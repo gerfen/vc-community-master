@@ -3584,7 +3584,7 @@ button.btn
 
 .tile
 {
-    background: #fff;
+    background: #fbfdfe;
     color: #4c4c4c;
     cursor: pointer;
     float: left;
@@ -3600,8 +3600,8 @@ button.btn
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
 
-    -webkit-box-shadow: 0 0 0 2px rgba(0,0,0,0) inset;
-            box-shadow: 0 0 0 2px rgba(0,0,0,0) inset;
+    -webkit-box-shadow: 0 0 0 2px #dee9f0 inset;
+            box-shadow: 0 0 0 2px #dee9f0 inset;
 }
 
 .tile.__price
@@ -6649,19 +6649,21 @@ input.ui-grid-filter-input[type="text"]
 /* Image preview */
 .image-preview
 {
-    height: 450px;
-    left: 55px;
+    background: #fff;
+    border: 2px solid #a1c0d4;
+    height: 300px;
+    line-height: 298px;
     overflow: hidden;
-    position: absolute;
-    top: 10px;
-    width: 450px;
+    position: fixed;
+    width: 300px;
     z-index: 50;
 }
 
     .image-preview *
     {
-        display: block;
+        display: inline-block;
         max-width: 100%;
+        vertical-align: middle;
     }
 
 /* Popup */
