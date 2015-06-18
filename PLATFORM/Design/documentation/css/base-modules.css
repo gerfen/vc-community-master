@@ -6170,7 +6170,6 @@ tags-input .tags .tag-item .remove-button
             .blade-static .form
             {
                 margin: 0 20px;
-                overflow: hidden;
                 padding: 17px 0;
                 position: relative;
             }
