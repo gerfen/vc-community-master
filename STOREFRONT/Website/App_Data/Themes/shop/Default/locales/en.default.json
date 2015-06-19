@@ -258,7 +258,11 @@
       "store_on_social_network": "{{ store_name }} on {{ social_network }}",
       "newsletter_title": "Newsletter",
       "newsletter_sign_up": "Sign Up",
-      "newsletter_email_placeholder": "Email Address"
+        "newsletter_email_placeholder": "Email Address",
+            "customer_service": "Customer Service",
+        "privacy_and_terms": "Privacy And Terms",
+        "order_a_custom_drum": "Order A Custom Drum",
+        "custom_order_text" : "If you are a band or business that would like your own custom displays, you can order one "
     }
   },
   "products": {

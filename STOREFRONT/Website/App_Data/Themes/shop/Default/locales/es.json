@@ -263,7 +263,11 @@
       "store_on_social_network": "{{ store_name }} en {{ social_network }}",
       "newsletter_title": "Boletín",
       "newsletter_sign_up": "Registro",
-      "newsletter_email_placeholder": "Dirección de correo electrónico"
+        "newsletter_email_placeholder": "Dirección de correo electrónico",
+            "customer_service": "fixme! Customer Service",
+        "privacy_and_terms": "fixme! Privacy And Terms",
+        "order_a_custom_drum" : "fixme! Order A Custom Drum",
+        "custom_order_text" : "fixme! If you are a band or business that would like your own custom displays, you can order one "
     }
   },
   "products": {
