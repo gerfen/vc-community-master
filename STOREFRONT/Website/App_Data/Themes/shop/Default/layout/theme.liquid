@@ -32,9 +32,8 @@
           <!-- Helpers ================================================== -->
           <link rel="canonical" href="{{ canonical_url }}">
             <meta name="viewport" content="width=device-width,initial-scale=1">
-
-             {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css' | stylesheet_tag }}
-
+				  {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css' | stylesheet_tag }}
+      {{ 'bootstrap.scss.css' | asset_url | stylesheet_tag }}
               {% if settings.ajax_cart_enable %}
               <!-- Ajaxify Cart Plugin ================================================== -->
               {{ 'ajaxify.scss.css' | asset_url | stylesheet_tag }}
@@ -59,9 +58,7 @@
 
               {{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
               {{ 'modernizr.min.js' | asset_url | script_tag }}
-
-                {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js' | script_tag }}
-
+    		  {{ '//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js' | script_tag }}
             </head>
 
   <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" >
@@ -69,7 +66,7 @@
     {% if settings.store_selector_enable %}{% include 'top-header-selector' %}{% endif %}
 
     <header class="site-header" role="banner">
-      <div class="wrapper">
+      <div class="inner-wrapper">
         <div class="grid--full">
           <div class="grid-item large--one-half">
             {% if template == 'index' %}
@@ -130,7 +127,7 @@
     </header>
 
     <nav class="nav-bar" role="navigation">
-      <div class="wrapper">
+      <div class="inner-wrapper">
         {% include 'search-bar' %}
         {% include 'site-nav' %}
       </div>

@@ -1,0 +1,63 @@
+{% if settings.slider_home_enable %}
+
+    <div id="myCarousel" class="carousel slide carousel-fade" style="">
+        <ol class="carousel-indicators">
+            {% for i in (1..6) %}
+            {% capture slide %}slide_{{ i }}{% endcapture %}
+            {% capture slide_link %}slide_{{ i }}_link{% endcapture %}
+            {% capture slide_img %}slide_{{ i }}.jpg{% endcapture %}
+            {% capture slide_alt %}slide_{{ i }}_alt{% endcapture %}
+            {% if settings[slide] %}
+            {% if i == 1 %}
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            {% else %}
+            <li data-target="myCarousel" data-slide-to="{{ i -1 }}"></li>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </ol>
+
+        <div class="carousel-inner" role="listbox">
+            {% for i in (1..6) %}
+            {% capture slide %}slide_{{ i }}{% endcapture %}
+            {% capture slide_link %}slide_{{ i }}_link{% endcapture %}
+            {% capture slide_img %}slide_{{ i }}.jpg{% endcapture %}
+            {% capture slide_alt %}slide_{{ i }}_alt{% endcapture %}
+            {% if settings[slide] %}
+            {% if i == 1 %}
+            <div class="active item">
+                {% else %}
+                <div class="item fill">
+                        {% endif %}
+                  <!-- <div class="fill" style="background-image: url('{{ slide_img | asset_url }}')"></div> -->
+                    
+                    <a href="{{ settings[slide_link] }}" class="slide-link">
+                        <img class="fill" src="{{ slide_img | asset_url }}" alt="{{settings[slide_alt]}}" style="width:100%" />
+                       </a>
+                  
+                </div>
+
+              <!-- {{ slide_img | asset_url | img_tag: settings[slide_alt]  }}-->
+
+                {% endif %}
+                {% endfor %}
+            </div>
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        </div>
+
+      
+
+
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function () {
+                $('.carousel').carousel({
+                    interval: 7000
+                });
+            });
+        </script>
+        {% endif %}
+
+
+      
+

@@ -1,4 +1,3 @@
-<!--{% include 'slider' %}-->
 {% include 'bootstrap-slider' %}
 
 <div id="promotion-banners-1" style="text-align: center;">
@@ -13,13 +12,13 @@
 {% endunless %}
 
 {% if settings.home_featured_collections_enable %}
-  <div class="section-header">
+  <div class="section-header inner-wrapper" >
     <h2 class="h1 section-header--left">{{ 'homepage.featured_collections.heading' | t }}</h2>
     <div class="section-header--right">
       <a href="/collections">{{ 'homepage.featured_collections.more_categories' | t }} &rsaquo;</a>
     </div>
   </div>
-  <div class="grid-uniform text-center row-negative-bottom">
+  <div class="grid-uniform text-center row-negative-bottom inner-wrapper">
 
     {% assign index = 0 %}
 
