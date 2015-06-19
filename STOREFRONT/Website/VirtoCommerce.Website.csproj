@@ -329,9 +329,15 @@
     <Content Include="App_Data\Themes\shop\Default\assets\arrow-right.svg" />
     <Content Include="App_Data\Themes\shop\Default\assets\arrow.svg" />
     <Content Include="App_Data\Themes\shop\Default\assets\arrow_switch.png" />
+    <Content Include="App_Data\Themes\shop\Default\assets\artistic-custom-drums.jpg" />
+    <Content Include="App_Data\Themes\shop\Default\assets\blank-display.jpg" />
+    <Content Include="App_Data\Themes\shop\Default\assets\Breweries-licensed-category.jpg" />
     <Content Include="App_Data\Themes\shop\Default\assets\cart.svg" />
     <Content Include="App_Data\Themes\shop\Default\assets\collection-view-grid.svg" />
     <Content Include="App_Data\Themes\shop\Default\assets\collection-view-list.svg" />
+    <Content Include="App_Data\Themes\shop\Default\assets\college-drums.jpg" />
+    <Content Include="App_Data\Themes\shop\Default\assets\drum-displays-hendrix-2.jpg" />
+    <Content Include="App_Data\Themes\shop\Default\assets\football.jpg" />
     <Content Include="App_Data\Themes\shop\Default\assets\logo.png" />
     <Content Include="App_Data\Themes\shop\Default\assets\favicon.png" />
     <Content Include="App_Data\Themes\shop\Default\assets\flags.png" />
@@ -344,6 +350,7 @@
     <Content Include="App_Data\Themes\shop\Default\assets\remove.svg" />
     <Content Include="App_Data\Themes\shop\Default\assets\respond-proxy.html" />
     <Content Include="App_Data\Themes\shop\Default\assets\respond.min.js" />
+    <Content Include="App_Data\Themes\shop\Default\assets\rock-bands2.jpg" />
     <Content Include="App_Data\Themes\shop\Default\assets\slide_1.jpg" />
     <Content Include="App_Data\Themes\shop\Default\assets\slide_2.jpg" />
     <Content Include="App_Data\Themes\shop\Default\assets\slide_3.jpg" />
@@ -796,6 +803,9 @@
     <Content Include="App_Data\Themes\shop\Default\templates\product.liquid" />
     <Content Include="App_Data\Themes\shop\Default\templates\search.liquid" />
     <Content Include="App_Data\Themes\shop\Default\assets\bootstrap.scss.liquid" />
+    <Content Include="App_Data\Themes\shop\Default\snippets\home-page-callout.liquid" />
+    <Content Include="App_Data\Themes\shop\Default\snippets\home-page-testimonials.liquid" />
+    <Content Include="App_Data\Themes\shop\Default\snippets\home-page-licensed-categories.liquid" />
     <None Include="App_Data\Themes\_Global\templates\external_login_confirmation.liquid" />
     <Content Include="App_Data\Themes\_Global\templates\index.liquid" />
     <Content Include="App_Data\Themes\_Global\templates\banner.liquid" />
