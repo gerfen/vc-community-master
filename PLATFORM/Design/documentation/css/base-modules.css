@@ -6815,6 +6815,7 @@ input.ui-grid-filter-input[type="text"]
     .gridster .gridster-cnt,
     .gridster [ng-model="widget"]
     {
+        overflow: hidden;
         text-align: center;
     }
 
