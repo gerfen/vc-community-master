@@ -806,6 +806,7 @@
     <Content Include="App_Data\Themes\shop\Default\snippets\home-page-callout.liquid" />
     <Content Include="App_Data\Themes\shop\Default\snippets\home-page-testimonials.liquid" />
     <Content Include="App_Data\Themes\shop\Default\snippets\home-page-licensed-categories.liquid" />
+    <Content Include="App_Data\Themes\shop\Default\snippets\top-header.liquid" />
     <None Include="App_Data\Themes\_Global\templates\external_login_confirmation.liquid" />
     <Content Include="App_Data\Themes\_Global\templates\index.liquid" />
     <Content Include="App_Data\Themes\_Global\templates\banner.liquid" />

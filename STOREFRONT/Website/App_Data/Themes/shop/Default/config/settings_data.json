@@ -7,7 +7,7 @@
             "cart_notes_enable": false,
             "collection_prod_image_sizes": "large",
             "collection_sidebar_filters": "groups",
-            "color_accent": "#ffea00",
+            "color_accent": "#E72327",
             "color_body_bg": "#fff",
             "color_body_text": "#585858",
             "color_borders": "#ececec",
@@ -15,7 +15,7 @@
             "color_footer_social_link": "#bbbbbb",
             "color_footer_text": "#636363",
             "color_header_background": "#fff",
-            "color_header_background_top": "#1d4273",
+            "color_header_background_top": "#E72327",
             "color_header_cart_search": "#fff",
             "color_header_text": "#000",
             "color_head_text_top":  "#999",
@@ -93,7 +93,7 @@
             "type_navigation_transform": true,
             "remove_dollar_symbol": false,
             "superscript_decimals": true,
-            "store_selector_enable": true
+            "store_selector_enable": false
         },
         "Blue": {
             "ajax_cart_enable": true,

@@ -65,10 +65,12 @@
 
     {% if settings.store_selector_enable %}{% include 'top-header-selector' %}{% endif %}
 
+      {% include 'top-header' %}
+
     <header class="site-header" role="banner">
       <div class="inner-wrapper">
         <div class="grid--full">
-          <div class="grid-item large--one-half">
+          <div class="grid-item large--one-quarter">
             {% if template == 'index' %}
             <h1 class="header-logo" itemscope itemtype="http://schema.org/Organization">
               {% else %}
