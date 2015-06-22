@@ -2,6 +2,17 @@
 $colorFooterBg: {{ settings.color_footer_bg }};
 $colorFooterText: {{ settings.color_footer_text }};
 
+.btn-xlarge {
+    padding: 18px 28px;
+    font-size: 28px; //change this to your desired size
+    line-height: normal;
+    -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+            border-radius: 8px;
+}
+
+
+
 
 .carousel, .item, .active {
     height: 100%;
@@ -44,6 +55,35 @@ $colorFooterText: {{ settings.color_footer_text }};
 .carousel-fade .prev {
   left: 0;
   z-index: 1;
+}
+
+
+.carousel-caption {
+    padding: 120px;
+}
+
+.carousel-caption-lower-right {
+    padding: 60px;
+    left: 70%;
+}
+
+.carousel-caption-upper-left {
+    padding: 180px;
+    left: 20%;
+    right: 80%;
+    
+
+  
+}
+
+.large {
+    color: #fff;
+     font-size: 36px;
+}
+.x-large {
+
+    color: #fff;
+     font-size: 42px;
 }
 
 
@@ -93,6 +133,18 @@ $colorFooterText: {{ settings.color_footer_text }};
 .carousel-indicators li.active {
   background: #fff;
   margin: 0 3px;
+}
+
+.carousel-caption h3:first-child {
+  animation-delay: 1s;
+}
+
+.carousel-caption h1nth-child(2) {
+  animation-delay: 2s;
+}
+
+.carousel-caption button {
+  animation-delay: 3s;
 }
 
 .callout {
@@ -157,5 +209,24 @@ $colorFooterText: {{ settings.color_footer_text }};
   width: 100%;
 }
 
+.header-link {
+
+color : #fff;
+text-decoration: none;
+line-height: 30px;
+padding: 10px;
+}
+
+ .header-link  a {
+    text-decoration: none;
+font-weight: bold;
+    color: #fff;
+  /*  @include transition(color 0.2s ease-out); */
+
+    &:hover {
+      color: darken({{ settings.color_footer_social_link }}, 15%);
+     /* @include transition(color 0.05s ease-in); */
+    }
+  }
 
 

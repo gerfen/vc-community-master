@@ -64,14 +64,20 @@
                 <p>
                     {{ 'layout.footer.custom_order_text' | t }}
                     {% for link in linklists[settings.footer_customorder_linklist].links %}
-                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                    {% else %}
+                    <a href="{{ link.url }}"><strong>{{ link.title }}</strong>.</a>
+                                       {% else %}
                     {% capture theme_settings_footer_linklist_path %}
                     <strong>Footer</strong> >
                     <strong>Quick links link list</strong>{% endcapture %}
                     {{ 'layout.footer.instructions_for_linklist_html' | t: theme_settings_link: theme_settings_link, theme_settings_footer_linklist_path: theme_settings_footer_linklist_path }}
                     {% endfor %}
 
+                </p>
+                <p>
+                   <h3>WE ACCEPT</h3> 
+                   
+                    {% capture cards_img %}cards.png{% endcapture %}
+                    <img src="{{ cards_img | asset_url }}" alt="Accepted Credit Cards" ">
                 </p>
             </div>
             {% endif %}

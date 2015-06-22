@@ -1,0 +1,138 @@
+{% if settings.slider_home_enable %}
+
+<div id="homeCarousel" class="carousel slide carousel-fade" style="" data-ride="carousel">
+    <ol class="carousel-indicators">
+
+        <li data-target="#homeCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="homeCarousel" data-slide-to="1"></li>
+        <li data-target="homeCarousel" data-slide-to="2"></li>
+
+    </ol>
+
+    <div class="carousel-inner" role="listbox">
+
+        <div class="active item fill">
+
+            <a href="/mayhem-festival" class="slide-link">
+                <img class="fill" src="{{ 'slide_1.jpg' | asset_url }}" alt="Mayhem Tour" style="width:100%" />
+
+            </a>
+            <div class="container">
+                <div class="carousel-caption carousel-caption-lower-right">
+                    <div class="row">
+                        <div class="col=md-4">
+                            <a href="/mayhem-festival" class="btn btn-xlarge" data-animation="animated zoomInRight">View Products</a>
+                        </div>
+                        <div class="col=md-8"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+
+    <div class="item fill">
+
+        <a href="/football/hawks-012" class="slide-link">
+            <img class="fill" src="{{ 'slide_2.jpg' | asset_url }}" alt="12th Man" style="width:100%" />
+
+        </a>
+        <div class="container">
+            <div class="carousel-caption carousel-caption-upper-left">
+                <div class="row" style="width:300px">
+                    <div class="col=md-4">
+                        <div class="large">BE SEAHAWKS PROUD</div>
+                        <div class="x-large">12th MAN</div>
+                        <a href="/football/hawks-012" class="btn btn-xlarge" data-animation="animated zoomInRight">Buy Now</a>
+                    </div>
+                    <div class="col=md-8"></div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+    <div class="item fill">
+
+        <a href="/rock-bands" class="slide-link">
+            <img class="fill" src="{{ 'slide_3.jpg' | asset_url }}" alt="Rock Bands" style="width:100%" />
+
+        </a>
+        <div class="container">
+            <div class="carousel-caption">
+                <a href="/rock-bands" class="btn  btn-xlarge" data-animation="animated zoomInRight">View Products</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<a class="left carousel-control" href="#homeCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+<a class="right carousel-control" href="#homeCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+</div>
+
+
+
+
+<script type="text/javascript" charset="utf-8">
+
+
+    /* Demo Scripts for Bootstrap Carousel and Animate.css article
+* on SitePoint by Maria Antonietta Perna
+*/
+    //(function ($) {
+
+    //    //Function to animate slider captions
+    //    function doAnimations(elems) {
+    //        //Cache the animationend event in a variable
+    //        var animEndEv = 'webkitAnimationEnd animationend';
+
+    //        elems.each(function () {
+    //            var $this = $(this),
+    //                $animationType = $this.data('animation');
+    //            $this.addClass($animationType).one(animEndEv, function () {
+    //                $this.removeClass($animationType);
+    //            });
+    //        });
+    //    }
+
+    //    //Variables on page load
+    //    var $myCarousel = $('#homeCarousel'),
+    //        $firstAnimatingElems = $myCarousel.find('.item:first').find("[data-animation ^= 'animated']");
+
+    //    //Initialize carousel
+    //    $myCarousel.carousel();
+
+    //    //Animate captions in first slide on page load
+    //    doAnimations($firstAnimatingElems);
+
+    //    //Pause carousel
+    //    $myCarousel.carousel('pause');
+
+
+    //    //Other slides to be animated on carousel slide event
+    //    $myCarousel.on('slide.bs.carousel', function (e) {
+    //        var $animatingElems = $(e.relatedTarget).find("[data-animation ^= 'animated']");
+    //        doAnimations($animatingElems);
+    //    });
+
+    //})(window.jQuery);
+
+
+
+
+    $(document).ready(function () {
+        $('.carousel').carousel({
+            interval: 7000
+        });
+
+        $('.carousel').carousel("pause");
+
+    });
+
+
+</script>
+        {% endif %}
+
+
+
+

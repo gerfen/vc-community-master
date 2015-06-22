@@ -332,6 +332,7 @@
     <Content Include="App_Data\Themes\shop\Default\assets\artistic-custom-drums.jpg" />
     <Content Include="App_Data\Themes\shop\Default\assets\blank-display.jpg" />
     <Content Include="App_Data\Themes\shop\Default\assets\Breweries-licensed-category.jpg" />
+    <Content Include="App_Data\Themes\shop\Default\assets\cards.png" />
     <Content Include="App_Data\Themes\shop\Default\assets\cart.svg" />
     <Content Include="App_Data\Themes\shop\Default\assets\collection-view-grid.svg" />
     <Content Include="App_Data\Themes\shop\Default\assets\collection-view-list.svg" />
@@ -807,6 +808,7 @@
     <Content Include="App_Data\Themes\shop\Default\snippets\home-page-testimonials.liquid" />
     <Content Include="App_Data\Themes\shop\Default\snippets\home-page-licensed-categories.liquid" />
     <Content Include="App_Data\Themes\shop\Default\snippets\top-header.liquid" />
+    <Content Include="App_Data\Themes\shop\Default\snippets\home-slider.liquid" />
     <None Include="App_Data\Themes\_Global\templates\external_login_confirmation.liquid" />
     <Content Include="App_Data\Themes\_Global\templates\index.liquid" />
     <Content Include="App_Data\Themes\_Global\templates\banner.liquid" />
