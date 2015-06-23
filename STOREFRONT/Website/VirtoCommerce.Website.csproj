@@ -337,8 +337,11 @@
     <Content Include="App_Data\Themes\shop\Default\assets\collection-view-grid.svg" />
     <Content Include="App_Data\Themes\shop\Default\assets\collection-view-list.svg" />
     <Content Include="App_Data\Themes\shop\Default\assets\college-drums.jpg" />
+    <Content Include="App_Data\Themes\shop\Default\assets\danielle_keister.jpg" />
     <Content Include="App_Data\Themes\shop\Default\assets\drum-displays-hendrix-2.jpg" />
+    <Content Include="App_Data\Themes\shop\Default\assets\eddie_trunk.jpg" />
     <Content Include="App_Data\Themes\shop\Default\assets\football.jpg" />
+    <Content Include="App_Data\Themes\shop\Default\assets\Keel.jpg" />
     <Content Include="App_Data\Themes\shop\Default\assets\logo.png" />
     <Content Include="App_Data\Themes\shop\Default\assets\favicon.png" />
     <Content Include="App_Data\Themes\shop\Default\assets\flags.png" />
@@ -348,6 +351,10 @@
     <Content Include="App_Data\Themes\shop\Default\assets\jquery.flexslider.min.js" />
     <Content Include="App_Data\Themes\shop\Default\assets\jquery.zoom.min.js" />
     <Content Include="App_Data\Themes\shop\Default\assets\modernizr.min.js" />
+    <Content Include="App_Data\Themes\shop\Default\assets\pamela_moore.jpg" />
+    <Content Include="App_Data\Themes\shop\Default\assets\parker_lundgren.jpg" />
+    <Content Include="App_Data\Themes\shop\Default\assets\Queensryche.jpg" />
+    <Content Include="App_Data\Themes\shop\Default\assets\ray-luzier-korn-drum-heads.jpg" />
     <Content Include="App_Data\Themes\shop\Default\assets\remove.svg" />
     <Content Include="App_Data\Themes\shop\Default\assets\respond-proxy.html" />
     <Content Include="App_Data\Themes\shop\Default\assets\respond.min.js" />
@@ -357,6 +364,9 @@
     <Content Include="App_Data\Themes\shop\Default\assets\slide_3.jpg" />
     <Content Include="App_Data\Themes\_Default\assets\arrow_switch.png" />
     <Content Include="App_Data\Themes\_Default\assets\flags.png" />
+    <Content Include="App_Data\Themes\shop\Default\assets\specs1.jpg" />
+    <Content Include="App_Data\Themes\shop\Default\assets\University-of-Washington-husky-1995-Side-150x150.jpg" />
+    <Content Include="App_Data\Themes\shop\Default\assets\university-of-washington-three-quarter-1995-drum-150x150.jpg" />
     <Content Include="App_Data\Themes\_Global\assets\icon_google_32.png" />
     <Content Include="App_Data\Themes\_Global\assets\icon_facebook_32.png" />
     <Content Include="App_Data\Themes\_Global\assets\loader_spinner.gif" />
@@ -809,6 +819,17 @@
     <Content Include="App_Data\Themes\shop\Default\snippets\home-page-licensed-categories.liquid" />
     <Content Include="App_Data\Themes\shop\Default\snippets\top-header.liquid" />
     <Content Include="App_Data\Themes\shop\Default\snippets\home-slider.liquid" />
+    <Content Include="App_Data\Pages\shop\en-US\pages\about.md" />
+    <Content Include="App_Data\Pages\shop\en-US\pages\contact-us.md" />
+    <Content Include="App_Data\Pages\shop\en-US\pages\custom-order.md" />
+    <Content Include="App_Data\Pages\shop\en-US\pages\customer-order.md" />
+    <Content Include="App_Data\Pages\shop\en-US\pages\privacy-policy.md" />
+    <Content Include="App_Data\Pages\shop\en-US\pages\product-info.md" />
+    <Content Include="App_Data\Pages\shop\en-US\pages\returns.md" />
+    <Content Include="App_Data\Pages\shop\en-US\pages\store-policy.md" />
+    <Content Include="App_Data\Pages\shop\en-US\pages\terms-of-sale.md" />
+    <Content Include="App_Data\Pages\shop\en-US\pages\terms-of-use.md" />
+    <Content Include="App_Data\Pages\shop\en-US\pages\testimonials.md" />
     <None Include="App_Data\Themes\_Global\templates\external_login_confirmation.liquid" />
     <Content Include="App_Data\Themes\_Global\templates\index.liquid" />
     <Content Include="App_Data\Themes\_Global\templates\banner.liquid" />
@@ -967,9 +988,7 @@
   <ItemGroup>
     <Content Include="App_Data\Themes\_Global\templates\confirmation-forgot-password.liquid" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\Pages\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

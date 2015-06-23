@@ -2,6 +2,12 @@
 $colorFooterBg: {{ settings.color_footer_bg }};
 $colorFooterText: {{ settings.color_footer_text }};
 
+.align-left {
+  display: inline;
+  float: left;
+  margin-right: 15px;
+}
+
 .btn-xlarge {
     padding: 18px 28px;
     font-size: 28px; //change this to your desired size
@@ -11,8 +17,66 @@ $colorFooterText: {{ settings.color_footer_text }};
             border-radius: 8px;
 }
 
+.breadcrumb {
+    background-color: #fff;
+}
+
+ul.faq {
+    list-style-type: none;
+  color: #747474;
+    font-family: 'Roboto Condensed', Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: smaller;
+    li {
+        color: #333333;
+    }
+   
+}
+
+ul.faq .btn {
+    background-color: #333333;
+    }
+
+ul.faq .btn:focus {
+    color: #fff;
+    }
+
+ul.faq a {
+    color: #fff;
+    }
+
+ul.faq a:hover {
+    color: #fff;
+    }
+
+ul.faq a:active {
+    color: #fff;
+    }
+
+ul.faq a:visited {
+    color: #fff;
+    }
+
+.question {
+    padding: 5px 5px;
+}
 
 
+.panel .btn {
+ font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+}
+.panel .btn.collapsed:after {
+    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+}
+
+.panel .btn:after {
+     content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+}
+.answer {
+    padding: 10px 0;
+    color: #747474;
+  
+}
 
 .carousel, .item, .active {
     height: 100%;
