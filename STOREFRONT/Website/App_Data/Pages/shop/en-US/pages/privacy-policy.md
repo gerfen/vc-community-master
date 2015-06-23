@@ -1,1 +1,28 @@
-privacy policy
+---
+title: Privacy Policy
+---
+
+		<p>EFFECTIVE DATE: January 1, 2014</p>
+<p>Select A Head LLC (“Select A Head”) values the privacy of its web site visitors and hopes that the following statement helps you understand how Select A Head collects, uses, and safeguards the personal information you provide us through our web site, selectahead.com, and its pages (the “Site”):</p>
+<h4>1. Information Select A Head Collects:</h4>
+<p>When you visit the Site, Select A Head collects personally identifiable information. Personally identifiable information is information that is not otherwise publicly available, and may include such things as your first and last name, e-mail address, physical address, and other information that you provide to us. If you choose to correspond with Select A Head through e-mail, Select A Head reserves the right to retain the content of your e-mail messages together with your e-mail address and Select A Head’s responses. Do not submit information that you do not want Select A Head to access. If you submit content to Select A Head in connection with an order for a Custom Display, Select A Head’s use of such content will be governed by our terms of sale.</p>
+<h4>2. How Select A Head Uses Your Information:</h4>
+<p>Select A Head may use personally identifiable information to provide information and services to Site users and to allow Select A Head to (i) respond to user questions and comments, (ii) analyze and monitor consumer and customer activity, (iii) promote and support Select A Head products and services, (iv) develop a knowledge base regarding its Site users, and (v) process product orders.</p>
+<h4>3. Third Parties:</h4>
+<p>Select A Head may disclose personally identifiable information in response to law enforcement activity, to enforce its contract or property rights, or when required by law. Information collected may also be transferred in connection with the sale or merger of the company or any division or business line of the company to which the information relates.</p>
+<p>If Select A Head hires any third parties to perform services relating to the way the Site functions, it will require them to protect your personally identifiable information in the same way Select A Head does. [Select A Head uses an outside credit card processing company to bill users for products and services. When you order a product or service, Select A Head will share names or other contact information that is necessary for the third party to provide these services.]</p>
+<p>In addition to the disclosures set forth above, Select A Head may aggregate personally identifiable information about its users and disclose such information in a non-personally identifiable manner to third parties (including advertisers) for marketing, promotional, and other purposes. In those cases, the third parties will not be able to identify any individual user of the Site based on the disclosures.</p>
+<h4>4. Cookies:</h4>
+<p>Select A Head may use different technologies, such as cookies, to passively collect information. The information collected might include the date and time you visit the Site, logs from your browser, your Internet Protocol (IP) address, and the pages you requested. This information will usually be used to (i) customize the advertising and content you see, (ii) process and confirm your entries and order information, (iii) contact you, and (iv) enhance your experience. Your browser must be set up to accept cookies in order to fully utilize certain areas of the Site.</p>
+<h4>5. Opt Out:</h4>
+<p>If you are no longer interested in receiving e-mail announcements and other marketing information from us, please e-mail your request to <a href="mailto:info@selectahead.com">info@selectahead.com</a>. Please include your full name, e-mail address and mailing address. Note that you may still receive certain communications from us, such as messages associated with orders you’ve placed and customer services messages.</p>
+<h4>6. Security:</h4>
+<p>Select A Head intends to use commercially reasonable means to protect the integrity of its Site and the confidentiality of the personally identifiable information that you provide. While Select A Head considers online privacy a priority, it cannot provide absolute assurances against, and will not be liable for, any breaches of confidentiality due to system failures or unauthorized access by third parties.</p>
+<h4>7. Users Under the Age of 18:</h4>
+<p>Select A Head intents this Site for use only by individuals who are 18 years of age or older. Please do not use the Site without the permission and involvement of a parent or guardian if you are not at least 18 years of age.</p>
+<h4>8. Changes to this Privacy Policy:</h4>
+<p>Select A Head reserves the right to change this Privacy Policy at any time. When material changes have been made to this Privacy Policy, Select A Head will update the Effective Date and indicate that the Privacy Policy has been revised on the front page of the Site with a link to the revised version of the Privacy Policy. Any material change to this Privacy Policy will also be indicated on the main page of the Site with a link to the revised Privacy Policy. Please check the Privacy Policy regularly to review the changes.</p>
+<h4>9. Consent to this Privacy Policy:</h4>
+<p>Your use of the Site constitutes your agreement to be bound by this Privacy Policy. If you do not agree to the terms of this Privacy Policy, please do not use the Site. Continued use of the Site following the posting of a revised Privacy Policy will mean that you accept the then-current Privacy Policy.</p>
+<h4>10. Contacting Select A Head:</h4>
+<p>Questions regarding the Site or this Privacy Policy should be sent to <a href="mailto:info@selectahead.com">info@selectahead.com</a>.</p>
