@@ -191,4 +191,4 @@ Shared/VirtoCommerce/VirtoCommerce.PaymentGateways.dll
 /STOREFRONT/Website/App_Data/Pages
 /PLATFORM/Modules/Catalog/VirtoCommerce.CatalogModule.Test/products.csv
 /PLATFORM/Modules/Marketing/VirtoCommerce.MarketingModule.Data/app.config
-STOREFRONT/Website/App_Data/Themes-org/selectahead/Default/assets/ajaxify.js.liquid
+/STOREFRONT/Website/App_Data/Themes

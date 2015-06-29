@@ -39,19 +39,19 @@
                         }
 
                         //Set navigation breadcrumbs
-                        setBreadcrumps();
+                        setBreadcrumbs();
                         setCheckedEntries();
                     }, function (error) {
                         bladeNavigationService.setError('Error ' + error.status, blade);
                     });
             }
 
-            //Breadcrumps
-            function setBreadcrumps() {
+            //Breadcrumbs
+            function setBreadcrumbs() {
                 //Clone array (angular.copy leave a same reference)
                 blade.breadcrumbs = blade.breadcrumbs.slice(0);
 
-                //catalog breadcrump by default
+                //catalog breadcrumb by default
                 var breadCrumb = {
                     id: blade.catalogId,
                     name: blade.catalog.name,
@@ -165,12 +165,13 @@
                         });
                 });
 
+                var listCategoryLinkCount = _.where(listEntryLinks, { listEntryType: 'category' }).length;
                 var dialog = {
                     id: "confirmDeleteItem",
                     categoryCount: categoryIds.length,
                     itemCount: itemIds.length,
-                    listCategoryLinkCount: _.where(listEntryLinks, { listEntryType: 'category' }).length,
-                    listItemLinkCount: listEntryLinks.length - this.listCategoryLinkCount,
+                    listCategoryLinkCount: listCategoryLinkCount,
+                    listItemLinkCount: listEntryLinks.length - listCategoryLinkCount,
                     callback: function (remove) {
                         if (remove) {
                             closeChildrenBlades();
@@ -370,36 +371,37 @@
 				     },
 				     canExecuteMethod: function () { return true; }
 				 },
-                 {
-                     name: "Copy",
-                     icon: 'fa fa-files-o',
-                     executeMethod: function () {
-                         $storage.catalogClipboardContent = _.where($scope.items, { selected: true });
-                     },
-                     canExecuteMethod: isItemsChecked,
-                     permission: 'catalog:items:manage'
-                 },
-                 {
-                     name: "Paste",
-                     icon: 'fa fa-clipboard',
-                     executeMethod: function () {
-                         blade.isLoading = true;
-                         listEntries.paste({
-                             catalog: blade.catalogId,
-                             category: blade.categoryId,
-                             listEntries: $storage.catalogClipboardContent
-                         }, function () {
-                             delete $storage.catalogClipboardContent;
-                             blade.refresh();
-                         }, function (error) {
-                             bladeNavigationService.setError('Error ' + error.status, blade);
-                         });
-                     },
-                     canExecuteMethod: function () {
-                         return $storage.catalogClipboardContent;
-                     },
-                     permission: 'catalog:items:manage'
-                 },
+                 /// hidding some UI functionality until it's fully implemented. Need to release
+                 //{
+                 //    name: "Copy",
+                 //    icon: 'fa fa-files-o',
+                 //    executeMethod: function () {
+                 //        $storage.catalogClipboardContent = _.where($scope.items, { selected: true });
+                 //    },
+                 //    canExecuteMethod: isItemsChecked,
+                 //    permission: 'catalog:items:manage'
+                 //},
+                 //{
+                 //    name: "Paste",
+                 //    icon: 'fa fa-clipboard',
+                 //    executeMethod: function () {
+                 //        blade.isLoading = true;
+                 //        listEntries.paste({
+                 //            catalog: blade.catalogId,
+                 //            category: blade.categoryId,
+                 //            listEntries: $storage.catalogClipboardContent
+                 //        }, function () {
+                 //            delete $storage.catalogClipboardContent;
+                 //            blade.refresh();
+                 //        }, function (error) {
+                 //            bladeNavigationService.setError('Error ' + error.status, blade);
+                 //        });
+                 //    },
+                 //    canExecuteMethod: function () {
+                 //        return $storage.catalogClipboardContent;
+                 //    },
+                 //    permission: 'catalog:items:manage'
+                 //},
                 {
                     name: "Delete",
                     icon: 'fa fa-trash-o',

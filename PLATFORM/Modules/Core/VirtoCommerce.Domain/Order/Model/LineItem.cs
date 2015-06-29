@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtoCommerce.Domain.Catalog.Model;
+using VirtoCommerce.Domain.Commerce.Model;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.Domain.Order.Model
 {
-	public class LineItem : AuditableEntity, IPosition
+	public class LineItem : AuditableEntity, IPosition, IHaveTaxDetalization
 	{
 		public CurrencyCodes Currency { get; set; }
 		/// <summary>
-		/// Price with tax and without dicount
+		/// Price with tax and without discount
 		/// </summary>
 		public decimal BasePrice { get; set; }
 		/// <summary>
@@ -34,7 +36,8 @@ namespace VirtoCommerce.Domain.Order.Model
 		public int Quantity { get; set; }
 
 		public string ProductId { get; set; }
-		public string CatalogId { get; set; }
+		public CatalogProduct Product { get; set; }
+ 		public string CatalogId { get; set; }
 		public string CategoryId { get; set; }
 
 		public string Name { get; set; }
@@ -57,5 +60,6 @@ namespace VirtoCommerce.Domain.Order.Model
 
 
 		public Discount Discount { get; set; }
+		public ICollection<TaxDetail> TaxDetails { get; set; }
 	}
 }

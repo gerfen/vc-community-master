@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtoCommerce.Domain.Catalog.Model;
+using VirtoCommerce.Domain.Commerce.Model;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.Domain.Cart.Model
 {
-	public class LineItem : AuditableEntity
+	public class LineItem : AuditableEntity, IHaveTaxDetalization
 	{
 		public string ProductId { get; set; }
+		public CatalogProduct Product { get; set; }
 		public string CatalogId { get; set; }
 		public string CategoryId { get; set; }
 		public string ProductCode { get; set; }
@@ -25,8 +28,6 @@ namespace VirtoCommerce.Domain.Cart.Model
 
 		public bool IsGift { get; set; }
 		public CurrencyCodes Currency { get; set; }
-
-		public ICollection<Discount> Discounts { get; set; }
 
 		public string LanguageCode { get; set; }
 
@@ -55,5 +56,11 @@ namespace VirtoCommerce.Domain.Cart.Model
 
 		public decimal DiscountTotal { get; set; }
 		public decimal TaxTotal { get; set; }
+
+		public ICollection<Discount> Discounts { get; set; }
+
+		#region IHaveTaxDetalization Members
+		public ICollection<TaxDetail> TaxDetails { get; set; }
+		#endregion
 	}
 }

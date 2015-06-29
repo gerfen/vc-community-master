@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http.Results;
 using AvaTax.TaxModule.Web.Controller;
-using AvaTax.TaxModule.Web.Managers;
+using AvaTax.TaxModule.Web.Services;
 using VirtoCommerce.Domain.Cart.Model;
 using VirtoCommerce.Domain.Order.Model;
 using VirtoCommerce.Platform.Core.Common;
@@ -317,11 +317,6 @@ namespace AvaTax.TaxModule.Test
             var avalaraServiceUrl = "https://development.avalara.net";
             var avalaraCompanyCode = "APITrialCompany";
             
-
-            var avalaraCode = "";
-            var avalaraDescription = "";
-            var avalaraLogoUrl = "";
-
             const string _usernamePropertyName = "Avalara.Tax.Credentials.AccountNumber";
             const string _passwordPropertyName = "Avalara.Tax.Credentials.LicenseKey";
             const string _serviceUrlPropertyName = "Avalara.Tax.Credentials.ServiceUrl";
@@ -357,7 +352,15 @@ namespace AvaTax.TaxModule.Test
                 new SettingEntry { Value = "True", Name = _isEnabledPropertyName, ValueType = SettingValueType.Boolean }
             };
 
-            var avalaraTax = new AvaTaxImpl(_usernamePropertyName, _passwordPropertyName, _serviceUrlPropertyName, _companyCodePropertyName, _isEnabledPropertyName, avalaraCode, avalaraDescription, avalaraLogoUrl, settings);
+            var settingsManager = new Moq.Mock<ISettingsManager>();
+
+            settingsManager.Setup(manager => manager.GetValue(_usernamePropertyName, string.Empty)).Returns(() => settings.First(x => x.Name == _usernamePropertyName).Value);
+            settingsManager.Setup(manager => manager.GetValue(_passwordPropertyName, string.Empty)).Returns(() => settings.First(x => x.Name == _passwordPropertyName).Value);
+            settingsManager.Setup(manager => manager.GetValue(_serviceUrlPropertyName, string.Empty)).Returns(() => settings.First(x => x.Name == _serviceUrlPropertyName).Value);
+            settingsManager.Setup(manager => manager.GetValue(_companyCodePropertyName, string.Empty)).Returns(() => settings.First(x => x.Name == _companyCodePropertyName).Value);
+            settingsManager.Setup(manager => manager.GetValue(_isEnabledPropertyName, true)).Returns(() => true);
+            
+            var avalaraTax = new AvaTaxSettings(_usernamePropertyName, _passwordPropertyName, _serviceUrlPropertyName, _companyCodePropertyName, _isEnabledPropertyName, settingsManager.Object);
 
             var controller = new AvaTaxController(avalaraTax);
             return controller;

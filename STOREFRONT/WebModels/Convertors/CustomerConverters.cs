@@ -29,6 +29,7 @@ namespace VirtoCommerce.Web.Convertors
             address.Phone = customerAddress.Phone;
             address.PostalCode = customerAddress.Zip;
             address.RegionName = customerAddress.Province;
+            address.RegionId = customerAddress.ProvinceCode;
             address.Zip = customerAddress.Zip;
 
             return address;
@@ -75,7 +76,7 @@ namespace VirtoCommerce.Web.Convertors
             customerAddress.City = address.City;
             customerAddress.Company = address.Organization;
             customerAddress.Country = address.CountryName;
-            customerAddress.CountryCode = "RUS";
+            customerAddress.CountryCode = "US";
             customerAddress.FirstName = address.FirstName;
             customerAddress.LastName = address.LastName;
             customerAddress.Phone = address.Phone;
@@ -95,11 +96,12 @@ namespace VirtoCommerce.Web.Convertors
             customerAddress.City = formModel.City;
             customerAddress.Company = formModel.Company;
             customerAddress.Country = formModel.Country;
-            customerAddress.CountryCode = "RUS";
+            customerAddress.CountryCode = "US";
             customerAddress.FirstName = formModel.FirstName;
             customerAddress.LastName = formModel.LastName;
             customerAddress.Phone = formModel.Phone;
             customerAddress.Province = formModel.Province;
+            customerAddress.ProvinceCode = formModel.ProvinceCode;
             customerAddress.Zip = formModel.Zip;
 
             return customerAddress;
@@ -114,12 +116,13 @@ namespace VirtoCommerce.Web.Convertors
             customerAddress.City = formModel.City;
             customerAddress.Company = formModel.Company;
             customerAddress.Country = formModel.Country;
-            customerAddress.CountryCode = "RUS";
+            customerAddress.CountryCode = "US";
             customerAddress.FirstName = formModel.FirstName;
             customerAddress.Id = formModel.Id;
             customerAddress.LastName = formModel.LastName;
             customerAddress.Phone = formModel.Phone;
             customerAddress.Province = formModel.Province;
+            customerAddress.ProvinceCode = formModel.ProvinceCode;
             customerAddress.Zip = formModel.Zip;
 
             return customerAddress;

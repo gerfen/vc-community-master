@@ -57,7 +57,7 @@ namespace VirtoCommerce.CatalogModule.Data.Services
                 throw new ArgumentNullException("category");
 
             var dbCategory = category.ToDataModel();
-            coreModel.Category retVal = null;
+            
             using (var repository = _catalogRepositoryFactory())
             {	
                 repository.Add(dbCategory);
@@ -73,8 +73,8 @@ namespace VirtoCommerce.CatalogModule.Data.Services
 					_commerceService.UpsertSeo(seoInfo);
 				}
 			}
-       
-            return retVal;
+			category.Id = dbCategory.Id;
+            return GetById(dbCategory.Id);
         }
 
         public void Update(coreModel.Category[] categories)

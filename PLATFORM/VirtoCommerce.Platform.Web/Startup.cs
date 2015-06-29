@@ -187,11 +187,112 @@ namespace VirtoCommerce.Platform.Web
 
             #endregion
 
+			#region Settings
+
+			var platformSettings = new[]
+            {
+                new ModuleManifest
+                {
+                    Settings = new[]
+                    {
+                        new ModuleSettingsGroup
+                        {
+                            Name = "Platform|Test",
+                            Settings = new[]
+                            {
+                                new ModuleSetting
+                                {
+                                    Name = "VirtoCommerce.Platform.Test.TestString",
+                                    ValueType = ModuleSetting.TypeString,
+                                    Title = "Test String",
+                                    Description = "Test String Description",
+                                }
+                            }
+                        },
+
+						new ModuleSettingsGroup
+						{
+							Name = "Platform|Notifications|SendGrid",
+							Settings = new []
+							{
+								new ModuleSetting
+								{
+									Name = "VirtoCommerce.Platform.Notifications.SendGrid.UserName",
+									ValueType = ModuleSetting.TypeString,
+									Title = "SendGrid UserName",
+									Description = "Your SendGrid account username"
+								},
+								new ModuleSetting
+								{
+									Name = "VirtoCommerce.Platform.Notifications.SendGrid.Secret",
+									ValueType = ModuleSetting.TypeString,
+									Title = "SendGrid Password",
+									Description = "Your SendGrid account password"
+								}
+							}
+						}
+                    }
+                }
+            };
+
+			var settingsManager = new SettingsManager(manifestProvider, platformRepositoryFactory, cacheManager, platformSettings);
+			container.RegisterInstance<ISettingsManager>(settingsManager);
+
+			#endregion
+
             #region Notifications
 
             var hubSignalR = GlobalHost.ConnectionManager.GetHubContext<ClientPushHub>();
             var notifier = new InMemoryNotifierImpl(hubSignalR);
             container.RegisterInstance<INotifier>(notifier);
+
+			var resolver = new LiquidNotificationTemplateResolver();
+			var notificationTemplateService = new NotificationTemplateServiceImpl(platformRepositoryFactory);
+			var notificationManager = new NotificationManager(resolver, platformRepositoryFactory, notificationTemplateService);
+
+			Func<IEmailNotificationSendingGateway> emailNotificationSendingGatewayFactory =
+				() => new DefaultEmailNotificationSendingGateway(settingsManager.GetSettingByName("VirtoCommerce.Platform.Notifications.SendGrid.UserName").Value,
+																 settingsManager.GetSettingByName("VirtoCommerce.Platform.Notifications.SendGrid.Secret").Value);
+
+			var defaultSmsNotificationSendingGateway = new DefaultSmsNotificationSendingGateway();
+
+			container.RegisterInstance<INotificationTemplateService>(notificationTemplateService);
+			container.RegisterInstance<INotificationManager>(notificationManager);
+			container.RegisterInstance<INotificationTemplateResolver>(resolver);
+			container.RegisterInstance<IEmailNotificationSendingGateway>(emailNotificationSendingGatewayFactory());
+			container.RegisterInstance<ISmsNotificationSendingGateway>(defaultSmsNotificationSendingGateway);
+
+			notificationManager.RegisterNotificationType(
+				() => new RegistrationEmailNotification(emailNotificationSendingGatewayFactory)
+				{
+					DisplayName = "Registration notification",
+					Description = "This notification sends by email to client when he finish registration",
+					ObjectId = "Platform",
+					NotificationTemplate = new NotificationTemplate
+					{
+						Body = @"<p> Dear {{ context.first_name }} {{ context.last_name }}, you has registered on our site</p> <p> Your e-mail  - {{ context.email }} </p>",
+						Subject = @"<p> Thanks for registration {{ context.first_name }} {{ context.last_name }}!!! </p>",
+						NotificationTypeId = "RegistrationEmailNotification",
+						ObjectId = "Platform"
+					}
+				}
+			);
+
+			//notificationManager.RegisterNotificationType(
+			//	() => new RegistrationSmsNotification(defaultSmsNotificationSendingGateway)
+			//	{
+			//		DisplayName = "Registration notification",
+			//		Description = "This notification sends by sms to client when he finish registration",
+			//		ObjectId = "Platform",
+			//		NotificationTemplate = new NotificationTemplate
+			//		{
+			//			Body = @"Dear {{ context.first_name }} {{ context.last_name }}, you has registered on our site. Your login  - {{ context.login }} Your login - {{ context.password }}",
+			//			Subject = @"",
+			//			NotificationTypeId = "RegistrationSmsNotification",
+			//			ObjectId = "Platform"
+			//		}
+			//	}
+			//);
 
             #endregion
 
@@ -231,13 +332,6 @@ namespace VirtoCommerce.Platform.Web
             var packageService = new ZipPackageService(manifestProvider, packagesPath, sourcePath);
 
             container.RegisterType<ModulesController>(new InjectionConstructor(packageService, sourcePath));
-
-            #endregion
-
-            #region Settings
-
-            var settingsManager = new SettingsManager(manifestProvider, platformRepositoryFactory, cacheManager);
-            container.RegisterInstance<ISettingsManager>(settingsManager);
 
             #endregion
 

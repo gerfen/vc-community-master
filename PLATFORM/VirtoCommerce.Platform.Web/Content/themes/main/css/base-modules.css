@@ -3803,7 +3803,7 @@ button.btn
 
 .__images-list .tile.double
 {
-    line-height: 230px;
+    line-height: 225px;
 }
 
 .tile.double .tile-ico
@@ -4512,6 +4512,36 @@ button.btn
     padding: 15px 0;
 }
 
+    .breadcrumbs .back
+    {
+        background: #fff;
+        border-color: #a1c0d4;
+        color: #a1c0d4;
+        display: inline-block;
+        vertical-align: middle;
+        height: 30px;
+        line-height: 28px;
+        margin: -5px 0 0;
+        text-align: center;
+        width: 30px;
+
+        -webkit-border-radius: 50%;
+                border-radius: 50%;
+    }
+
+    .breadcrumbs .back:hover
+    {
+        border-color: #43b0e6;
+        color: #43b0e6;
+    }
+
+    .breadcrumbs .back ~ .menu
+    {
+        display: inline-block;
+        margin: -7px 0 0 10px;
+        vertical-align: middle;
+    }
+
     .breadcrumbs .menu-item.__divider
     {
         height: 22px;
@@ -5187,9 +5217,9 @@ button.btn
     top: 5px;
 }
 
-.select2-search-choice-close:after
+.select2-search-choice-close::after
 {
-    color: #43b0e6;
+    color: #a1c0d4;
     content: '×';
     font-family: caption;
     font-size: 16px;
@@ -5197,6 +5227,11 @@ button.btn
     line-height: 1;
     text-shadow: none;
     top: 0;
+}
+
+.select2-search-choice-close:hover::after
+{
+    color: #43b0e6;
 }
 
 
@@ -5737,11 +5772,6 @@ tags-input .tags .tag-item .remove-button
         background: #34454c;
     }
 
-    .blade .blade-head.__expanded
-    {
-        height: 180px;
-    }
-
         .blade-head .blade-status
         {
             height: 25px;
@@ -5953,23 +5983,21 @@ tags-input .tags .tag-item .remove-button
 
         .blade-head .blade-toolbar
         {
+            background: #333;
             border-top: 1px solid #3d3d3d;
-            bottom: 0;
             left: 0;
             height: 50px;
+            overflow: hidden;
             position: absolute;
             right: 8px;
+            top: 79px;
+            z-index: 50;
 
             -webkit-box-shadow: 0 1px 0 #2b2b2b inset;
                     box-shadow: 0 1px 0 #2b2b2b inset;
 
             -webkit-transition: height .3s ease;
                     transition: height .3s ease;
-        }
-
-        .blade-head.__expanded .blade-toolbar
-        {
-            height: 100px;
         }
 
         .blade-head .blade-switch
@@ -5999,21 +6027,6 @@ tags-input .tags .tag-item .remove-button
             {
                 height: 50px;
                 margin: 0 0 0 10px;
-            }
-
-            .blade-toolbar .menu.__more
-            {
-                opacity: 0;
-                visibility: hidden;
-
-                -webkit-transition: all .3s ease;
-                        transition: all .3s ease;
-            }
-
-            .blade-head.__expanded .blade-toolbar .menu.__more
-            {
-                opacity: 1;
-                visibility: visible;
             }
 
                 .menu.__more .menu-item
@@ -6128,11 +6141,6 @@ tags-input .tags .tag-item .remove-button
 
         -webkit-transition: height .3s ease;
                 transition: height .3s ease;
-    }
-
-    .blade-head.__expanded + .blade-container
-    {
-        height: calc(100% - 180px);
     }
 
     .blade .blade-container.__loading
@@ -6409,6 +6417,7 @@ tags-input .tags .tag-item .remove-button
 
         .blade-inner .inner-block
         {
+            margin: 0 0 20px;
             width: 380px;
         }
 
@@ -6465,6 +6474,11 @@ tags-input .tags .tag-item .remove-button
             -webkit-animation: loading 2s infinite ease-in-out;
                     animation: loading 2s infinite ease-in-out;
         }
+
+    .blade .example-mail
+    {
+        padding: 20px 0;
+    }
 
 
 /* UI Grid */

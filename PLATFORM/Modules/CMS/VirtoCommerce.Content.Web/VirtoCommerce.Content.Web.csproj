@@ -118,7 +118,6 @@
     <Content Include="Default_Theme\Default\locales\fr.json" />
     <Content Include="Default_Theme\Default\locales\pt-BR.json" />
     <Content Include="Default_Theme\Default\locales\pt-PT.json" />
-    <Content Include="Default_Theme\Default\snippets\advanced-tag-loop.liquid" />
     <Content Include="Default_Theme\Default\snippets\ajax-cart-template.liquid" />
     <Content Include="Default_Theme\Default\snippets\blog-sidebar.liquid" />
     <Content Include="Default_Theme\Default\snippets\breadcrumb.liquid" />
@@ -270,9 +269,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\PagesUtility.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\directives\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\VirtoCommerce.Platform.Core\VirtoCommerce.Platform.Core.csproj">
       <Project>{f7c9313b-522e-4619-abc9-8c7d4600d6b5}</Project>

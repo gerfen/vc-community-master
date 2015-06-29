@@ -1,7 +1,7 @@
 ﻿<nav class="nav-bar">
     <ul class="menu bar">
         <li class="menu-item" ng-class="{'__selected': currentMenuItem === menuItem && showSubMenu}" ng-repeat="menuItem in menuItems | filter: {parent: null}" ng-click="selectMenuItem(menuItem)">
-            <a class="menu-link" ng-if="!menuItem.template" href="">
+            <a class="menu-link" ng-if="!menuItem.template" href="" va-permission="{{menuItem.permission}}">
                 <span class="menu-ico" ng-class="menuItem.icon"></span>
                 <span class="name">{{menuItem.title}}</span>
             </a>
@@ -12,7 +12,7 @@
         </li>
     </ul>
     <div class="dropdown" ng-class="{'__opened': showSubMenu}">
-        <a class="dropdown-close" ng-click="showSubMenu = false; counter = 0;">×</a>
+        <a class="dropdown-close" ng-click="showSubMenu = false">×</a>
         <div class="dropdown-head" ng-if="!currentMenuItem.headerTemplate">
             <!-- <ul class="menu __inline">
                 <li class="menu-item">

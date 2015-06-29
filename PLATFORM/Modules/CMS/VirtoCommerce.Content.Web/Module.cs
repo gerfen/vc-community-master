@@ -66,6 +66,8 @@ namespace VirtoCommerce.Content.Web
             var uploadPath = HostingEnvironment.MapPath("~/App_Data/Uploads/");
             var uploadPathFiles = HostingEnvironment.MapPath("~/App_Data/Uploads/Files/");
 
+		
+
 			Func<string, IThemeService> themesFactory = x =>
             {
                 switch (x)
@@ -103,6 +105,10 @@ namespace VirtoCommerce.Content.Web
                 }
             };
 
+			var chosenThemeRepositoryName = settingsManager.GetValue("VirtoCommerce.Content.MainProperties.ThemesRepositoryType", string.Empty);
+			var currentThemeService = themesFactory(chosenThemeRepositoryName);
+			_container.RegisterInstance<IThemeService>(currentThemeService);
+
             if (!Directory.Exists(fileSystemMainPath))
             {
                 Directory.CreateDirectory(fileSystemMainPath);
@@ -130,7 +136,11 @@ namespace VirtoCommerce.Content.Web
                     File.Delete(file);
             }
 
-            this._container.RegisterType<ThemeController>(new InjectionConstructor(themesFactory, settingsManager, uploadPath, uploadPathFiles));
+			var options = this._container.Resolve<IModuleInitializerOptions>();
+			var modulePath = options.GetModuleDirectoryPath("VirtoCommerce.Content");
+			var themePath = Path.Combine(modulePath, "Default_Theme");
+
+			this._container.RegisterType<ThemeController>(new InjectionConstructor(themesFactory, settingsManager, uploadPath, uploadPathFiles, themePath));
 
             #endregion
 

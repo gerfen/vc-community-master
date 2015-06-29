@@ -146,13 +146,17 @@
         blade.isLoading = true;
 
         if (blade.newPage) {
+        	if (blade.isByteContent) {
+        		blade.currentEntity.language = "files";
+        	}
+
             pages.checkName({ storeId: blade.choosenStoreId, pageName: blade.currentEntity.name, language: blade.currentEntity.language }, function (data) {
-                if (Boolean(data.result)) {
+            	if (Boolean(data.result)) {
                     pages.update({ storeId: blade.choosenStoreId }, blade.currentEntity, function () {
                         blade.origEntity = angular.copy(blade.currentEntity);
                         blade.newPage = false;
-                        bladeNavigationService.closeBlade(blade);
                         blade.parentBlade.initialize();
+                        bladeNavigationService.closeBlade(blade);
                     },
                     function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
                 }
@@ -173,13 +177,12 @@
         }
         else {
             pages.update({ storeId: blade.choosenStoreId }, blade.currentEntity, function () {
-                blade.parentBlade.initialize();
                 blade.choosenPageName = blade.currentEntity.name;
                 blade.choosenPageLanguage = blade.currentEntity.language;
                 blade.title = blade.currentEntity.name;
                 blade.subtitle = 'Edit page';
                 blade.newPage = false;
-                blade.initialize();
+                blade.parentBlade.initialize();
             },
             function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
         }
@@ -196,13 +199,21 @@
 
                     pages.delete({ storeId: blade.choosenStoreId, pageNamesAndLanguges: blade.choosenPageLanguage + '^' + blade.choosenPageName }, function () {
                         $scope.bladeClose();
-                        blade.parentBlade.initialize();
+                        blade.initialize();
                     },
                     function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
                 }
             }
         }
         dialogService.showConfirmationDialog(dialog);
+    }
+
+    blade.closeChildrenBlades = function () {
+    	if ($scope.blade.childrenBlades) {
+    		angular.forEach($scope.blade.childrenBlades.slice(), function (child) {
+    			bladeNavigationService.closeBlade(child);
+    		});
+    	}
     }
 
     function isCanSave() {
