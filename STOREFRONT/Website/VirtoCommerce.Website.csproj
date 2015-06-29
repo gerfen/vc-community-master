@@ -238,18 +238,6 @@
     <Content Include="App_Data\Themes\_Global\Snippets\guest_popup.liquid" />
     <Content Include="App_Data\Themes\_Global\Snippets\error_popup.liquid" />
     <Content Include="App_Data\Themes\_Global\templates\bank_card_form.liquid" />
-    <Content Include="App_Data\Pages\shop\en-US\pages\about-us.md" />
-    <Content Include="App_Data\Pages\shop\en-US\pages\contact-us.md" />
-    <Content Include="App_Data\Pages\shop\en-US\pages\custom-order.md" />
-    <Content Include="App_Data\Pages\shop\en-US\pages\privacy-policy.md" />
-    <Content Include="App_Data\Pages\shop\en-US\pages\product-info.md" />
-    <Content Include="App_Data\Pages\shop\en-US\pages\returns-exchanges.md" />
-    <Content Include="App_Data\Pages\shop\en-US\pages\reviews.md" />
-    <Content Include="App_Data\Pages\shop\en-US\pages\store-policy.md" />
-    <Content Include="App_Data\Pages\shop\en-US\pages\terms-of-sale.md" />
-    <Content Include="App_Data\Pages\shop\en-US\pages\terms-of-use.md" />
-    <Content Include="App_Data\Pages\shop\en-US\pages\testimonials.md" />
-    <Content Include="App_Data\Pages\shop\en-US\pages\thank-you.md" />
     <None Include="App_Data\Themes\_Global\templates\external_login_confirmation.liquid" />
     <Content Include="App_Data\Themes\_Global\templates\index.liquid" />
     <Content Include="App_Data\Themes\_Global\templates\banner.liquid" />
@@ -409,7 +397,9 @@
   <ItemGroup>
     <Content Include="App_Data\Themes\_Global\templates\confirmation-forgot-password.liquid" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\Pages\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
