@@ -86,6 +86,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Binders\MailModelBinder.cs" />
     <Compile Include="Convertors\PagesConverters.cs" />
     <Compile Include="Models\Cms\Article.cs" />
     <Compile Include="Models\Banners\Banner.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Models\Lists\LinkList.cs" />
     <Compile Include="Models\Lists\LinkLists.cs" />
     <Compile Include="Models\LoginProvider.cs" />
+    <Compile Include="Models\MailModel.cs" />
     <Compile Include="Models\MetafieldsCollection.cs" />
     <Compile Include="Models\Cms\Page.cs" />
     <Compile Include="Models\Cms\PageCollection.cs" />
