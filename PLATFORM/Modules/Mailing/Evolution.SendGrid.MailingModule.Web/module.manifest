@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<module>
+    <id>Evolution.SendGrid</id>
+    <version>1.0.0</version>
+    <platformVersion>2.0.0</platformVersion>
+    <dependencies>
+      <dependency id="VirtoCommerce.Core" version="1.0.0" />
+    </dependencies>
+
+    <title>Evolution SendGrid Mailing</title>
+    <description>APIs for SendGrid mailing</description>
+    <authors>
+        <author>Evolution Software Design, Inc.</author>
+    </authors>
+    <owners>
+        <owner>Evolution Software Design, Inc.</owner>
+    </owners>
+    <projectUrl>http://virtocommerce.com/</projectUrl>
+    <iconUrl>http://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
+    <releaseNotes>First version.</releaseNotes>
+    <copyright>Copyright © 2015 Evolution Software Design, Inc. All rights reserved</copyright>
+    <tags>sendgrid mailing</tags>
+
+    <assemblyFile>Evolution.SendGrid.MailingModule.Web.dll</assemblyFile>
+    <moduleType>Evolution.SendGrid.MailingModule.Web.Module, Evolution.SendGrid.MailingModule.Web</moduleType>
+    <!--<styles>
+		<directory virtualPath="$/Content/css" searchPattern="*.css" searchSubdirectories="true" />
+	</styles>-->
+  <!--
+    <scripts>
+        <directory virtualPath="$/Scripts" searchPattern="*.js" searchSubdirectories="true" />
+    </scripts>
+    -->
+<!--
+    <settings>
+        <group name="Mailing|MailChimp|Credentials">
+            <setting>
+                <name>MailChimp.Mailing.Credentials.AccessToken</name>
+                <valueType>secureString</valueType>
+                <title>MailChimp API access token</title>
+                <description>MailChimp API access token</description>
+            </setting>
+            <setting>
+                <name>MailChimp.Mailing.Credentials.DataCenter</name>
+                <valueType>secureString</valueType>
+                <title>data center</title>
+                <description>MailChimp API data center code</description>
+            </setting>
+            <setting>
+                <name>MailChimp.Mailing.SubscribersListId</name>
+                <valueType>string</valueType>
+                <title>Subscriber's list</title>
+                <description>MailChimp subscribers list Id</description>
+            </setting>
+        </group>
+        <group name="Mailing|MailChimp|MailChimp Description">
+            <setting>
+                <name>MailChimp.Mailing.Description</name>
+                <valueType>string</valueType>
+                <defaultValue>MailChimp public site description</defaultValue>
+                <title>Description</title>
+                <description>Description of mailchimp for public site</description>
+            </setting>
+            <setting>
+                <name>MailChimp.Mailing.LogoUrl</name>
+                <valueType>string</valueType>
+                <defaultValue>http://static.mailchimp.com/web/brand-assets/logo-dark.png</defaultValue>
+                <title>Logo url</title>
+                <description>MailChimp logo url</description>
+            </setting>
+        </group>
+    </settings>
+    <permissions>
+        <group name="Mailing">
+            <permission id="mailing:manage" name="Manage mailing settings" description="Permission to manage mass mailing to customers."/>
+        </group>
+    </permissions>
+  -->
+</module>
