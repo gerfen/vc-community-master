@@ -67,5 +67,9 @@ namespace VirtoCommerce.ApiClient.DataContracts.Cart
         public decimal DiscountTotal { get; set; }
 
         public decimal TaxTotal { get; set; }
+
+        public string TaxType { get; set; }
+
+        public ICollection<TaxDetail> TaxDetails { get; set; }
     }
 }

@@ -156,6 +156,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paypal.ExpressCheckout", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paypal.DirectPayments", "Modules\PaymentGateways\Paypal.DirectPayments\Paypal.DirectPayments.csproj", "{A52BE0AD-5076-445C-BE57-CC82E1A8921D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Klarna.Checkout.US", "Modules\PaymentGateways\Klarna.Checkout.US\Klarna.Checkout.US.csproj", "{98F12F7E-2F53-478C-952F-C644B4B64B9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evolution.SendGrid.MailingModule.Web", "Modules\Mailing\Evolution.SendGrid.MailingModule.Web\Evolution.SendGrid.MailingModule.Web.csproj", "{543149D4-AE0D-4824-9334-8868D2A6E8A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -370,6 +374,14 @@ Global
 		{A52BE0AD-5076-445C-BE57-CC82E1A8921D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A52BE0AD-5076-445C-BE57-CC82E1A8921D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A52BE0AD-5076-445C-BE57-CC82E1A8921D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98F12F7E-2F53-478C-952F-C644B4B64B9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98F12F7E-2F53-478C-952F-C644B4B64B9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98F12F7E-2F53-478C-952F-C644B4B64B9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98F12F7E-2F53-478C-952F-C644B4B64B9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{543149D4-AE0D-4824-9334-8868D2A6E8A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{543149D4-AE0D-4824-9334-8868D2A6E8A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{543149D4-AE0D-4824-9334-8868D2A6E8A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{543149D4-AE0D-4824-9334-8868D2A6E8A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -444,5 +456,7 @@ Global
 		{06AF7027-C874-4732-A8B9-109E838A9704} = {4E79CE95-D200-41C9-B191-324B741494BE}
 		{B50902A2-2646-4786-BF1E-555DB3DD5CC2} = {4E79CE95-D200-41C9-B191-324B741494BE}
 		{A52BE0AD-5076-445C-BE57-CC82E1A8921D} = {4E79CE95-D200-41C9-B191-324B741494BE}
+		{98F12F7E-2F53-478C-952F-C644B4B64B9A} = {4E79CE95-D200-41C9-B191-324B741494BE}
+		{543149D4-AE0D-4824-9334-8868D2A6E8A4} = {0A6CC5D3-FD1D-4244-9C8A-EA1F9593C5FF}
 	EndGlobalSection
 EndGlobal

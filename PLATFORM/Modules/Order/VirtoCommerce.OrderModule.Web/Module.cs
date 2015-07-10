@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Data.Entity;
 using Microsoft.Practices.Unity;
-using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Common.Events;
-using VirtoCommerce.Domain.Inventory.Services;
 using VirtoCommerce.Domain.Order.Events;
 using VirtoCommerce.Domain.Order.Services;
 using VirtoCommerce.OrderModule.Data.Observers;
 using VirtoCommerce.OrderModule.Data.Repositories;
 using VirtoCommerce.OrderModule.Data.Services;
-using VirtoCommerce.OrderModule.Web.BackgroundJobs;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
+using VirtoCommerce.Platform.Core.Notification;
+using VirtoCommerce.OrderModule.Data.Notification;
+using VirtoCommerce.OrderModule.Web.Resources;
 
 namespace VirtoCommerce.OrderModule.Web
 {
-    public class Module : IModule
+    public class Module : ModuleBase
     {
         private const string _connectionStringName = "VirtoCommerce";
         private readonly IUnityContainer _container;
@@ -29,11 +29,11 @@ namespace VirtoCommerce.OrderModule.Web
 
         #region IModule Members
 
-        public void SetupDatabase(SampleDataLevel sampleDataLevel)
+        public override void SetupDatabase(SampleDataLevel sampleDataLevel)
         {
             using (var context = new OrderRepositoryImpl(_connectionStringName))
             {
-				IDatabaseInitializer<OrderRepositoryImpl> initializer;
+                IDatabaseInitializer<OrderRepositoryImpl> initializer;
 
                 switch (sampleDataLevel)
                 {
@@ -42,7 +42,7 @@ namespace VirtoCommerce.OrderModule.Web
                         initializer = new OrderSampleDatabaseInitializer();
                         break;
                     default:
-						initializer = new SetupDatabaseInitializer<OrderRepositoryImpl, VirtoCommerce.OrderModule.Data.Migrations.Configuration>();
+                        initializer = new SetupDatabaseInitializer<OrderRepositoryImpl, Data.Migrations.Configuration>();
                         break;
                 }
 
@@ -50,14 +50,16 @@ namespace VirtoCommerce.OrderModule.Web
             }
         }
 
-        public void Initialize()
+        public override void Initialize()
         {
-			_container.RegisterType<IEventPublisher<OrderChangeEvent>, EventPublisher<OrderChangeEvent>>();
+            _container.RegisterType<IEventPublisher<OrderChangeEvent>, EventPublisher<OrderChangeEvent>>();
             //Subscribe to order changes. Calculate totals   
-			_container.RegisterType<IObserver<OrderChangeEvent>, CalculateTotalsObserver>("CalculateTotalsObserver");
+            _container.RegisterType<IObserver<OrderChangeEvent>, CalculateTotalsObserver>("CalculateTotalsObserver");
             //Adjust inventory activity
-			_container.RegisterType<IObserver<OrderChangeEvent>, AdjustInventoryObserver>("AdjustInventoryObserver");
-         
+            _container.RegisterType<IObserver<OrderChangeEvent>, AdjustInventoryObserver>("AdjustInventoryObserver");
+			//Create order observer. Send notification
+			_container.RegisterType<IObserver<OrderChangeEvent>, CreateOrderObserver>("CreateOrderObserver");
+
             _container.RegisterType<IOrderRepository>(new InjectionFactory(c => new OrderRepositoryImpl("VirtoCommerce", new AuditableInterceptor(), new EntityPrimaryKeyGeneratorInterceptor())));
             //_container.RegisterInstance<IInventoryService>(new Mock<IInventoryService>().Object);
             _container.RegisterType<IOperationNumberGenerator, TimeBasedNumberGeneratorImpl>();
@@ -66,14 +68,28 @@ namespace VirtoCommerce.OrderModule.Web
             _container.RegisterType<ICustomerOrderSearchService, CustomerOrderSearchServiceImpl>();
         }
 
-        public void PostInitialize()
+        public override void PostInitialize()
         {
-			var cacheManager = _container.Resolve<CacheManager>();
-			var cacheSettings = new[] 
+            var cacheManager = _container.Resolve<CacheManager>();
+            var cacheSettings = new[] 
 			{
-				new CacheSettings("Statistic", TimeSpan.FromHours(1)),
+				new CacheSettings("Statistic", TimeSpan.FromHours(1))
 			};
-			cacheManager.AddCacheSettings(cacheSettings);
+            cacheManager.AddCacheSettings(cacheSettings);
+
+			var notificationManager = _container.Resolve<INotificationManager>();
+
+			notificationManager.RegisterNotificationType(() => new OrderCreateEmailNotification(_container.Resolve<IEmailNotificationSendingGateway>())
+			{
+				DisplayName = "Create order notification",
+				Description = "This notification sends by email to client when he create order",
+				NotificationTemplate = new NotificationTemplate
+				{
+					Body = OrderNotificationResource.CreateOrderNotificationBody,
+					Subject = OrderNotificationResource.CreateOrderNotificationSubject,
+					Language = "en-US"
+				}
+			});
         }
 
         #endregion

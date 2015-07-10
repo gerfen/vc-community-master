@@ -40,20 +40,32 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
 
 		[HttpGet]
 		[ResponseType(typeof(webModels.NotificationTemplate))]
-		[Route("template/{type}/{objectId}")]
-		public IHttpActionResult GetNotificationTemplate(string type, string objectId)
+		[Route("template/{type}/{objectId}/{objectTypeId}/{language}")]
+		public IHttpActionResult GetNotificationTemplate(string type, string objectId, string objectTypeId, string language)
 		{
-			var retVal = _notificationTemplateService.GetByNotification(type, objectId);
-			if (retVal == null)
+			NotificationTemplate retVal = new NotificationTemplate();
+			var notification = _notificationManager.GetNewNotification(type, objectId, objectTypeId, language);
+			if (notification != null)
 			{
-				var notification = _notificationManager.GetNewNotification(type);
-				if (notification != null)
-				{
-					retVal = notification.NotificationTemplate;
-				}
+				retVal = notification.NotificationTemplate;
 			}
 
 			return Ok(retVal.ToWebModel());
+		}
+
+		[HttpGet]
+		[ResponseType(typeof(webModels.NotificationTemplate[]))]
+		[Route("template/{type}/{objectId}/{objectTypeId}")]
+		public  IHttpActionResult GetNotificationTemplates(string type, string objectId, string objectTypeId)
+		{
+			List<webModels.NotificationTemplate> retVal = new List<webModels.NotificationTemplate>();
+			var templates = _notificationTemplateService.GetNotificationTemplatesByNotification(type, objectId, objectTypeId);
+
+			if(templates.Any())
+			{
+				retVal = templates.Select(t => t.ToWebModel()).ToList();
+			}
+			return Ok(retVal.ToArray());
 		}
 
 		[HttpPost]
@@ -61,6 +73,15 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
 		public IHttpActionResult UpdateNotificationTemplate([FromBody] webModels.NotificationTemplate notificationTemplate)
 		{
 			_notificationTemplateService.Update(new NotificationTemplate[] { notificationTemplate.ToCoreModel() });
+
+			return Ok();
+		}
+
+		[HttpDelete]
+		[Route("template/{id}")]
+		public IHttpActionResult DeleteNotificationTemplate(string id)
+		{
+			_notificationTemplateService.Delete(new string[] { id });
 
 			return Ok();
 		}
@@ -79,10 +100,10 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
 
 		[HttpPost]
 		[ResponseType(typeof(webModels.Notification))]
-		[Route("template/{type}/resolvenotification")]
-		public IHttpActionResult ResolveNotification([FromBody]List<KeyValuePair<string, string>> parameters, string type)
+		[Route("template/{type}/{objectId}/{objectTypeId}/{language}/resolvenotification")]
+		public IHttpActionResult ResolveNotification([FromBody]List<KeyValuePair<string, string>> parameters, string type, string objectId, string objectTypeId, string language)
 		{
-			var notification = _notificationManager.GetNewNotification(type);
+			var notification = _notificationManager.GetNewNotification(type, objectId, objectTypeId, language);
 			foreach (var param in parameters)
 			{
 				var property = notification.GetType().GetProperty(param.Key);
@@ -95,10 +116,10 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
 
 		[HttpPost]
 		[ResponseType(typeof(string))]
-		[Route("template/{type}/sendnotification")]
-		public IHttpActionResult SendNotification([FromBody]List<KeyValuePair<string, string>> parameters, string type)
+		[Route("template/{type}/{objectId}/{objectTypeId}/{language}/sendnotification")]
+		public IHttpActionResult SendNotification([FromBody]List<KeyValuePair<string, string>> parameters, string type, string objectId, string objectTypeId, string language)
 		{
-			var notification = _notificationManager.GetNewNotification(type);
+			var notification = _notificationManager.GetNewNotification(type, objectId, objectTypeId, language);
 			foreach (var param in parameters)
 			{
 				var property = notification.GetType().GetProperty(param.Key);
@@ -107,6 +128,39 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
 			var result = _notificationManager.SendNotification(notification);
 
 			return Ok(result.ErrorMessage);
+		}
+
+		[HttpGet]
+		[ResponseType(typeof(webModels.SearchNotificationsResult))]
+		[Route("journal/{objectId}/{objectTypeId}")]
+		public IHttpActionResult GetNotificationJournal(string objectId, string objectTypeId, int start, int count)
+		{
+			var result = _notificationManager.SearchNotifications(new SearchNotificationCriteria() { ObjectId = objectId, ObjectTypeId = objectTypeId, Skip = start, Take = count });
+
+			var retVal = new webModels.SearchNotificationsResult();
+			retVal.Notifications = result.Notifications.Select(nt => nt.ToWebModel()).ToArray();
+			retVal.TotalCount = result.TotalCount;
+
+			return Ok(retVal);
+		}
+
+		[HttpGet]
+		[ResponseType(typeof(webModels.Notification))]
+		[Route("notification/{id}")]
+		public IHttpActionResult GetNotification(string id)
+		{
+			var retVal = _notificationManager.GetNotificationById(id);
+
+			return Ok(retVal.ToWebModel());
+		}
+
+		[HttpPost]
+		[Route("stopnotifications")]
+		public IHttpActionResult StopSendingNotifications(string[] ids)
+		{
+			_notificationManager.StopSendingNotifications(ids);
+
+			return Ok();
 		}
 	}
 }

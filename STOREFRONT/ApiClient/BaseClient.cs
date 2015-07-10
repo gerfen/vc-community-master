@@ -301,6 +301,7 @@ namespace VirtoCommerce.ApiClient
 
                 var errorCode = UnknownErrorCode;
                 var errorMessage = "An unknown error has occurred during this operation";
+                string stackTrace = null;
                 List<ErrorDetail> errorDetails = null;
 
                 if (managementServiceError != null)
@@ -308,13 +309,30 @@ namespace VirtoCommerce.ApiClient
                     errorCode = managementServiceError.Code;
                     errorMessage = managementServiceError.Message + " " + managementServiceError.ExceptionMessage;
                     errorDetails = managementServiceError.Details;
+
+                    if (!String.IsNullOrEmpty(managementServiceError.StackTrace))
+                    {
+                        stackTrace = managementServiceError.StackTrace;
+                    }
+                    else if (managementServiceError.InnerException != null)
+                    {
+                        stackTrace = managementServiceError.InnerException.StackTrace;
+                    }
                 }
                 else
                 {
                     errorMessage = response.Content.ReadAsStringAsync().Result ?? errorMessage;
                 }
 
-                throw new ManagementClientException(response.StatusCode, errorCode, errorMessage, errorDetails);
+                var managementException = new ManagementClientException(response.StatusCode, errorCode, errorMessage, errorDetails);
+                if (managementServiceError != null)
+                {
+                    var innerException = new Exception(stackTrace);
+
+                    managementException = new ManagementClientException(response.StatusCode, errorCode, errorMessage, errorDetails, innerException);
+                }
+
+                throw managementException;
             }
         }
 

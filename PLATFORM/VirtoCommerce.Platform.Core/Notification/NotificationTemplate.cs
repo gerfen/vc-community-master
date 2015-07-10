@@ -3,17 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.Platform.Core.Notification
 {
-	public class NotificationTemplate
+	public class NotificationTemplate : AuditableEntity
 	{
-		public string Id { get; set; }
-		public DateTime CreatedDate { get; set; }
-		public DateTime? ModifiedDate { get; set; }
-		public string CreatedBy { get; set; }
-		public string ModifiedBy { get; set; }
-
 		/// <summary>
 		/// Id of object that create notification
 		/// </summary>
@@ -23,11 +18,6 @@ namespace VirtoCommerce.Platform.Core.Notification
 		/// Id of notification type
 		/// </summary>
 		public string NotificationTypeId { get; set; }
-
-		/// <summary>
-		/// Display name of template
-		/// </summary>
-		public string DisplayName { get; set; }
 
 		/// <summary>
 		/// Subject of notification
@@ -43,5 +33,9 @@ namespace VirtoCommerce.Platform.Core.Notification
 		/// Body of notification
 		/// </summary>
 		public string Body { get; set; }
+
+		public string ObjectTypeId { get; set; }
+		public string Language { get; set; }
+		public bool IsDefault { get; set; }
 	}
 }

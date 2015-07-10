@@ -28,7 +28,7 @@ namespace VirtoCommerce.Platform.Data.Notification
 
 		public void RegisterNotificationType(Func<Core.Notification.Notification> notification)
 		{
-			var notificationType = GetNewNotification(notification().Type);
+			var notificationType = GetNewNotification(notification().GetType().Name);
 
 			if (notificationType == null)
 			{
@@ -56,15 +56,15 @@ namespace VirtoCommerce.Platform.Data.Notification
 
 			using (var repository = _repositoryFactory())
 			{
-				notification.Id = Guid.NewGuid().ToString("N");
-				repository.Add(notification.ToDataModel());
+				var addedNotification = notification.ToDataModel();
+				repository.Add(addedNotification);
 				repository.UnitOfWork.Commit();
 			}
 		}
 
 		private void ResolveTemplate(Core.Notification.Notification notification)
 		{
-			SetNotificationTemplate(notification);
+			GetNewNotification(notification.GetType().Name, notification.ObjectId, notification.ObjectTypeId, notification.Language);
 			_resolver.ResolveTemplate(notification);
 		}
 
@@ -85,20 +85,44 @@ namespace VirtoCommerce.Platform.Data.Notification
 
 		public Core.Notification.Notification GetNewNotification(string type)
 		{
+			return GetNewNotification(type, null, null, null);
+		}
+
+		public Core.Notification.Notification GetNewNotification(string type, string objectId, string objectTypeId, string language)
+		{
 			var notifications = GetNotifications();
-			var retVal = notifications.FirstOrDefault(x => x.Type == type);
-			SetNotificationTemplate(retVal);
+			var retVal = notifications.FirstOrDefault(x => x.GetType().Name == type);
+			if (retVal != null)
+			{
+				retVal.ObjectId = objectId;
+				retVal.ObjectTypeId = objectTypeId;
+				retVal.Language = language;
+				if (retVal != null)
+				{
+					var template = _notificationTemplateService.GetByNotification(type, objectId, objectTypeId, language);
+					if (template != null)
+					{
+						retVal.NotificationTemplate = template;
+					}
+					else if (retVal.NotificationTemplate == null)
+					{
+						retVal.NotificationTemplate = new NotificationTemplate();
+					}
+				}
+
+				if (retVal.NotificationTemplate != null && string.IsNullOrEmpty(retVal.NotificationTemplate.NotificationTypeId))
+				{
+					retVal.NotificationTemplate.NotificationTypeId = type;
+				}
+			}
 
 			return retVal;
 		}
 
-		public T GetNewNotification<T>() where T : Core.Notification.Notification
+		public T GetNewNotification<T>(string objectId, string objectTypeId, string language) where T : Core.Notification.Notification
 		{
 			var notifications = GetNotifications();
-			var retVal = (T)notifications.FirstOrDefault(x => x.GetType().Name == typeof(T).Name);
-			SetNotificationTemplate(retVal);
-
-			return retVal;
+			return GetNewNotification(typeof(T).Name, objectId, objectTypeId, language) as T;
 		}
 
 		public void UpdateNotification(Core.Notification.Notification notification)
@@ -130,26 +154,59 @@ namespace VirtoCommerce.Platform.Data.Notification
 			using (var repository = _repositoryFactory())
 			{
 				retVal.Notifications = new List<Core.Notification.Notification>();
-				var notifications = repository.Notifications.Take(criteria.Take).Skip(criteria.Skip);
-				foreach (var notification in notifications)
+				if (!criteria.IsActive)
 				{
-					retVal.Notifications.Add(GetNotificationCoreModel(notification));
+					var notifications = repository.Notifications.Where(n => n.ObjectId == criteria.ObjectId && n.ObjectTypeId == criteria.ObjectTypeId).OrderBy(n => n.CreatedDate).Skip(criteria.Skip).Take(criteria.Take);
+					foreach (var notification in notifications)
+					{
+						retVal.Notifications.Add(GetNotificationCoreModel(notification));
+					}
+					retVal.TotalCount = repository.Notifications.Count(n => n.ObjectId == criteria.ObjectId && n.ObjectTypeId == criteria.ObjectTypeId);
 				}
-				retVal.TotalCount = notifications.Count();
+				else
+				{
+					var notifications = repository.Notifications.Where(n => n.IsActive && !n.IsSuccessSend && !n.SentDate.HasValue && (!n.StartSendingDate.HasValue || (n.StartSendingDate.HasValue && n.StartSendingDate.Value < DateTime.UtcNow))).OrderBy(n => n.CreatedBy).Take(criteria.Take);
+					foreach(var notification in notifications)
+					{
+						retVal.Notifications.Add(GetNotificationCoreModel(notification));
+					}
+				}
 			}
 
 			return retVal;
 		}
 
-		private void SetNotificationTemplate(Core.Notification.Notification notification)
+		public Core.Notification.Notification GetNotification(string id)
 		{
-			if (notification != null)
+			Core.Notification.Notification retVal = null;
+
+			using(var repository = _repositoryFactory())
 			{
-				var template = _notificationTemplateService.GetByNotification(notification.Type, notification.ObjectId);
-				if (template != null)
+				var notification = repository.Notifications.FirstOrDefault(n => n.Id == id);
+				if(notification != null)
 				{
-					notification.NotificationTemplate = template;
+					retVal = GetNotificationCoreModel(notification);
 				}
+			}
+
+			return retVal;
+		}
+
+		public void StopSendingNotifications(string[] ids)
+		{
+			using(var repository = _repositoryFactory())
+			{
+				foreach(var id in ids)
+				{
+					var entity = repository.Notifications.FirstOrDefault(n => n.Id == id);
+					if(entity != null)
+					{
+						entity.IsActive = false;
+						repository.Update(entity);
+					}
+				}
+
+				repository.UnitOfWork.Commit();
 			}
 		}
 

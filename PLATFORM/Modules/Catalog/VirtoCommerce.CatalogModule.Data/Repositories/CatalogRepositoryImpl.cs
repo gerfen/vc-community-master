@@ -52,7 +52,6 @@ namespace VirtoCommerce.CatalogModule.Data.Repositories
             #endregion
 
             MapEntity<dataModel.CategoryItemRelation>(modelBuilder, toTable: "CategoryItemRelation");
-            MapEntity<dataModel.ItemAsset>(modelBuilder, toTable: "ItemAsset");
             MapEntity<dataModel.Association>(modelBuilder, toTable: "Association");
             MapEntity<dataModel.AssociationGroup>(modelBuilder, toTable: "AssociationGroup");
             MapEntity<dataModel.CatalogLanguage>(modelBuilder, toTable: "CatalogLanguage");
@@ -63,6 +62,18 @@ namespace VirtoCommerce.CatalogModule.Data.Repositories
             MapEntity<dataModel.PropertySet>(modelBuilder, toTable: "PropertySet");
             MapEntity<dataModel.PropertySetProperty>(modelBuilder, toTable: "PropertySetProperty");
 
+
+			#region Category
+			modelBuilder.Entity<dataModel.Category>().HasKey(x => x.Id)
+					.Property(x => x.Id);
+			modelBuilder.Entity<dataModel.Category>().HasMany(c => c.Images).WithOptional(p => p.Category).HasForeignKey(x => x.CategoryId).WillCascadeOnDelete(true);
+			modelBuilder.Entity<dataModel.Category>().HasOptional(x=>x.ParentCategory).WithMany().HasForeignKey(x => x.ParentCategoryId).WillCascadeOnDelete(false);
+			modelBuilder.Entity<dataModel.Category>().ToTable("Category"); 
+			#endregion
+
+			modelBuilder.Entity<dataModel.Image>().ToTable("CatalogImage");
+			modelBuilder.Entity<dataModel.Asset>().ToTable("CatalogAsset");
+
             // Introducing FOREIGN KEY constraint 'FK_dbo.Association_dbo.Item_ItemId' on table 'Association' may cause cycles or multiple cascade paths.
             modelBuilder.Entity<dataModel.Association>().HasRequired(m => m.CatalogItem).WithMany().WillCascadeOnDelete(false);
             modelBuilder.Entity<dataModel.CategoryItemRelation>().HasRequired(p => p.Category).WithMany().WillCascadeOnDelete(false);
@@ -72,7 +83,10 @@ namespace VirtoCommerce.CatalogModule.Data.Repositories
 			modelBuilder.Entity<dataModel.Item>().HasOptional(m => m.Category).WithMany().WillCascadeOnDelete(false);
             modelBuilder.Entity<dataModel.Category>().HasOptional(m => m.PropertySet).WithMany().WillCascadeOnDelete(true);
             modelBuilder.Entity<dataModel.Catalog>().HasOptional(m => m.PropertySet).WithMany().WillCascadeOnDelete(true);
-			
+		
+
+
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -97,27 +111,14 @@ namespace VirtoCommerce.CatalogModule.Data.Repositories
             });
             #endregion
 
-            #region Category TPT
-            modelBuilder.Entity<dataModel.CategoryBase>().Map(entity =>
-            {
-                entity.ToTable("CategoryBase");
-            });
-            modelBuilder.Entity<dataModel.Category>().Map(entity =>
-            {
-                entity.ToTable("Category");
-            });
-            //modelBuilder.Entity<dataModel.LinkedCategory>().Map(entity =>
-            //{
-            //	entity.ToTable("LinkedCategory");
-            //});
-            #endregion
-
+       
             #region Item TPH
             MapEntity<dataModel.Item>(modelBuilder, toTable: "Item");
             MapEntity<dataModel.Product>(modelBuilder, toTable: "Item", discriminatorValue: "Product");
 
             #endregion
 
+	
             #region PropertyValueBase TPC
             modelBuilder.Entity<dataModel.CatalogPropertyValue>().Map(entity =>
             {
@@ -151,9 +152,15 @@ namespace VirtoCommerce.CatalogModule.Data.Repositories
                 .HasMany(c => c.CategoryLinks)
                 .WithRequired(p => p.CatalogItem);
 
-            modelBuilder.Entity<dataModel.Item>()
-                .HasMany(c => c.ItemAssets)
-                .WithRequired(p => p.CatalogItem);
+			modelBuilder.Entity<dataModel.Item>()
+				.HasMany(c => c.Images)
+				.WithOptional(p => p.CatalogItem)
+				.HasForeignKey(x => x.ItemId).WillCascadeOnDelete(true);
+
+			modelBuilder.Entity<dataModel.Item>()
+			   .HasMany(c => c.Assets)
+			   .WithOptional(p => p.CatalogItem)
+			   .HasForeignKey(x => x.ItemId).WillCascadeOnDelete(true);
 
             modelBuilder.Entity<dataModel.Item>()
                 .HasMany(c => c.Childrens)
@@ -173,9 +180,9 @@ namespace VirtoCommerce.CatalogModule.Data.Repositories
 
 
         #region ICatalogRepository Members
-        public IQueryable<dataModel.CategoryBase> Categories
+        public IQueryable<dataModel.Category> Categories
         {
-            get { return GetAsQueryable<dataModel.CategoryBase>(); }
+            get { return GetAsQueryable<dataModel.Category>(); }
         }
 
         public IQueryable<dataModel.CatalogBase> Catalogs
@@ -188,10 +195,14 @@ namespace VirtoCommerce.CatalogModule.Data.Repositories
             get { return GetAsQueryable<dataModel.ItemPropertyValue>(); }
         }
 
-        public IQueryable<dataModel.ItemAsset> ItemAssets
-        {
-            get { return GetAsQueryable<dataModel.ItemAsset>(); }
-        }
+		public IQueryable<dataModel.Image> Images 
+		{
+			get { return GetAsQueryable<dataModel.Image>(); }
+		}
+		public IQueryable<dataModel.Asset> Assets
+		{
+			get { return GetAsQueryable<dataModel.Asset>(); }
+		}
 
         public IQueryable<dataModel.Item> Items
         {
@@ -256,8 +267,7 @@ namespace VirtoCommerce.CatalogModule.Data.Repositories
 
             if (category.ParentCategoryId != null)
             {
-                var parentCategory = Categories.OfType<dataModel.Category>()
-                                    .FirstOrDefault(x => x.Id == category.ParentCategoryId);
+                var parentCategory = Categories.FirstOrDefault(x => x.Id == category.ParentCategoryId);
                 if (parentCategory != null)
                 {
                     retVal.Add(parentCategory);
@@ -269,10 +279,10 @@ namespace VirtoCommerce.CatalogModule.Data.Repositories
 
         public dataModel.Category GetCategoryById(string categoryId)
         {
-            var result = Categories.OfType<dataModel.Category>()
-                .Include(x => x.CategoryPropertyValues)
+            var result = Categories.Include(x => x.CategoryPropertyValues)
                 .Include(x => x.OutgoingLinks)
                 .Include(x => x.IncommingLinks)
+				.Include(x=> x.Images)
                 .Include(x => x.PropertySet.PropertySetProperties.Select(y => y.Property))
                 .FirstOrDefault(x => x.Id == categoryId);
 
@@ -288,9 +298,12 @@ namespace VirtoCommerce.CatalogModule.Data.Repositories
         public dataModel.Item[] GetItemByIds(string[] itemIds, coreModel.ItemResponseGroup respGroup = coreModel.ItemResponseGroup.ItemLarge)
         {
             if (!itemIds.Any())
+            {
                 return new dataModel.Item[] { };
+            }
+
             //Used breaking query EF performance concept https://msdn.microsoft.com/en-us/data/hh949853.aspx#8
-            var retVal = Items.Include(x => x.Catalog).Include(x => x.Category).Where(x => itemIds.Contains(x.Id)).ToArray();
+            var retVal = Items.Include(x => x.Catalog).Include(x => x.Category).Include(x=>x.Images).Where(x => itemIds.Contains(x.Id)).ToArray();
 
 
             if ((respGroup & coreModel.ItemResponseGroup.Categories) == coreModel.ItemResponseGroup.Categories)
@@ -303,7 +316,7 @@ namespace VirtoCommerce.CatalogModule.Data.Repositories
             }
             if ((respGroup & coreModel.ItemResponseGroup.ItemAssets) == coreModel.ItemResponseGroup.ItemAssets)
             {
-                var assets = ItemAssets.Where(x => itemIds.Contains(x.ItemId)).ToArray();
+                var assets = Assets.Where(x => itemIds.Contains(x.ItemId)).ToArray();
             }
             if ((respGroup & coreModel.ItemResponseGroup.ItemEditorialReviews) == coreModel.ItemResponseGroup.ItemEditorialReviews)
             {
@@ -356,8 +369,7 @@ namespace VirtoCommerce.CatalogModule.Data.Repositories
             var propSet = PropertySets.FirstOrDefault(x => x.PropertySetProperties.Any(y => y.PropertyId == propId));
             if (propSet != null)
             {
-                var categoryId = Categories.OfType<dataModel.Category>()
-                                   .Where(x => x.PropertySetId == propSet.Id)
+                var categoryId = Categories.Where(x => x.PropertySetId == propSet.Id)
                                    .Select(x => x.Id).FirstOrDefault();
                 if (categoryId != null)
                 {
@@ -486,7 +498,7 @@ namespace VirtoCommerce.CatalogModule.Data.Repositories
                 RemoveCategories(allChildrenIds);
 
                 //Remove all products from category
-                var productsIds = CategoryItemRelations.Where(x => x.CategoryId == id).Select(x => x.ItemId).ToArray();
+                var productsIds = Items.Where(x => x.CategoryId == id).Select(x => x.Id).ToArray();
                 RemoveItems(productsIds);
 
                 //Remove all categoryRelations

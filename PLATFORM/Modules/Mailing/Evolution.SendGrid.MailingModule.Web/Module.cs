@@ -4,7 +4,7 @@ using VirtoCommerce.Platform.Core.Modularity;
 
 namespace Evolution.SendGrid.MailingModule.Web
 {
-    public class Module : IModule
+    public class Module : ModuleBase
     {
         private readonly IUnityContainer _container;
 
@@ -15,18 +15,16 @@ namespace Evolution.SendGrid.MailingModule.Web
 
         #region IModule Members
 
-        public void SetupDatabase(SampleDataLevel sampleDataLevel)
-        {
-        }
+      
 
-        public void Initialize()
+        public override void Initialize()
         {
             _container.RegisterType<SendGridController>();
         }
 
-        public void PostInitialize()
-        {
-        }
+       
+
+        
 
         #endregion
     }

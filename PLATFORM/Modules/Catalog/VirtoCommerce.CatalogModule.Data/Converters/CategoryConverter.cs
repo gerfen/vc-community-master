@@ -16,35 +16,47 @@ namespace VirtoCommerce.CatalogModule.Data.Converters
         /// <summary>
         /// Converting to model type
         /// </summary>
-        /// <param name="dbCategoryBase">The database category base.</param>
+        /// <param name="dbCategory">The database category base.</param>
         /// <param name="catalog">The catalog.</param>
         /// <param name="properties">The properties.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">catalog</exception>
-        public static coreModel.Category ToCoreModel(this dataModel.CategoryBase dbCategoryBase, coreModel.Catalog catalog,
+        public static coreModel.Category ToCoreModel(this dataModel.Category dbCategory, coreModel.Catalog catalog,
                                                     coreModel.Property[] properties = null,  dataModel.Category[] allParents = null)
         {
             if (catalog == null)
                 throw new ArgumentNullException("catalog");
 
 			var retVal = new coreModel.Category();
-			retVal.InjectFrom(dbCategoryBase);
+			retVal.InjectFrom(dbCategory);
 			retVal.CatalogId = catalog.Id;
 			retVal.Catalog = catalog;
-			retVal.ParentId = dbCategoryBase.ParentCategoryId;
+			retVal.ParentId = dbCategory.ParentCategoryId;
+			retVal.IsActive = dbCategory.IsActive;
 
-            var dbCategory = dbCategoryBase as dataModel.Category;
-            if (dbCategory != null)
-            {
-                retVal.PropertyValues = dbCategory.CategoryPropertyValues.Select(x => x.ToCoreModel(properties)).ToList();
-                retVal.Virtual = catalog.Virtual;
-				retVal.Links = dbCategory.OutgoingLinks.Select(x => x.ToCoreModel(retVal)).ToList();
-            }
+
+			retVal.PropertyValues = dbCategory.CategoryPropertyValues.Select(x => x.ToCoreModel(properties)).ToList();
+			retVal.Virtual = catalog.Virtual;
+			retVal.Links = dbCategory.OutgoingLinks.Select(x => x.ToCoreModel(retVal)).ToList();
+
 
             if (allParents != null)
             {
                 retVal.Parents = allParents.Select(x => x.ToCoreModel(catalog)).ToArray();
-            }		
+            }
+
+			//Try to inherit taxType from parent category
+			if(retVal.TaxType == null && retVal.Parents != null)
+			{
+				retVal.TaxType = retVal.Parents.Select(x => x.TaxType).Where(x => x != null).FirstOrDefault();
+			}
+
+			#region Images
+			if (dbCategory.Images != null)
+			{
+				retVal.Images = dbCategory.Images.OrderBy(x => x.SortOrder).Select(x => x.ToCoreModel()).ToList();
+			}
+			#endregion
 
             return retVal;
 
@@ -55,7 +67,7 @@ namespace VirtoCommerce.CatalogModule.Data.Converters
         /// </summary>
         /// <param name="category">The category.</param>
         /// <returns></returns>
-        public static dataModel.CategoryBase ToDataModel(this coreModel.Category category)
+        public static dataModel.Category ToDataModel(this coreModel.Category category)
         {
 			var retVal = new dataModel.Category();
 
@@ -68,6 +80,7 @@ namespace VirtoCommerce.CatalogModule.Data.Converters
 			retVal.ParentCategoryId = category.ParentId;
 			retVal.EndDate = DateTime.UtcNow.AddYears(100);
 			retVal.StartDate = DateTime.UtcNow;
+			retVal.IsActive = category.IsActive ?? true;
           
             if (category.PropertyValues != null)
             {
@@ -81,6 +94,13 @@ namespace VirtoCommerce.CatalogModule.Data.Converters
 				retVal.OutgoingLinks.AddRange(category.Links.Select(x => x.ToDataModel(category)));
             }
 
+			#region Images
+			if (category.Images != null)
+			{
+				retVal.Images = new ObservableCollection<dataModel.Image>(category.Images.Select(x=>x.ToDataModel()));
+			}
+			#endregion
+
             return retVal;
         }
 
@@ -89,17 +109,21 @@ namespace VirtoCommerce.CatalogModule.Data.Converters
         /// </summary>
         /// <param name="source"></param>
         /// <param name="target"></param>
-        public static void Patch(this dataModel.CategoryBase source, dataModel.CategoryBase target)
+		public static void Patch(this coreModel.Category source, dataModel.Category target)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
 
-            var dbSource = source as dataModel.Category;
-            var dbTarget = target as dataModel.Category;
+			//TODO: temporary solution because partial update replaced not nullable properties in db entity
+			if (source.IsActive != null)
+				target.IsActive = source.IsActive.Value;
+
+			var dbSource = source.ToDataModel() as dataModel.Category;
+			var dbTarget = target as dataModel.Category;
 
             if (dbSource != null && dbTarget != null)
             {
-				var patchInjectionPolicy = new PatchInjection<dataModel.Category>(x => x.Code, x=>x.Name, x=>x.IsActive);
+				var patchInjectionPolicy = new PatchInjection<dataModel.Category>(x => x.Code, x=>x.Name, x=>x.TaxType);
 				target.InjectFrom(patchInjectionPolicy, source);
 
                 if (!dbSource.CategoryPropertyValues.IsNullCollection())
@@ -110,6 +134,11 @@ namespace VirtoCommerce.CatalogModule.Data.Converters
 				if(!dbSource.OutgoingLinks.IsNullCollection())
 				{
 					dbSource.OutgoingLinks.Patch(dbTarget.OutgoingLinks, new LinkedCategoryComparer(), (sourceLink, targetLink) => sourceLink.Patch(targetLink));
+				}
+
+				if (!dbSource.Images.IsNullCollection())
+				{
+					dbSource.Images.Patch(dbTarget.Images, (sourceImage, targetImage) => sourceImage.Patch(targetImage));
 				}
             }
         }

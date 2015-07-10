@@ -1,4 +1,5 @@
-﻿<div class="blade-content __medium-wide">
+﻿<div class="blade-static __bottom" ng-include="'Scripts/common/templates/ok-cancel.tpl.html'"></div>
+<div class="blade-content __medium-wide">
     <div class="blade-inner">
         <div class="inner-block">
             <form class="form" name="detailForm">
@@ -75,7 +76,7 @@
                 <div class="form columns clearfix">
                     <div class="column">
                         <div class="form-group">
-                            <label class="form-label">Fulfillment center</label>
+                            <label class="form-label">Fulfillment center <a href="" ng-click="openFulfillmentCentersList()"><i class="form-ico fa fa-pencil"></i></a></label>
                             <div class="form-input">
                                 <ui-select ng-model="blade.currentEntity.fulfillmentCenter">
                                     <ui-select-match placeholder="Select...">{{$select.selected.name}}</ui-select-match>
@@ -88,7 +89,7 @@
                     </div>
                     <div class="column">
                         <div class="form-group">
-                            <label class="form-label">Returns Fulfillment center</label>
+                            <label class="form-label">Returns Fulfillment center <a href="" ng-click="openFulfillmentCentersList()"><i class="form-ico fa fa-pencil"></i></a></label>
                             <div class="form-input">
                                 <ui-select ng-model="blade.currentEntity.returnsFulfillmentCenter">
                                     <ui-select-match placeholder="Select...">{{$select.selected.name}}</ui-select-match>
@@ -118,4 +119,3 @@
         </div>
     </div>
 </div>
-<div class="blade-static __bottom" ng-include="'Scripts/common/templates/ok-cancel.tpl.html'"></div>

@@ -65,11 +65,15 @@ namespace VirtoCommerce.CatalogModule.Data.Converters
             if (target == null)
                 throw new ArgumentNullException("target");
 
-            var newValue = target.ToString();
+			var newValue = source.ToString();
             if (newValue != null)
-                SetPropertyValue(target, (coreModel.PropertyValueType)target.ValueType, target.ToString());
+				SetPropertyValue(target, (coreModel.PropertyValueType)target.ValueType, newValue);
+            if (source.Alias != null)
+                target.Alias = source.Alias;
             if (source.KeyValue != null)
                 target.KeyValue = source.KeyValue;
+			if (source.Alias != null)
+				target.Alias = source.Alias;
         }
 
 		private static void SetPropertyValue(dataModel.PropertyValueBase retVal, coreModel.PropertyValueType type, string value)

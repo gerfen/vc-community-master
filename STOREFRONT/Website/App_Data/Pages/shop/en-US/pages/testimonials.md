@@ -63,4 +63,7 @@ title: Testimonials
                 <p><strong>- Pamela Moore</strong></p>
             </div>
         </div>
-</div>
+</div>#array: [1,2,3,4,5,6]
+{% for item in array limit:2 offset:2 %}
+    {{ item }}
+{% endfor %}

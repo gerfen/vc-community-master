@@ -1,8 +1,8 @@
 ﻿<div class="blade-content __large-wide">
 	<div class="blade-inner">
 		<div class="inner-block">
-			<form class="form">
-				<div class="note">
+			<form class="form" name="edit">
+				<div class="note" ng-init="setForm(edit)">
 					<p>This is list of notification parameters. You can paste this code and value of parameters will be inserted in your template:</p>
 					<br />
 					<table style="border-collapse: collapse;">
@@ -20,12 +20,36 @@
 						</tbody>
 					</table>
 				</div>
-				<fieldset>
+
+				<div class="form columns clearfix">
+					<div class="column">
+						<fieldset ng-if="blade.isNew">
+							<legend>Language</legend>
+						</fieldset>
+						<div class=" form-group" ng-if="blade.isNew" style="margin-top:-16px;">
+							<div class="form-input">
+								<ui-select ng-model="blade.currentEntity.language">
+									<ui-select-match placeholder="Select...">{{$select.selected}}</ui-select-match>
+									<ui-select-choices repeat="x in blade.languages">
+										<span class="flag flag-{{blade.getFlag(x)}}"></span>
+										<span ng-bind-html="x"></span>
+									</ui-select-choices>
+								</ui-select>
+							</div>
+						</div>
+					</div>
+					<div class="column"></div>
+				</div>
+
+				<fieldset style="margin-top:20px;" ng-if="blade.isNew">
+					<legend>Subject</legend>
+				</fieldset>
+				<fieldset ng-if="!blade.isNew">
 					<legend>Subject</legend>
 				</fieldset>
 				<div class="form-group" style="margin-top:-15px;">
 					<div class="form-input">
-						<ui-codemirror required ng-model="blade.currentEntity.subject" ui-codemirror-opts="editorOptions"></ui-codemirror>
+						<ui-codemirror ng-model="blade.currentEntity.subject" ui-codemirror-opts="editorOptions"></ui-codemirror>
 					</div>
 				</div>
 

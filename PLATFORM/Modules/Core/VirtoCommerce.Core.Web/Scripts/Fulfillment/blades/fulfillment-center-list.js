@@ -6,7 +6,6 @@ function ($scope, fulfillments, bladeNavigationService) {
     $scope.blade.refresh = function () {
         $scope.blade.isLoading = true;
 
-        //$scope.blade.parentWidget.refresh().$promise.then(function (results) {
         fulfillments.query({}, function (results) {
             $scope.blade.isLoading = false;
             $scope.blade.currentEntities = results;
@@ -57,7 +56,7 @@ function ($scope, fulfillments, bladeNavigationService) {
             });
     }
 
-    $scope.blade.headIcon = 'fa fa-wrench';
+    $scope.blade.headIcon = 'fa-wrench';
     $scope.blade.toolbarCommands = [
       {
           name: "Refresh", icon: 'fa fa-refresh',

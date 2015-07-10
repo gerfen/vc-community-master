@@ -1,4 +1,4 @@
-﻿---
+---
 title: Product Info
 ---
 <div class="container">
@@ -47,7 +47,7 @@ title: Product Info
             <ul id="menu" class="faq">
 
                 <li class="panel">
-                <span><a class="btn btn-sm collapsed" data-toggle="collapse" data-parent="#menu" href="#question_1"></a></span><span class="question">How to change drum heads</span>
+                <span><a class="btn btn-sm collapsed" data-toggle="collapse" data-parent="#menu" href="#question_1"></a></span><span class="question">How to change drum heads<span>
                 <div id="question_1" class="answer collapse">
                 <p>1. Remove the existing head by removing each lug with the included drum key. Turn each lug counter clockwise until you can easily remove the drum head. As you remove the head, alternate between lugs. For instance, if you start loosening a lug at the top of the bass drum, don’t loosen the lug that is next to it. Instead, loosen the lug that is diagonal across from it on the opposite side of the drum. This allows the head to be tightened evenly and will prevent tuning problems later on.</p>
                 <p>2. Remove the ring that held the bass drum head in place and set it aside, then dispose of the old head.</p>

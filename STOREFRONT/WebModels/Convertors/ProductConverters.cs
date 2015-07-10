@@ -39,7 +39,7 @@ namespace VirtoCommerce.Web.Convertors
 
         public static Product AsWebModel(
             this Data.Product product, IEnumerable<Data.Price> prices,
-            IEnumerable<Data.Marketing.PromotionReward> rewards, IEnumerable<Data.InventoryInfo> inventories, Collection collection = null)
+            IEnumerable<Data.Marketing.PromotionReward> rewards, Collection collection = null)
         {
             var productModel = new Product();
 
@@ -52,10 +52,15 @@ namespace VirtoCommerce.Web.Convertors
 
             var keywords = product.Seo != null ? product.Seo.Select(k => k.AsWebModel()) : null;
 
+            var primaryImage = product.PrimaryImage ?? (product.Images != null ? product.Images.FirstOrDefault() : null);
+
             productModel.Description = description != null ? description.Content : null;
             productModel.Handle = product.Code;
             productModel.Id = product.Id;
-            productModel.Images = new ItemCollection<Image>(product.Images.Select(i => i.AsWebModel(product.Name, product.Id)));
+            productModel.Images = product.Images != null ?
+                new ItemCollection<Image>(product.Images.Select(i => i.AsWebModel(product.Name, product.Id))) : null;
+            productModel.FeaturedImage = primaryImage != null ?
+                primaryImage.AsWebModel(primaryImage.Name, product.Id) : null;
             productModel.Keywords = keywords;
             productModel.Metafields = new MetaFieldNamespacesCollection(new[] { fieldsCollection });
             productModel.Options = options;
@@ -72,7 +77,7 @@ namespace VirtoCommerce.Web.Convertors
             // specify SEO based url
             var urlHelper = GetUrlHelper();
             var url = String.Empty;
-            if (urlHelper != null && productModel.Keywords != null && productModel.Keywords.Any())
+            if (urlHelper != null && collection != null && productModel.Keywords != null && productModel.Keywords.Any())
             {
                 var keyword = productModel.Keywords.SeoKeyword(Thread.CurrentThread.CurrentUICulture.Name);
                 if (keyword != null)
@@ -83,7 +88,7 @@ namespace VirtoCommerce.Web.Convertors
                 }
             }
 
-            if (String.IsNullOrEmpty(url) && urlHelper != null)
+            if (String.IsNullOrEmpty(url) && urlHelper != null && collection != null)
             {
                 url = urlHelper.ItemUrl(productModel.Handle, collection == null ? "" : collection.Outline);
                 if (!String.IsNullOrEmpty(url))
@@ -98,19 +103,15 @@ namespace VirtoCommerce.Web.Convertors
                 {
                     var price = prices.FirstOrDefault(p => p.ProductId == variation.Id);
 
-                    var variantInventory = inventories != null ?
-                        inventories.FirstOrDefault(i => i.ProductId == variation.Id) : null;
-
-                    productModel.Variants.Add(variation.AsVariantWebModel(price, options, productRewards, variantInventory));
+                    productModel.Variants.Add(variation.AsVariantWebModel(price, options, productRewards));
                 }
             }
 
             var productPrice = prices.FirstOrDefault(p => p.ProductId == product.Id);
 
-            var productInventory = inventories != null ?
-                inventories.FirstOrDefault(i => i.ProductId == product.Id) : null;
+            var variant = product.AsVariantWebModel(productPrice, options, productRewards);
 
-            var variant = product.AsVariantWebModel(productPrice, options, productRewards, productInventory);
+            variant.Title = "Default Title";
 
             productModel.Variants.Add(variant);
 
@@ -118,13 +119,11 @@ namespace VirtoCommerce.Web.Convertors
         }
 
         public static Variant AsVariantWebModel(this Data.CatalogItem variation, Data.Price price, string[] options,
-            IEnumerable<Data.Marketing.PromotionReward> rewards, Data.InventoryInfo inventory)
+            IEnumerable<Data.Marketing.PromotionReward> rewards)
         {
             var variantModel = new Variant();
 
-            var variationImage =
-                variation.Images.FirstOrDefault(i => i.Name.Equals("primaryimage", StringComparison.OrdinalIgnoreCase)) ??
-                variation.Images.FirstOrDefault();
+            var variationImage = variation.PrimaryImage ?? (variation.Images != null ? variation.Images.FirstOrDefault() : null);
 
             string variantlUrlParameter = null;// HttpContext.Current.Request.QueryString["variant"];
             string pathTemplate;
@@ -146,8 +145,8 @@ namespace VirtoCommerce.Web.Convertors
             variantModel.Id = variation.Code;
             variantModel.Image = variationImage != null ? variationImage.AsWebModel(variation.Name, variation.MainProductId) : null;
 
-            PopulateInventory(ref variantModel, variation, inventory);
-            variantModel.AllOptions = GetOptionValues(options, variation.VariationProperties);
+            PopulateInventory(ref variantModel, variation);
+            variantModel.Options = GetOptionValues(options, variation.VariationProperties);
 
             variantModel.NumericPrice = price != null ? (price.Sale.HasValue ? price.Sale.Value : price.List) : 0M;
             if (reward != null)
@@ -166,8 +165,7 @@ namespace VirtoCommerce.Web.Convertors
             return variantModel;
         }
 
-
-        private static void PopulateInventory(ref Variant variant, Data.CatalogItem item, Data.InventoryInfo inventory)
+        private static void PopulateInventory(ref Variant variant, Data.CatalogItem item)
         {
             if (item.IsBuyable.HasValue && item.IsBuyable.Value &&
                 item.StartDate < DateTime.UtcNow &&
@@ -175,6 +173,7 @@ namespace VirtoCommerce.Web.Convertors
             {
                 if (item.TrackInventory.HasValue && item.TrackInventory.Value)
                 {
+                    var inventory = item.Inventory;
                     if (inventory != null && inventory.Status == Data.InventoryStatus.Enabled)
                     {
                         variant.InventoryManagement = inventory.FulfillmentCenterId;
@@ -206,7 +205,7 @@ namespace VirtoCommerce.Web.Convertors
 
         public static Image AsWebModel(this Data.ItemImage image, string alt, string productId, int position = 0, ICollection<Variant> variants = null)
         {
-            var imageModel = new Image { Alt = alt, AttachedToVariant = true, Id = image.Id, Name = image.Name, Position = position, ProductId = productId, Src = image.Src, Variants = variants };
+            var imageModel = new Image { Alt = alt, AttachedToVariant = true, Name = image.Name, Position = position, ProductId = productId, Src = image.Src, Variants = variants };
 
             return imageModel;
         }
@@ -218,18 +217,32 @@ namespace VirtoCommerce.Web.Convertors
             return webReview;
         }
 
+        #region Option Methods
+
+        private static string DefaultOption = "Default Title";
         private static string[] GetOptions(IDictionary<string, object> itemProperties)
         {
             if (itemProperties == null || !itemProperties.Any())
             {
-                return null;
+                return new []{ "Title" };
             }
 
-            return itemProperties.Select(o => o.Key).ToArray();
+            var options = itemProperties.Select(o => o.Key).ToArray();
+            if (options == null || !options.Any())
+            {
+                options = new[] { "Title" };
+            }
+
+            return options;
         }
 
         private static string[] GetOptionValues(IEnumerable<string> options, IDictionary<string, object> itemProperties)
         {
+            if (options != null && options.Count() == 1 && options.ElementAt(0) == "Title")
+            {
+                return new[] { DefaultOption };
+            }
+
             if (itemProperties == null || !itemProperties.Any() || options == null)
             {
                 return null;
@@ -238,6 +251,7 @@ namespace VirtoCommerce.Web.Convertors
             var variationOptions = options.Select(option => itemProperties.ContainsKey(option) ? itemProperties[option].ToNullOrString() : null).ToList();
             return variationOptions.ToArray();
         }
+        #endregion
 
         private static UrlHelper GetUrlHelper()
         {

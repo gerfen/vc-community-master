@@ -2,6 +2,15 @@
 <div class="blade-content">
     <div class="blade-inner">
         <div class="inner-block clearfix">
+            <div class="form-group">
+                <label class="form-label">Is active</label>
+                <div class="form-input">
+                    <label class="form-label __switch">
+                        <input type="checkbox" ng-model="blade.currentEntity.isActive" />
+                        <span class="switch"></span>
+                    </label>
+                </div>
+            </div>
             <div class="columns">
                 <div class="column">
                     <ul class="list __info">
@@ -18,6 +27,17 @@
                             <div class="list-descr">{{blade.currentEntity.code}}</div>
                         </li>
                     </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Tax type <a href="" ng-click="openDictionarySettingManagement()" va-permission="platform:setting:manage"><i class="form-ico fa fa-pencil"></i></a></label>
+                <div class="form-input">
+                    <ui-select ng-model="blade.currentEntity.taxType">
+                        <ui-select-match allow-clear="true" placeholder="Select...">{{$select.selected}}</ui-select-match>
+                        <ui-select-choices repeat="x in taxTypes | filter: $select.search">
+                            <span ng-bind-html="x | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
                 </div>
             </div>
             <form class="form" name="detailForm">

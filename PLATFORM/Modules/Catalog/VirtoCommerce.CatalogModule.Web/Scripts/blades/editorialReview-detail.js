@@ -18,15 +18,10 @@
 
     function saveChanges() {
         $scope.blade.isLoading = true;
-        var entriesCopy = $scope.blade.parentBlade.currentEntities.slice();
-
-        if (angular.isDefined($scope.currentEntity.id)) {
-            entriesCopy = _.reject(entriesCopy, function (ent) { return ent.id === $scope.currentEntity.id; });
-        }
-
+        var entriesCopy = _.filter($scope.blade.parentBlade.currentEntities, function (ent) { return !angular.equals(ent, $scope.blade.origEntity); });
         entriesCopy.push($scope.currentEntity);
 
-        items.updateitem({ id: $scope.blade.parentBlade.currentEntityId, reviews: entriesCopy }, function () {
+        items.update({ id: $scope.blade.parentBlade.currentEntityId, reviews: entriesCopy }, function () {
             angular.copy($scope.currentEntity, $scope.blade.origEntity);
             $scope.blade.parentBlade.refresh(true);
         },
@@ -66,7 +61,7 @@
                     if (idx >= 0) {
                         var entriesCopy = $scope.blade.parentBlade.currentEntities.slice();
                         entriesCopy.splice(idx, 1);
-                        items.updateitem({ id: $scope.blade.parentBlade.currentEntityId, reviews: entriesCopy }, function () {
+                        items.update({ id: $scope.blade.parentBlade.currentEntityId, reviews: entriesCopy }, function () {
                             $scope.bladeClose();
                             $scope.blade.parentBlade.refresh(true);
                         },

@@ -85,7 +85,7 @@
         });
     }
 
-    $scope.blade.headIcon = 'fa fa-archive';
+    $scope.blade.headIcon = 'fa-archive';
 
     $scope.blade.toolbarCommands = [
         {
@@ -119,24 +119,6 @@
                 return !isDirty();
             },
             permission: 'store:manage'
-        },
-        {
-            name: "Export",
-            icon: 'fa fa-upload',
-            executeMethod: function () {
-                var newBlade = {
-                    id: 'storeExport',
-                    title: 'Store export',
-                    name: 'VirtoCommerce import',
-                    description: 'Native VirtoCommerce store data export',
-                    icon: 'fa fa-file-archive-o',
-                    store: $scope.blade.currentEntity,
-                    controller: 'virtoCommerce.storeModule.storeExportController',
-                    template: 'Modules/$(VirtoCommerce.Store)/Scripts/blades/backup/store-export.tpl.html'
-                };
-                bladeNavigationService.showBlade(newBlade, $scope.blade);
-            },
-            canExecuteMethod: function () { return true; }
         }
     ];
 

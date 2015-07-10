@@ -50,7 +50,6 @@
             id: "settingDetailChild",
             currentEntityId: node.name,
             title: blade.title,
-            subtitle: 'Manage dictionary values',
             controller: 'platformWebApp.settingDictionaryController',
             template: 'Scripts/app/settings/blades/setting-dictionary.tpl.html'
         };
@@ -83,7 +82,7 @@
         $scope.bladeClose();
     };
 
-    $scope.blade.headIcon = 'fa fa-wrench';
+    $scope.blade.headIcon = 'fa-wrench';
     $scope.blade.toolbarCommands = [
         {
             name: "Reset", icon: 'fa fa-undo',

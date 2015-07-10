@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -24,7 +25,7 @@ using VirtoCommerce.Web.Views.Engines.Liquid;
 using VirtoCommerce.ApiClient.DataContracts.Cart;
 using VirtoCommerce.ApiClient.DataContracts.Marketing;
 using VirtoCommerce.ApiClient.DataContracts.Contents;
-using System.Collections.Specialized;
+using data = VirtoCommerce.ApiClient.DataContracts;
 
 #endregion
 
@@ -37,43 +38,54 @@ namespace VirtoCommerce.Web.Models.Services
         private readonly CartClient _cartClient;
         private readonly CartHelper _cartHelper;
         private readonly OrderClient _orderClient;
-        private readonly SecurityClient _securityClient;
         private readonly StoreClient _storeClient;
         private readonly PriceClient _priceClient;
-        private readonly InventoryClient _inventoryClient;
         private readonly ListClient _listClient;
         private readonly ThemeClient _themeClient;
-        private readonly PageClient _pageClient;
         private readonly IViewLocator _viewLocator;
         private readonly ReviewsClient _reviewsClient;
         private readonly string _themesCacheStoragePath;
-        private readonly string _pagesCacheStoragePath;
         private readonly MarketingClient _marketingClient;
 
         private static readonly object _LockObject = new object();
         #endregion
 
         #region Constructors and Destructors
-        public CommerceService()
+
+        public static CommerceService Create()
+        {
+            const string cacheKey = "commerceservice";
+            var commerceService = HttpContext.Current.Cache[cacheKey] as CommerceService;
+
+            if (commerceService != null) return commerceService;
+            lock (_LockObject)
+            {
+                commerceService = HttpContext.Current.Cache[cacheKey] as CommerceService;
+                
+                if (commerceService == null)
+                {
+                    commerceService = new CommerceService();
+                    HttpRuntime.Cache.Insert(cacheKey, commerceService, null);
+                }
+            }
+
+            return commerceService;
+        }
+
+        private CommerceService()
         {
             this._listClient = ClientContext.Clients.CreateListClient();
             this._browseClient = ClientContext.Clients.CreateBrowseClient();
             this._storeClient = ClientContext.Clients.CreateStoreClient();
             this._cartClient = ClientContext.Clients.CreateCartClient();
             this._orderClient = ClientContext.Clients.CreateOrderClient();
-            this._securityClient = ClientContext.Clients.CreateSecurityClient();
             this._priceClient = ClientContext.Clients.CreatePriceClient();
             this._marketingClient = ClientContext.Clients.CreateMarketingClient();
-            this._inventoryClient = ClientContext.Clients.CreateInventoryClient();
             this._themeClient = ClientContext.Clients.CreateThemeClient();
-            this._pageClient = ClientContext.Clients.CreatePageClient();
             this._reviewsClient = ClientContext.Clients.CreateReviewsClient();
 
             _themesCacheStoragePath = ConfigurationManager.AppSettings["ThemeCacheFolder"];
-            _pagesCacheStoragePath = ConfigurationManager.AppSettings["PageCacheFolder"];
-
-            this._viewLocator = new FileThemeViewLocator(HostingEnvironment.MapPath(_themesCacheStoragePath));
-
+            this._viewLocator = new FileThemeViewLocator(_themesCacheStoragePath);
             this._cartHelper = new CartHelper(this);
         }
         #endregion
@@ -379,7 +391,8 @@ namespace VirtoCommerce.Web.Models.Services
                     {
                         Handle = shippingMethod.ShipmentMethodCode,
                         Price = shippingMethod.Price,
-                        Title = shippingMethod.Name
+                        Title = shippingMethod.Name,
+                        TaxType = shippingMethod.TaxType
                     });
                 }
             }
@@ -406,24 +419,6 @@ namespace VirtoCommerce.Web.Models.Services
             return paymentMethodModels;
         }
 
-        public async Task<ICollection<PaymentMethod>> GetStorePaymentMethodsAsync(string storeId)
-        {
-            ICollection<PaymentMethod> paymentMethodModels = null;
-
-            var paymentMethods = await _cartClient.GetStorePaymentMethods(storeId);
-
-            if (paymentMethods != null)
-            {
-                paymentMethodModels = new List<PaymentMethod>();
-                foreach (var paymentMethod in paymentMethods)
-                {
-                    paymentMethodModels.Add(paymentMethod.AsWebModel());
-                }
-            }
-
-            return paymentMethodModels;
-        }
-
         public async Task UpdateCheckoutAsync(Checkout checkout)
         {
             var cart = await _cartClient.GetCartAsync(SiteContext.Current.StoreId, SiteContext.Current.CustomerId);
@@ -436,9 +431,9 @@ namespace VirtoCommerce.Web.Models.Services
             await _cartClient.UpdateCurrentCartAsync(cart);
         }
 
-        public async Task<VirtoCommerce.ApiClient.DataContracts.Orders.CustomerOrder> CreateOrderAsync()
+        public async Task<data.Orders.CustomerOrder> CreateOrderAsync()
         {
-            VirtoCommerce.ApiClient.DataContracts.Orders.CustomerOrder order = null;
+            data.Orders.CustomerOrder order = null;
 
             var cart = await _cartClient.GetCartAsync(SiteContext.Current.StoreId, SiteContext.Current.CustomerId);
 
@@ -451,7 +446,7 @@ namespace VirtoCommerce.Web.Models.Services
             return order;
         }
 
-        public async Task<ProcessPaymentResult> ProcessPaymentAsync(string orderId, string paymentMethodId, ApiClient.DataContracts.BankCardInfo cardInfo)
+        public async Task<ProcessPaymentResult> ProcessPaymentAsync(string orderId, string paymentMethodId, data.BankCardInfo cardInfo)
         {
             return await _orderClient.ProcessPayment(orderId, paymentMethodId, cardInfo);
         }
@@ -603,9 +598,7 @@ namespace VirtoCommerce.Web.Models.Services
 
             var rewards = await _marketingClient.GetPromotionRewardsAsync(promoContext);
 
-            var inventories = await this.GetItemsInventoriesAsync(variationIds);
-
-            return product.AsWebModel(prices, rewards, inventories);
+            return product.AsWebModel(prices, rewards);
         }
 
         public async Task<Product> GetProductByKeywordAsync(SiteContext context, string keyword, ItemResponseGroups responseGroup = ItemResponseGroups.ItemLarge)
@@ -625,13 +618,6 @@ namespace VirtoCommerce.Web.Models.Services
             var prices = await this.GetProductPricesAsync(context.PriceLists, variationIds);
 
             var price = prices.FirstOrDefault(p => p.ProductId == product.Id);
-            //if (product.Variations != null)
-            //{
-            //    foreach (var variation in product.Variations)
-            //    {
-            //        price = prices.FirstOrDefault(p => p.ProductId == variation.Id);
-            //    }
-            //}
 
             var promoContext = new PromotionEvaluationContext
             {
@@ -653,31 +639,18 @@ namespace VirtoCommerce.Web.Models.Services
             };
 
             var rewards = await _marketingClient.GetPromotionRewardsAsync(promoContext);
-
-            var inventories = await this.GetItemsInventoriesAsync(variationIds);
-
-            return product.AsWebModel(prices, rewards, inventories);
+            return product.AsWebModel(prices, rewards);
         }
 
-        public async Task<IEnumerable<InventoryInfo>> GetItemsInventoriesAsync(string[] itemIds)
-        {
-            if (itemIds == null)
-            {
-                return null;
-            }
-
-            return await _inventoryClient.GetItemsInventories(itemIds);
-        }
-
-        public async Task<IEnumerable<ApiClient.DataContracts.Marketing.PromotionReward>>
-            GetPromoRewardsAsync(ApiClient.DataContracts.Marketing.PromotionEvaluationContext context)
+        public async Task<IEnumerable<PromotionReward>>
+            GetPromoRewardsAsync(PromotionEvaluationContext context)
         {
             return await _marketingClient.GetPromotionRewardsAsync(context);
         }
 
-        public async Task<IEnumerable<CatalogItem>> GetCatalogItemsByIdsAsync(IEnumerable<string> catalogItemsIds, string responseGroup)
+        public async Task<IEnumerable<CatalogItem>> GetCatalogItemsByIdsAsync(IEnumerable<string> catalogItemsIds, string storeId, string responseGroup)
         {
-            return await _browseClient.GetCatalogItemsByIdsAsync(catalogItemsIds, responseGroup);
+            return await _browseClient.GetCatalogItemsByIdsAsync(catalogItemsIds, storeId, responseGroup);
         }
 
         public async Task<IEnumerable<ApiClient.DataContracts.Price>> GetProductPricesAsync(string[] priceLists, string[] productIds)
@@ -711,7 +684,7 @@ namespace VirtoCommerce.Web.Models.Services
             if (settingsResource == null || settingsResource.Contents == null)
                 return null;
 
-            var fileContents = settingsResource.Contents.Invoke().ReadToEnd();
+            var fileContents = settingsResource.Contents;
             var obj = JsonConvert.DeserializeObject<dynamic>(fileContents);
 
             // now get settings for current theme and add it as a settings parameter
@@ -731,7 +704,7 @@ namespace VirtoCommerce.Web.Models.Services
                     .ToDictionary(x => x.Key, y => this.GetTypedValue(y.Value));
             }
 
-            HttpRuntime.Cache.Insert(contextKey, parameters, new CacheDependency(new[] { settingsResource.Location }));
+            HttpRuntime.Cache.Insert(contextKey, parameters, HostingEnvironment.VirtualPathProvider.GetCacheDependency(settingsResource.Location, new[] { settingsResource.Location }, DateTime.UtcNow));
 
             return new Settings(parameters, defaultValue);
         }
@@ -753,11 +726,11 @@ namespace VirtoCommerce.Web.Models.Services
                 return null;
             }
 
-            ViewLocationResult localeResource = null;
+            ViewLocationResult localeResource;
 
             if (loadDefault)
             {
-                localeResource = this._viewLocator.LocateResource("*default.json");
+                localeResource = this._viewLocator.LocateResource("en.default.json"); // TODO: remove hard coding
             }
             else
             {
@@ -769,22 +742,36 @@ namespace VirtoCommerce.Web.Models.Services
                                      (String.Format("{0}.json", culture.TwoLetterISOLanguageName)));
             }
 
-            if (localeResource == null)
+            if (localeResource == null || localeResource.SearchedLocations != null)
             {
+                // need to cache value so we don't keep requesting over and over
+                var path = HostingEnvironment.MapPath(_themesCacheStoragePath);
+                var allDirectories = Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
+ 
+                HttpRuntime.Cache.Insert(contextKey, new object(), new CacheDependency(allDirectories));
+ 
                 return null;
             }
 
-            var fileContents = localeResource.Contents.Invoke().ReadToEnd();
+            var fileContents = localeResource.Contents;
 
             var contents = JsonConvert.DeserializeObject<dynamic>(fileContents);
-            HttpRuntime.Cache.Insert(contextKey, contents, new CacheDependency(new[] { localeResource.Location }));
+            HttpRuntime.Cache.Insert(contextKey, contents, HostingEnvironment.VirtualPathProvider.GetCacheDependency(localeResource.Location, new[] { localeResource.Location }, DateTime.UtcNow));
             return contents;
         }
 
         public async Task<IEnumerable<Shop>> GetShopsAsync()
         {
+            var shops = new List<Shop>();
+
             var stores = await this._storeClient.GetStoresAsync();
-            return stores.Select(s => s.AsWebModel());
+
+            if (stores != null)
+            {
+                shops.AddRange(stores.Select(store => store.AsWebModel()));
+            }
+
+            return shops;
         }
 
         public async Task<Cart> SaveChangesAsync(Cart cart)
@@ -847,9 +834,7 @@ namespace VirtoCommerce.Web.Models.Services
 
             var rewards = await _marketingClient.GetPromotionRewardsAsync(promoContext);
 
-            var inventories = await this.GetItemsInventoriesAsync(allIds);
-
-            var result = new SearchResults<T>(response.Items.Select(i => i.AsWebModel(prices, rewards, inventories, parentCollection)).OfType<T>()) { TotalCount = response.TotalCount };
+            var result = new SearchResults<T>(response.Items.Select(i => i.AsWebModel(prices, rewards, parentCollection)).OfType<T>()) { TotalCount = response.TotalCount };
 
             if (response.Facets != null && response.Facets.Any())
                 result.Facets = response.Facets.Select(x => x.AsWebModel()).ToArray();
@@ -887,8 +872,8 @@ namespace VirtoCommerce.Web.Models.Services
             var store = context.StoreId;
             var theme = context.Theme.Name;
             var themePath = String.Format("{0}\\{1}", _themesCacheStoragePath, context.Theme.Path);
-            var themeStorageClient = new FileStorageCacheService(HostingEnvironment.MapPath(themePath));
-            var pagesStorageClient = new FileStorageCacheService(HostingEnvironment.MapPath(String.Format("~/App_Data/Pages/{0}", store)));
+            var themeStorageClient = FileStorageCacheService.Create(HostingEnvironment.MapPath(themePath));
+            var pagesStorageClient = FileStorageCacheService.Create(HostingEnvironment.MapPath(String.Format("~/App_Data/Pages/{0}", store)));
 
             // get last updated for both pages or theme files
             var themeLastUpdated = themeStorageClient.GetLatestUpdate();
@@ -896,7 +881,7 @@ namespace VirtoCommerce.Web.Models.Services
 
             var response = await this._storeClient.GetStoreAssetsAsync(store, theme, themeLastUpdated, pagesLastUpdated);
 
-            if (response.Any())
+            if (response.Any() && response.SelectMany(group => group.Assets).Any())
             {
                 lock (_LockObject)
                 {

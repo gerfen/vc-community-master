@@ -123,7 +123,8 @@ namespace VirtoCommerce.CartModule.Web.Controllers.Api
 					OptionDescription = x.OptionDescription,
 					Price = x.Rate,
 					ShipmentMethodCode = x.ShippingMethod.Code,
-					LogoUrl = x.ShippingMethod.LogoUrl
+					LogoUrl = x.ShippingMethod.LogoUrl,
+					TaxType = x.ShippingMethod.TaxType
 				});
 			
 			return Ok(retVal);
@@ -165,7 +166,11 @@ namespace VirtoCommerce.CartModule.Web.Controllers.Api
             {
                 GatewayCode = p.Code,
                 Name = p.Description,
-                IconUrl = p.LogoUrl
+                IconUrl = p.LogoUrl,
+                Type = p.PaymentMethodType.ToString(),
+                Group = p.PaymentMethodGroupType.ToString(),
+                Description = p.Description,
+                Priority = p.Priority
             }).ToArray();
 
             return this.Ok(retVal);

@@ -27,8 +27,7 @@
         $scope.formScope = form;
     }
 
-    $scope.blade.headIcon = 'fa fa-archive';
-    $scope.blade.toolbarCustomTemplates = ['Scripts/common/templates/toolbar-isActive.tpl.html'];
+    $scope.blade.headIcon = 'fa-archive';
     
     initializeBlade($scope.blade.origEntity);
 }]);

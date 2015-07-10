@@ -1,5 +1,6 @@
 ﻿#region
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.Web.Models;
 using Data = VirtoCommerce.ApiClient.DataContracts;
@@ -74,6 +75,19 @@ namespace VirtoCommerce.Web.Convertors
                     ret.FinancialStatus = inPayment.Status;
                     ret.FinancialStatusLabel = inPayment.Status;
                 }
+
+                if (inPayment.TaxIncluded)
+                {
+                    if (ret.TaxLines == null)
+                    {
+                        ret.TaxLines = new List<TaxLine>();
+                    }
+                    ret.TaxLines.Add(new TaxLine
+                    {
+                        Price = inPayment.Tax,
+                        Title = "Payments tax"
+                    });
+                }
             }
 
             if (orderShipment != null)
@@ -88,6 +102,19 @@ namespace VirtoCommerce.Web.Convertors
                     ret.FulfillmentStatus = inPayment.Status;
                     ret.FulfillmentStatusLabel = inPayment.Status;
                 }
+
+                if (orderShipment.TaxIncluded)
+                {
+                    if (ret.TaxLines == null)
+                    {
+                        ret.TaxLines = new List<TaxLine>();
+                    }
+                    ret.TaxLines.Add(new TaxLine
+                    {
+                        Price = orderShipment.Tax,
+                        Title = "Shipping tax"
+                    });
+                }
             }
 
             if (customerOrder.Items != null)
@@ -95,6 +122,22 @@ namespace VirtoCommerce.Web.Convertors
                 foreach (var lineItem in customerOrder.Items)
                 {
                     ret.LineItems.Add(lineItem.AsWebModel());
+                }
+
+                var taxableLineItems = customerOrder.Items;//.Where(i => i.TaxIncluded);
+                if (taxableLineItems.Count() > 0)
+                {
+                    if (ret.TaxLines == null)
+                    {
+                        ret.TaxLines = new List<TaxLine>();
+                    }
+
+                    ret.TaxLines.Add(new TaxLine
+                    {
+                        Price = taxableLineItems.Sum(li => li.Tax),
+                        Rate = taxableLineItems.Where(i => i.TaxDetails != null).Sum(i => i.TaxDetails.Sum(td => td.Rate)),
+                        Title = "Line items"
+                    });
                 }
             }
 
@@ -106,19 +149,24 @@ namespace VirtoCommerce.Web.Convertors
                 foreach (var shipment in customerOrder.Shipments)
                 {
                     ret.ShippingMethods.Add(shipment.AsWebModel());
-                    ret.ShippingPrice += shipment.Sum;
+                }
+
+                var taxableShipments = customerOrder.Shipments;//.Where(s => s.TaxIncluded);
+                if (taxableShipments.Count() > 0)
+                {
+                    if (ret.TaxLines == null)
+                    {
+                        ret.TaxLines = new List<TaxLine>();
+                    }
+
+                    ret.TaxLines.Add(new TaxLine
+                    {
+                        Price = taxableShipments.Sum(s => s.Tax),
+                        Rate = taxableShipments.Where(s => s.TaxDetails != null).Sum(i => i.TaxDetails.Sum(td => td.Rate)),
+                        Title = "Shipping"
+                    });
                 }
             }
-
-            ret.SubtotalPrice = ret.LineItems.Sum(li => li.Quantity * li.Price);
-
-            if (customerOrder.TaxIncluded)
-            {
-                ret.TaxLines.Add(new TaxLine { Price = customerOrder.Tax });
-                ret.TaxPrice = ret.TaxLines.Sum(tl => tl.Price);
-            }
-
-            ret.TotalPrice = customerOrder.Sum;
 
             return ret;
         }
@@ -184,6 +232,8 @@ namespace VirtoCommerce.Web.Convertors
                           Quantity = lineItem.Quantity,
                           RequiresShipping = false,
                           Sku = null,
+                          TaxAmount = lineItem.Tax,
+                          TaxType = lineItem.TaxType,
                           Title = lineItem.Name,
                           Url = null,
                           Variant = null,

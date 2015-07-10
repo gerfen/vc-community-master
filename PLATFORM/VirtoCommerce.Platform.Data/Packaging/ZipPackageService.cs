@@ -16,12 +16,14 @@ namespace VirtoCommerce.Platform.Data.Packaging
         private const string _packageFileExtension = ".zip";
         private const string _packageFilePattern = "*" + _packageFileExtension;
 
+        private readonly IModuleCatalog _moduleCatalog;
         private readonly IModuleManifestProvider _manifestProvider;
         private readonly string _installedPackagesPath;
         private readonly string _sourcePackagesPath;
 
-        public ZipPackageService(IModuleManifestProvider manifestProvider, string installedPackagesPath, string sourcePackagesPath)
+        public ZipPackageService(IModuleCatalog moduleCatalog, IModuleManifestProvider manifestProvider, string installedPackagesPath, string sourcePackagesPath)
         {
+            _moduleCatalog = moduleCatalog;
             _manifestProvider = manifestProvider;
             _installedPackagesPath = installedPackagesPath;
             _sourcePackagesPath = sourcePackagesPath;
@@ -195,6 +197,20 @@ namespace VirtoCommerce.Platform.Data.Packaging
 
                 if (!dependentModules.Any())
                 {
+                    // Call Uninstall() for module instance
+                    if (_moduleCatalog != null)
+                    {
+                        var moduleInstance = _moduleCatalog.Modules
+                            .Where(m => m.ModuleName == packageId)
+                            .Select(m => m.ModuleInstance)
+                            .FirstOrDefault();
+
+                        if (moduleInstance != null)
+                        {
+                            moduleInstance.Uninstall();
+                        }
+                    }
+
                     // Delete files
                     var installedPackageFileName = GetPackageFileName(module.Id, module.Version);
                     var installedPackageFilePath = Path.Combine(_installedPackagesPath, installedPackageFileName);
@@ -230,9 +246,9 @@ namespace VirtoCommerce.Platform.Data.Packaging
         {
             var errors = new List<string>();
 
-            var platformVersion = GetPlatformVersion();
+			var platformVersion = PlatformVersion.CurrentVersion;
 
-            if (!IsCompatibleVersion(platformVersion, package.PlatformVersion))
+            if (!SemanticVersion.Parse(package.PlatformVersion).IsCompatibleWith(PlatformVersion.CurrentVersion))
             {
                 errors.Add(string.Format(CultureInfo.CurrentCulture, "Required platform version: '{0}'.", package.PlatformVersion));
             }
@@ -267,7 +283,7 @@ namespace VirtoCommerce.Platform.Data.Packaging
 
                     if (installedModule != null)
                     {
-                        isMissing = !IsCompatibleVersion(installedModule.Version, dependency.Version);
+						isMissing = !SemanticVersion.Parse(dependency.Version).IsCompatibleWith(SemanticVersion.Parse(installedModule.Version));
                     }
 
                     if (isMissing)
@@ -280,27 +296,7 @@ namespace VirtoCommerce.Platform.Data.Packaging
             return result;
         }
 
-        private static bool IsCompatibleVersion(string version, string requiredVersion)
-        {
-            // TODO: support version ranges
-
-            var isCompatible = string.IsNullOrWhiteSpace(requiredVersion);
-
-            if (!isCompatible)
-            {
-                SemanticVersion semanticVersion;
-                SemanticVersion requiredSemanticVersion;
-
-                if (SemanticVersion.TryParse(version, out semanticVersion) && SemanticVersion.TryParse(requiredVersion, out requiredSemanticVersion))
-                {
-                    var comparisonResult = SemanticVersion.Compare(semanticVersion, requiredSemanticVersion);
-                    isCompatible = comparisonResult >= 0;
-                }
-            }
-
-            return isCompatible;
-        }
-
+		
         private static void Report(IProgress<ProgressMessage> progress, ProgressMessageLevel level, string format, params object[] args)
         {
             if (progress != null)
@@ -354,6 +350,7 @@ namespace VirtoCommerce.Platform.Data.Packaging
                             {
                                 entryStream.CopyTo(fileStream);
                             }
+                            File.SetLastWriteTime(filePath, entry.LastWriteTime.LocalDateTime);
                             break;
                     }
                 }
@@ -419,7 +416,7 @@ namespace VirtoCommerce.Platform.Data.Packaging
             }
         }
 
-        private static ModuleDescriptor ConvertToModuleDescriptor(ModuleManifest manifest, List<string> installedPackages = null)
+        private  ModuleDescriptor ConvertToModuleDescriptor(ModuleManifest manifest, List<string> installedPackages = null)
         {
             ModuleDescriptor result = null;
 
@@ -457,6 +454,8 @@ namespace VirtoCommerce.Platform.Data.Packaging
                     var packageFileName = GetPackageFileName(manifest.Id, manifest.Version);
                     result.IsRemovable = installedPackages.Contains(packageFileName, StringComparer.OrdinalIgnoreCase);
                 }
+
+				result.ModuleInfo = _moduleCatalog.Modules.First(x => x.ModuleName == result.Id);
             }
 
             return result;

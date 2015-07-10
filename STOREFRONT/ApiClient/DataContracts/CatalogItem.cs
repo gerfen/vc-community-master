@@ -37,6 +37,8 @@ namespace VirtoCommerce.ApiClient.DataContracts
 
         public ItemImage[] Images { get; set; }
 
+        public ItemImage PrimaryImage { get; set; }
+
         public string MainProductId { get; set; }
 
         public bool? TrackInventory { get; set; }
@@ -46,11 +48,14 @@ namespace VirtoCommerce.ApiClient.DataContracts
         public bool? IsActive { get; set; }
 
         public int? MaxQuantity { get; set; }
+
         public int? MinQuantity { get; set; }
 
         public string Name { get; set; }
 
         public string Outline { get; set; }
+
+        public Inventory Inventory { get; set; }
 
         public IDictionary<string, object> Properties
         {

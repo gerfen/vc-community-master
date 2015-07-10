@@ -5,10 +5,12 @@
     var initialName = blade.item.name;
     var lastGeneratedName = blade.item.name;
 
+    blade.headIcon = blade.item.productType === 'Digital' ? 'fa fa-file-archive-o' : 'fa fa-truck';
+
     $scope.createItem = function () {
         blade.isLoading = true;
 
-        blade.item.$updateitem(null,
+        blade.item.$update(null,
             function (dbItem) {
                 blade.parentBlade.refresh(true);
 
@@ -47,7 +49,7 @@
                     subtitle: 'item images',
                     bottomTemplate: 'Scripts/common/templates/ok.tpl.html',
                     controller: 'virtoCommerce.catalogModule.newProductWizardImagesController',
-                    template: 'Modules/$(VirtoCommerce.Catalog)/Scripts/blades/item-image-detail.tpl.html'
+                    template: 'Modules/$(VirtoCommerce.Catalog)/Scripts/blades/images.tpl.html'
                 };
                 break;
             case 'seo':

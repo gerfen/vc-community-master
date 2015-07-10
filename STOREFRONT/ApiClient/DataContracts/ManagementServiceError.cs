@@ -32,6 +32,9 @@ namespace VirtoCommerce.ApiClient.DataContracts
         [DataMember(Order = 3)]
         public List<ErrorDetail> Details { get; set; }
 
+        [DataMember]
+        public string StackTrace { get; set; }
+
         [DataMember(Order = 2)]
         public string ExceptionMessage { get; set; }
 
@@ -40,6 +43,12 @@ namespace VirtoCommerce.ApiClient.DataContracts
         /// </summary>
         [DataMember(Order = 1)]
         public string Message { get; set; }
+
+        [DataMember]
+        public string ExceptionType { get; set; }
+
+        [DataMember]
+        public ManagementServiceError InnerException { get; set; }
 
         #endregion
     }

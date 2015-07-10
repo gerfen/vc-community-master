@@ -69,7 +69,6 @@
 			    $scope.openFulfillmentCentersList = function () {
 			        var newBlade = {
 			            id: 'fulfillmentCenterList',
-			            parentWidget: $scope.blade,
 			            controller: 'virtoCommerce.coreModule.fulfillment.fulfillmentListController',
 			            template: 'Modules/$(VirtoCommerce.Core)/Scripts/fulfillment/blades/fulfillment-center-list.tpl.html'
 			        };
@@ -229,7 +228,6 @@
 
 
 			    // actions on load
-			    $scope.blade.toolbarCustomTemplates = ['Modules/$(VirtoCommerce.Orders)/Scripts/blades/operation-detail-toolbar.tpl.html'];
 			    $scope.blade.refresh($scope.blade.isNew);
 
 			}])

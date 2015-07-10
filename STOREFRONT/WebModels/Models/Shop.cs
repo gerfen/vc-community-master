@@ -28,6 +28,8 @@ namespace VirtoCommerce.Web.Models
 
         public string[] EnabledPaymentTypes { get; set; }
 
+        public IEnumerable<PaymentMethod> PaymentMethods { get; set; }
+
         public IEnumerable<SeoKeyword> Keywords { get; set; }
 
         public string[] Languages { get; set; }
@@ -49,6 +51,8 @@ namespace VirtoCommerce.Web.Models
         public string Catalog { get; set; }
 
         public string[] Currencies { get; set; }
+
+        public string SimplifiedUrl { get; set; }
 
         public MetaFieldNamespacesCollection Metafields { get; set; }
 

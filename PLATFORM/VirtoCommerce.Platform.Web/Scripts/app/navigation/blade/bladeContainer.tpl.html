@@ -38,17 +38,20 @@
             </div>
             <div class="blade-toolbar">
                 <ul class="menu __inline">
-                    <li class="menu-item" ng-class="{'__disabled': !toolbarCommand.canExecuteMethod(blade)}" ng-click='toolbarCommand.executeMethod(blade)' ng-repeat="toolbarCommand in resolvedToolbarCommands" ng-disabled="!toolbarCommand.canExecuteMethod(blade)" va-permission="{{toolbarCommand.permission}}">
+                    <li class="menu-item" ng-class="{'__disabled': !toolbarCommand.canExecuteMethod(blade)}" ng-click='toolbarCommand.executeMethod(blade)' ng-repeat="toolbarCommand in resolvedToolbarCommands | limitTo:toolsPerLineCount" ng-disabled="!toolbarCommand.canExecuteMethod(blade)" va-permission="{{toolbarCommand.permission}}">
                         <button class="menu-btn">
                             <i class="menu-ico" ng-class="toolbarCommand.icon"></i>
                             {{toolbarCommand.name}}
                         </button>
                     </li>
+                    <li class="menu-item __more" ng-click="showMoreTools($event)" ng-if="resolvedToolbarCommands.length > toolsPerLineCount">
+                        <a class="menu-btn">
+                            <i class="menu-ico fa fa-ellipsis-h"></i>
+                            More
+                        </a>
+                    </li>
                 </ul>
             </div>
-            <ul class="menu __inline">
-                <li class="menu-item" ng-include="toolbarCustomTemplate" ng-repeat="toolbarCustomTemplate in resolvedToolbarCustomTemplates"></li>
-            </ul>
         </header>
         <div class="loader" ng-show="blade.isLoading">
             <span></span>

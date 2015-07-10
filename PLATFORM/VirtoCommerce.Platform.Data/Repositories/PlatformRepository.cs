@@ -108,6 +108,18 @@ namespace VirtoCommerce.Platform.Data.Repositories
 			// Notifications
 			modelBuilder.Entity<NotificationEntity>().ToTable("PlatformNotification").HasKey(x => x.Id);
 			modelBuilder.Entity<NotificationTemplateEntity>().ToTable("PlatformNotificationTemplate").HasKey(x => x.Id);
+			modelBuilder.Entity<NotificationTemplateEntity>()
+				.Property(x => x.NotificationTypeId)
+				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_PlatformNotificationTemplate_NotificationTypeId_ObjectTypeId_ObjectId_Language", 1) { IsUnique = true }));
+			modelBuilder.Entity<NotificationTemplateEntity>()
+				.Property(x => x.ObjectId)
+				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_PlatformNotificationTemplate_NotificationTypeId_ObjectTypeId_ObjectId_Language", 2) { IsUnique = true }));
+			modelBuilder.Entity<NotificationTemplateEntity>()
+				.Property(x => x.ObjectTypeId)
+				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_PlatformNotificationTemplate_NotificationTypeId_ObjectTypeId_ObjectId_Language", 3) { IsUnique = true }));
+			modelBuilder.Entity<NotificationTemplateEntity>()
+				.Property(x => x.Language)
+				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_PlatformNotificationTemplate_NotificationTypeId_ObjectTypeId_ObjectId_Language", 4) { IsUnique = true }));
 
 			base.OnModelCreating(modelBuilder);
 		}
@@ -143,11 +155,17 @@ namespace VirtoCommerce.Platform.Data.Repositories
 
 		#endregion
 
-		public NotificationTemplateEntity GetNotificationTemplateByNotification(string notificationTypeId, string objectId)
+		public NotificationTemplateEntity GetNotificationTemplateByNotification(string notificationTypeId, string objectId, string objectTypeId, string language)
 		{
-			var query = NotificationTemplates;
+			var query = NotificationTemplates.Where(nt => nt.NotificationTypeId.Equals(notificationTypeId) && nt.ObjectId.Equals(objectId) && nt.ObjectTypeId.Equals(objectTypeId));
 
-			return query.FirstOrDefault(nt => nt.NotificationTypeId.Equals(notificationTypeId) && nt.ObjectId.Equals(objectId));
+			var retVal = query.FirstOrDefault(nt => nt.Language.Equals(language));
+			if(retVal == null)
+			{
+				retVal = query.FirstOrDefault(nt => nt.IsDefault);
+			}
+
+			return retVal;
 		}
 	}
 }

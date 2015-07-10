@@ -66,6 +66,7 @@
     <Compile Include="Cart\Model\ShoppingCart.cs" />
     <Compile Include="Cart\Services\IShoppingCartSearchService.cs" />
     <Compile Include="Cart\Services\IShoppingCartService.cs" />
+    <Compile Include="Catalog\Model\Asset.cs" />
     <Compile Include="Catalog\Model\AvailabilityRule.cs" />
     <Compile Include="Catalog\Model\Catalog.cs" />
     <Compile Include="Catalog\Model\CatalogLanguage.cs" />
@@ -77,8 +78,7 @@
     <Compile Include="Commerce\Model\ILanguageSupport.cs" />
     <Compile Include="Catalog\Model\ILinkSupport.cs" />
     <Compile Include="Commerce\Model\ISeoSupport.cs" />
-    <Compile Include="Catalog\Model\ItemAsset.cs" />
-    <Compile Include="Catalog\Model\ItemAssetType.cs" />
+    <Compile Include="Catalog\Model\Image.cs" />
     <Compile Include="Catalog\Model\ItemResponseGroup.cs" />
     <Compile Include="Catalog\Model\ProductAssociation.cs" />
     <Compile Include="Catalog\Model\Property.cs" />
@@ -178,6 +178,7 @@
     <Compile Include="Order\Model\IStockInOperation.cs" />
     <Compile Include="Order\Model\IStockOperation.cs" />
     <Compile Include="Order\Model\IStockOutOperation.cs" />
+    <Compile Include="Order\Model\ISupportCancellation.cs" />
     <Compile Include="Order\Model\LineItem.cs" />
     <Compile Include="Order\Model\OperationProperty.cs" />
     <Compile Include="Order\Model\PropertyValueType.cs" />

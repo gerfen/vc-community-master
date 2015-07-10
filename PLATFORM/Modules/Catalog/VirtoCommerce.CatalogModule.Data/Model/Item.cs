@@ -17,7 +17,8 @@ namespace VirtoCommerce.CatalogModule.Data.Model
 		{
 			Id = Guid.NewGuid().ToString("N");
 			CategoryLinks = new NullCollection<CategoryItemRelation>();
-			ItemAssets = new NullCollection<ItemAsset>();
+			Images = new NullCollection<Image>();
+			Assets = new NullCollection<Asset>();
 			AssociationGroups = new NullCollection<AssociationGroup>();
 			EditorialReviews = new NullCollection<EditorialReview>();
 			ItemPropertyValues = new NullCollection<ItemPropertyValue>();
@@ -47,9 +48,6 @@ namespace VirtoCommerce.CatalogModule.Data.Model
 
 		[StringLength(128)]
 		public string PackageType { get; set; }
-
-		[StringLength(128)]
-		public string TaxCategory { get; set; }
 
 		[StringLength(64)]
 		[Required]
@@ -92,7 +90,9 @@ namespace VirtoCommerce.CatalogModule.Data.Model
 
 		public virtual ObservableCollection<CategoryItemRelation> CategoryLinks { get; set; }
 
-		public virtual ObservableCollection<ItemAsset> ItemAssets { get; set; }
+		public virtual ObservableCollection<Asset> Assets { get; set; }
+
+		public virtual ObservableCollection<Image> Images { get; set; }
 
 		public virtual ObservableCollection<AssociationGroup> AssociationGroups { get; set; }
 

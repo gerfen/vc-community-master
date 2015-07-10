@@ -20,13 +20,16 @@ using VirtoCommerce.Platform.Core.Asset;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.ChangeLog;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Notification;
+using VirtoCommerce.Platform.Core.Packaging;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Asset;
 using VirtoCommerce.Platform.Data.Caching;
 using VirtoCommerce.Platform.Data.ChangeLog;
+using VirtoCommerce.Platform.Data.ExportImport;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
 using VirtoCommerce.Platform.Data.Notification;
 using VirtoCommerce.Platform.Data.Packaging;
@@ -37,6 +40,8 @@ using VirtoCommerce.Platform.Data.Settings;
 using VirtoCommerce.Platform.Web;
 using VirtoCommerce.Platform.Web.Controllers.Api;
 using WebGrease.Extensions;
+using VirtoCommerce.Platform.Web.BackgroundJobs;
+using VirtoCommerce.Platform.Web.Resources;
 
 [assembly: OwinStartup(typeof(Startup))]
 
@@ -115,6 +120,22 @@ namespace VirtoCommerce.Platform.Web
 
             OwinConfig.Configure(app, container, connectionStringName, authenticationOptions);
 
+			var jobScheduler = container.Resolve<SendNotificationsJobsSheduler>();
+			jobScheduler.SheduleJobs();
+
+			var notificationManager = container.Resolve<INotificationManager>();
+			notificationManager.RegisterNotificationType(() => new RegistrationEmailNotification(container.Resolve<IEmailNotificationSendingGateway>())
+			{
+				DisplayName = "Registration notification",
+				Description = "This notification sends by email to client when he finish registration",
+				NotificationTemplate = new NotificationTemplate
+				{
+					Body = PlatformNotificationResource.RegistrationNotificationBody,
+					Subject = PlatformNotificationResource.RegistrationNotificationSubject,
+					Language = "en-US"
+				}
+			});
+
             var postInitializeModules = moduleCatalog.CompleteListWithDependencies(moduleCatalog.Modules)
                 .Where(m => m.ModuleInstance != null)
                 .ToArray();
@@ -171,6 +192,7 @@ namespace VirtoCommerce.Platform.Web
             Func<IPlatformRepository> platformRepositoryFactory = () => new PlatformRepository(connectionStringName, new AuditableInterceptor(), new EntityPrimaryKeyGeneratorInterceptor());
             container.RegisterType<IPlatformRepository>(new InjectionFactory(c => platformRepositoryFactory()));
             container.RegisterInstance<Func<IPlatformRepository>>(platformRepositoryFactory);
+            var moduleCatalog = container.Resolve<IModuleCatalog>();
             var manifestProvider = container.Resolve<IModuleManifestProvider>();
 
             #region Caching
@@ -187,29 +209,14 @@ namespace VirtoCommerce.Platform.Web
 
             #endregion
 
-			#region Settings
+            #region Settings
 
 			var platformSettings = new[]
-            {
-                new ModuleManifest
-                {
-                    Settings = new[]
-                    {
-                        new ModuleSettingsGroup
-                        {
-                            Name = "Platform|Test",
-                            Settings = new[]
-                            {
-                                new ModuleSetting
-                                {
-                                    Name = "VirtoCommerce.Platform.Test.TestString",
-                                    ValueType = ModuleSetting.TypeString,
-                                    Title = "Test String",
-                                    Description = "Test String Description",
-                                }
-                            }
-                        },
-
+			{
+				new ModuleManifest
+				{
+					Settings = new[]
+					{
 						new ModuleSettingsGroup
 						{
 							Name = "Platform|Notifications|SendGrid",
@@ -230,15 +237,30 @@ namespace VirtoCommerce.Platform.Web
 									Description = "Your SendGrid account password"
 								}
 							}
+						},
+
+						new ModuleSettingsGroup
+						{
+							Name = "Platform|Notifications|SendingJob",
+							Settings = new []
+							{
+								new ModuleSetting
+								{
+									Name = "VirtoCommerce.Platform.Notifications.SendingJob.TakeCount",
+									ValueType = ModuleSetting.TypeInteger,
+									Title = "Job Take Count",
+									Description = "Take count for sending job"
+								}
+							}
 						}
                     }
                 }
             };
 
-			var settingsManager = new SettingsManager(manifestProvider, platformRepositoryFactory, cacheManager, platformSettings);
-			container.RegisterInstance<ISettingsManager>(settingsManager);
+            var settingsManager = new SettingsManager(manifestProvider, platformRepositoryFactory, cacheManager, platformSettings);
+            container.RegisterInstance<ISettingsManager>(settingsManager);
 
-			#endregion
+            #endregion
 
             #region Notifications
 
@@ -246,53 +268,35 @@ namespace VirtoCommerce.Platform.Web
             var notifier = new InMemoryNotifierImpl(hubSignalR);
             container.RegisterInstance<INotifier>(notifier);
 
-			var resolver = new LiquidNotificationTemplateResolver();
-			var notificationTemplateService = new NotificationTemplateServiceImpl(platformRepositoryFactory);
-			var notificationManager = new NotificationManager(resolver, platformRepositoryFactory, notificationTemplateService);
+            var resolver = new LiquidNotificationTemplateResolver();
+            var notificationTemplateService = new NotificationTemplateServiceImpl(platformRepositoryFactory);
+            var notificationManager = new NotificationManager(resolver, platformRepositoryFactory, notificationTemplateService);
 
-			Func<IEmailNotificationSendingGateway> emailNotificationSendingGatewayFactory =
-				() => new DefaultEmailNotificationSendingGateway(settingsManager.GetSettingByName("VirtoCommerce.Platform.Notifications.SendGrid.UserName").Value,
-																 settingsManager.GetSettingByName("VirtoCommerce.Platform.Notifications.SendGrid.Secret").Value);
+            var emailNotificationSendingGateway = new DefaultEmailNotificationSendingGateway(settingsManager);
 
-			var defaultSmsNotificationSendingGateway = new DefaultSmsNotificationSendingGateway();
+            var defaultSmsNotificationSendingGateway = new DefaultSmsNotificationSendingGateway();
 
-			container.RegisterInstance<INotificationTemplateService>(notificationTemplateService);
+            container.RegisterInstance<INotificationTemplateService>(notificationTemplateService);
 			container.RegisterInstance<INotificationManager>(notificationManager);
-			container.RegisterInstance<INotificationTemplateResolver>(resolver);
-			container.RegisterInstance<IEmailNotificationSendingGateway>(emailNotificationSendingGatewayFactory());
-			container.RegisterInstance<ISmsNotificationSendingGateway>(defaultSmsNotificationSendingGateway);
+            container.RegisterInstance<INotificationTemplateResolver>(resolver);
+			container.RegisterInstance<IEmailNotificationSendingGateway>(emailNotificationSendingGateway);
+            container.RegisterInstance<ISmsNotificationSendingGateway>(defaultSmsNotificationSendingGateway);
 
-			notificationManager.RegisterNotificationType(
-				() => new RegistrationEmailNotification(emailNotificationSendingGatewayFactory)
-				{
-					DisplayName = "Registration notification",
-					Description = "This notification sends by email to client when he finish registration",
-					ObjectId = "Platform",
-					NotificationTemplate = new NotificationTemplate
-					{
-						Body = @"<p> Dear {{ context.first_name }} {{ context.last_name }}, you has registered on our site</p> <p> Your e-mail  - {{ context.email }} </p>",
-						Subject = @"<p> Thanks for registration {{ context.first_name }} {{ context.last_name }}!!! </p>",
-						NotificationTypeId = "RegistrationEmailNotification",
-						ObjectId = "Platform"
-					}
-				}
-			);
-
-			//notificationManager.RegisterNotificationType(
-			//	() => new RegistrationSmsNotification(defaultSmsNotificationSendingGateway)
-			//	{
-			//		DisplayName = "Registration notification",
-			//		Description = "This notification sends by sms to client when he finish registration",
-			//		ObjectId = "Platform",
-			//		NotificationTemplate = new NotificationTemplate
-			//		{
-			//			Body = @"Dear {{ context.first_name }} {{ context.last_name }}, you has registered on our site. Your login  - {{ context.login }} Your login - {{ context.password }}",
-			//			Subject = @"",
-			//			NotificationTypeId = "RegistrationSmsNotification",
-			//			ObjectId = "Platform"
-			//		}
-			//	}
-			//);
+            //notificationManager.RegisterNotificationType(
+            //	() => new RegistrationSmsNotification(defaultSmsNotificationSendingGateway)
+            //	{
+            //		DisplayName = "Registration notification",
+            //		Description = "This notification sends by sms to client when he finish registration",
+            //		ObjectId = "Platform",
+            //		NotificationTemplate = new NotificationTemplate
+            //		{
+            //			Body = @"Dear {{ context.first_name }} {{ context.last_name }}, you has registered on our site. Your login  - {{ context.login }} Your login - {{ context.password }}",
+            //			Subject = @"",
+            //			NotificationTypeId = "RegistrationSmsNotification",
+            //			ObjectId = "Platform"
+            //		}
+            //	}
+            //);
 
             #endregion
 
@@ -329,8 +333,8 @@ namespace VirtoCommerce.Platform.Web
             var sourcePath = HostingEnvironment.MapPath("~/App_Data/SourcePackages");
             var packagesPath = HostingEnvironment.MapPath("~/App_Data/InstalledPackages");
 
-            var packageService = new ZipPackageService(manifestProvider, packagesPath, sourcePath);
-
+            var packageService = new ZipPackageService(moduleCatalog, manifestProvider, packagesPath, sourcePath);
+			container.RegisterInstance<IPackageService>(packageService);
             container.RegisterType<ModulesController>(new InjectionConstructor(packageService, sourcePath));
 
             #endregion
@@ -359,6 +363,10 @@ namespace VirtoCommerce.Platform.Web
             container.RegisterType<IAuthenticationManager>(new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
 
             #endregion
+
+			#region ExportImport
+			container.RegisterType<IPlatformExportImportManager, PlatformExportImportManager>();
+			#endregion
         }
 
         private static string MakeRelativePath(string rootPath, string fullPath)

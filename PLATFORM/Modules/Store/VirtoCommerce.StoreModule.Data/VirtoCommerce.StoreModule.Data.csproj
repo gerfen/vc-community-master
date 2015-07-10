@@ -54,8 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\SorePaymentMethodConverter.cs" />
-    <Compile Include="Converters\SoreShippingMethodConverter.cs" />
+    <Compile Include="Converters\StorePaymentMethodConverter.cs" />
+    <Compile Include="Converters\StoreShippingMethodConverter.cs" />
     <Compile Include="Converters\StoreConverter.cs" />
     <Compile Include="Migrations\201504301210161_Initial.cs" />
     <Compile Include="Migrations\201504301210161_Initial.Designer.cs">
@@ -76,6 +76,10 @@
     <Compile Include="Migrations\201506151332388_StoreReferencesCascadeDelete.cs" />
     <Compile Include="Migrations\201506151332388_StoreReferencesCascadeDelete.Designer.cs">
       <DependentUpon>201506151332388_StoreReferencesCascadeDelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507021246252_TaxTypeToStoreShippingMethod.cs" />
+    <Compile Include="Migrations\201507021246252_TaxTypeToStoreShippingMethod.Designer.cs">
+      <DependentUpon>201507021246252_TaxTypeToStoreShippingMethod.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Store.cs" />
@@ -122,6 +126,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506151332388_StoreReferencesCascadeDelete.resx">
       <DependentUpon>201506151332388_StoreReferencesCascadeDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507021246252_TaxTypeToStoreShippingMethod.resx">
+      <DependentUpon>201507021246252_TaxTypeToStoreShippingMethod.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

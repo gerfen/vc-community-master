@@ -1,9 +1,9 @@
 ﻿#region
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using DotLiquid;
-
 #endregion
 
 namespace VirtoCommerce.Web.Models
@@ -18,8 +18,6 @@ namespace VirtoCommerce.Web.Models
         private ICollection<LineItem> _lineItems;
 
         private ICollection<ShippingMethod> _shippingMethods;
-
-        private ICollection<TaxLine> _taxLines;
         #endregion
 
         #region Public Properties
@@ -102,28 +100,46 @@ namespace VirtoCommerce.Web.Models
         }
 
         [DataMember]
-        public ICollection<PaymentMethod> PaymentMethods { get; set; }
+        public IEnumerable<PaymentMethod> PaymentMethods { get; set; }
 
         [DataMember]
-        public decimal ShippingPrice { get; set; }
-
-        [DataMember]
-        public decimal SubtotalPrice { get; set; }
-
-        [DataMember]
-        public ICollection<TaxLine> TaxLines
+        public decimal ShippingPrice
         {
             get
             {
-                return this._taxLines ?? (this._taxLines = new HashSet<TaxLine>());
+                return ShippingMethods != null ? ShippingMethods.Sum(sm => sm.Price) : 0M;
             }
         }
 
         [DataMember]
-        public decimal TaxPrice { get; set; }
+        public decimal SubtotalPrice
+        {
+            get
+            {
+                return LineItems != null ? LineItems.Sum(li => li.LinePrice) : 0M;
+            }
+        }
 
         [DataMember]
-        public decimal TotalPrice { get; set; }
+        public ICollection<TaxLine> TaxLines { get; set; }
+
+        [DataMember]
+        public decimal TaxPrice
+        {
+            get
+            {
+                return TaxLines != null ? TaxLines.Sum(tl => tl.Price) : 0M;
+            }
+        }
+
+        [DataMember]
+        public decimal TotalPrice
+        {
+            get
+            {
+                return SubtotalPrice + TaxPrice + ShippingPrice;
+            }
+        }
         #endregion
     }
 }
