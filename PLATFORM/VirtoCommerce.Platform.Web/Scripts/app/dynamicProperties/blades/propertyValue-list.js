@@ -1,6 +1,7 @@
 ﻿angular.module('platformWebApp')
 .controller('platformWebApp.propertyValueListController', ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.settings', 'platformWebApp.dynamicProperties.dictionaryItemsApi', function ($scope, bladeNavigationService, dialogService, settings, dictionaryItemsApi) {
     var blade = $scope.blade;
+    blade.updatePermission = 'platform:dynamic_properties:update';
     blade.headIcon = 'fa-plus-square-o';
     blade.title = "platform.blades.propertyValue-list.title";
     blade.subtitle = "platform.blades.propertyValue-list.subtitle";
@@ -26,7 +27,11 @@
     };
 
     function isDirty() {
-        return !angular.equals(blade.currentEntities, blade.origEntity);
+        return !angular.equals(blade.currentEntities, blade.origEntity) && blade.hasUpdatePermission();
+    }
+
+    function canSave() {
+        return isDirty() && formScope && formScope.$valid;
     }
 
     $scope.cancelChanges = function () {
@@ -43,9 +48,7 @@
     };
 
     var formScope;
-    $scope.setForm = function (form) {
-        formScope = form;
-    }
+    $scope.setForm = function (form) { formScope = form; }
 
     $scope.editDictionary = function (property) {
         var newBlade = {
@@ -62,23 +65,7 @@
     };
 
     blade.onClose = function (closeCallback) {
-        if (isDirty()) {
-            var dialog = {
-                id: "confirmItemChange",
-                title: "platform.dialogs.properties-save.title",
-                message: "platform.dialogs.properties-save.message",
-                callback: function (needSave) {
-                    if (needSave) {
-                        $scope.saveChanges();
-                    }
-                    closeCallback();
-                }
-            };
-            dialogService.showConfirmationDialog(dialog);
-        }
-        else {
-            closeCallback();
-        }
+        bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, $scope.saveChanges, closeCallback, "platform.dialogs.properties-save.title", "platform.dialogs.properties-save.message");
     };
 
     blade.toolbarCommands = [
@@ -87,9 +74,7 @@
             executeMethod: function () {
                 angular.copy(blade.origEntity, blade.currentEntities);
             },
-            canExecuteMethod: function () {
-                return isDirty();
-            }
+            canExecuteMethod: isDirty
         },
 		{
 		    name: "platform.commands.manage-type-properties", icon: 'fa fa-edit',

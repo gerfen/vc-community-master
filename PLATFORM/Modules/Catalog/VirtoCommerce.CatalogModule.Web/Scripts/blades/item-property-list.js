@@ -1,6 +1,7 @@
 ﻿angular.module('virtoCommerce.catalogModule')
-.controller('virtoCommerce.catalogModule.itemPropertyListController', ['$scope', 'virtoCommerce.catalogModule.items', 'virtoCommerce.catalogModule.properties', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', function ($scope, items, properties, bladeNavigationService, dialogService) {
+.controller('virtoCommerce.catalogModule.itemPropertyListController', ['$scope', 'virtoCommerce.catalogModule.items', 'virtoCommerce.catalogModule.properties', 'platformWebApp.bladeNavigationService', function ($scope, items, properties, bladeNavigationService) {
     var blade = $scope.blade;
+    blade.updatePermission = 'catalog:update';
 
     blade.refresh = function (parentRefresh) {
         items.get({ id: blade.itemId }, function (data) {
@@ -29,8 +30,12 @@
     }
 
     function isDirty() {
-        return !angular.equals(blade.item, blade.origItem);
-    };
+        return !angular.equals(blade.item, blade.origItem) && blade.hasUpdatePermission();
+    }
+
+    function canSave() {
+        return isDirty() && formScope && formScope.$valid;
+    }
 
     function saveChanges() {
         blade.isLoading = true;
@@ -42,23 +47,7 @@
     };
 
     blade.onClose = function (closeCallback) {
-        if (isDirty()) {
-            var dialog = {
-                id: "confirmItemChange",
-                title: "catalog.dialogs.item-save.title",
-                message: "catalog.dialogs.item-save.message"
-            };
-            dialog.callback = function (needSave) {
-                if (needSave) {
-                    saveChanges();
-                }
-                closeCallback();
-            };
-            dialogService.showConfirmationDialog(dialog);
-        }
-        else {
-            closeCallback();
-        }
+        bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, saveChanges, closeCallback, "catalog.dialogs.item-save.title", "catalog.dialogs.item-save.message");
     };
 
     $scope.editProperty = function (prop) {
@@ -111,20 +100,16 @@
 		    executeMethod: function () {
 		        saveChanges();
 		    },
-		    canExecuteMethod: function () {
-		        return isDirty() && formScope && formScope.$valid;
-		    },
-		    permission: 'catalog:update'
+		    canExecuteMethod: canSave,
+		    permission: blade.updatePermission
 		},
         {
             name: "platform.commands.reset", icon: 'fa fa-undo',
             executeMethod: function () {
                 angular.copy(blade.origItem, blade.item);
             },
-            canExecuteMethod: function () {
-                return isDirty();
-            },
-            permission: 'catalog:update'
+            canExecuteMethod: isDirty,
+            permission: blade.updatePermission
         },
 		{
 		    name: "catalog.commands.add-property", icon: 'fa fa-plus',
@@ -135,12 +120,12 @@
 		            origEntity: {
 		                type: "Product",
 		                valueType: "ShortText",
-                        values:[]
+		                values: []
 		            }
 		        });
 		    },
 		    canExecuteMethod: function () { return true; },
-		    permission: 'catalog:update'
+		    permission: blade.updatePermission
 		}
     ];
 

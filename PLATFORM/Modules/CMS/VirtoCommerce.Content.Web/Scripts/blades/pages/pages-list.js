@@ -3,6 +3,7 @@
     $scope.selectedNodeId = null;
 
     var blade = $scope.blade;
+    blade.updatePermission = 'content:update';
 
     blade.isPages = function () {
         return blade.type === 'pages';
@@ -132,18 +133,7 @@
             bladeNavigationService.showBlade(newBlade, $scope.blade);
         }
     }
-
-    $scope.blade.onClose = function (closeCallback) {
-        closeChildrenBlades();
-        closeCallback();
-    };
-
-    function closeChildrenBlades() {
-        angular.forEach($scope.blade.childrenBlades.slice(), function (child) {
-            bladeNavigationService.closeBlade(child);
-        });
-    }
-
+    
     blade.folderClick = function (data) {
         blade.steps.push(data.folderName);
 
@@ -176,7 +166,7 @@
                 canExecuteMethod: function () {
                     return true;
                 },
-                permission: 'content:update'
+                permission: blade.updatePermission
             });
         }
     }
@@ -224,7 +214,7 @@
                 canExecuteMethod: function () {
                     return true;
                 },
-                permission: 'content:update'
+                permission: blade.updatePermission
             });
         }
     }

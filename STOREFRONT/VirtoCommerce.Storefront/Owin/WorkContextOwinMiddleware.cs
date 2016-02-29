@@ -5,11 +5,14 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 using CacheManager.Core;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
+using Microsoft.Owin.Security;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -23,6 +26,7 @@ using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Customer.Services;
+using VirtoCommerce.Storefront.Model.LinkList.Services;
 using VirtoCommerce.Storefront.Model.Quote.Services;
 
 namespace VirtoCommerce.Storefront.Owin
@@ -38,10 +42,8 @@ namespace VirtoCommerce.Storefront.Owin
         private readonly IVirtoCommercePlatformApi _platformApi;
         private readonly ICommerceCoreModuleApi _commerceApi;
         private readonly IPricingModuleApi _pricingModuleApi;
-        private readonly ICartBuilder _cartBuilder;
         private readonly IQuoteRequestBuilder _quoteRequestBuilder;
         private readonly ICMSContentModuleApi _cmsApi;
-        private readonly ICustomerService _customerService;
         private readonly ICacheManager<object> _cacheManager;
 
         private readonly UnityContainer _container;
@@ -49,15 +51,15 @@ namespace VirtoCommerce.Storefront.Owin
         public WorkContextOwinMiddleware(OwinMiddleware next, UnityContainer container)
             : base(next)
         {
+            //Be AWARE! WorkContextOwinMiddleware crated once in first application start
+            //and  there can not be resolved and stored in fields services using WorkContext as dependency (WorkCOntext has a per request lifetime)
             _storeApi = container.Resolve<IStoreModuleApi>();
             _platformApi = container.Resolve<IVirtoCommercePlatformApi>();
-            _cartBuilder = container.Resolve<ICartBuilder>();
             _quoteRequestBuilder = container.Resolve<IQuoteRequestBuilder>();
             _cmsApi = container.Resolve<ICMSContentModuleApi>();
             _pricingModuleApi = container.Resolve<IPricingModuleApi>();
             _commerceApi = container.Resolve<ICommerceCoreModuleApi>();
             _cacheManager = container.Resolve<ICacheManager<object>>();
-            _customerService = container.Resolve<ICustomerService>();
             _container = container;
         }
 
@@ -67,6 +69,9 @@ namespace VirtoCommerce.Storefront.Owin
             {
                 var workContext = _container.Resolve<WorkContext>();
                 var urlBuilder = _container.Resolve<IStorefrontUrlBuilder>();
+
+                var linkListService = _container.Resolve<IMenuLinkListService>();
+                var cartBuilder = _container.Resolve<ICartBuilder>();
 
                 // Initialize common properties
                 workContext.RequestUrl = context.Request.Uri;
@@ -98,16 +103,18 @@ namespace VirtoCommerce.Storefront.Owin
                     workContext.CurrentOrderSearchCriteria = new Model.Order.OrderSearchCriteria(qs);
                     workContext.CurrentQuoteSearchCriteria = new Model.Quote.QuoteSearchCriteria(qs);
 
-                    //Current customer
+                    //Get current customer
                     workContext.CurrentCustomer = await GetCustomerAsync(context);
+                    //Validate that current customer has to store access
+                    ValidateUserStoreLogin(context, workContext.CurrentCustomer, workContext.CurrentStore);
                     MaintainAnonymousCustomerCookie(context, workContext);
 
                     //Do not load shopping cart and other for resource requests
-                    if (!IsAssetRequest(context.Request.Uri))
+                    if (!IsAssetRequest(context.Request))
                     {
                         //Shopping cart
-                        await _cartBuilder.GetOrCreateNewTransientCartAsync(workContext.CurrentStore, workContext.CurrentCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency);
-                        workContext.CurrentCart = _cartBuilder.Cart;
+                        await cartBuilder.GetOrCreateNewTransientCartAsync(workContext.CurrentStore, workContext.CurrentCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency);
+                        workContext.CurrentCart = cartBuilder.Cart;
 
                         if (workContext.CurrentStore.QuotesEnabled)
                         {
@@ -115,8 +122,8 @@ namespace VirtoCommerce.Storefront.Owin
                             workContext.CurrentQuoteRequest = _quoteRequestBuilder.QuoteRequest;
                         }
 
-                        var linkLists = await _cacheManager.GetAsync("GetLinkLists-" + workContext.CurrentStore.Id, "ApiRegion", async () => { return await _cmsApi.MenuGetListsAsync(workContext.CurrentStore.Id) ?? new List<VirtoCommerceContentWebModelsMenuLinkList>(); });
-                        workContext.CurrentLinkLists = linkLists != null ? linkLists.Select(ll => ll.ToWebModel(urlBuilder)).ToList() : null;
+                        var linkLists = await _cacheManager.GetAsync("GetAllStoreLinkLists-" + workContext.CurrentStore.Id, "ApiRegion", async () => await linkListService.LoadAllStoreLinkListsAsync(workContext.CurrentStore.Id));
+                        workContext.CurrentLinkLists = linkLists.Where(x => x.Language == workContext.CurrentLanguage).ToList();
 
 
                         //Initialize blogs search criteria 
@@ -160,24 +167,42 @@ namespace VirtoCommerce.Storefront.Owin
             return result.Any() ? result : null;
         }
 
-     
-        private bool IsAssetRequest(Uri uri)
+
+        private bool IsAssetRequest(IOwinRequest request)
         {
-            return uri.AbsolutePath.Contains("themes/assets") || !string.IsNullOrEmpty(Path.GetExtension(uri.ToString()));
+            var retVal = string.Equals(request.Method, "GET", StringComparison.OrdinalIgnoreCase); 
+            if(retVal)
+            {
+                retVal = request.Uri.AbsolutePath.Contains("themes/assets") || !string.IsNullOrEmpty(Path.GetExtension(request.Uri.ToString()));
+            }
+            return retVal;
+        }
+
+        private void ValidateUserStoreLogin(IOwinContext context, CustomerInfo customer, Store currentStore)
+        {
+
+            if (customer.IsRegisteredUser && !customer.AllowedStores.IsNullOrEmpty()
+                && !customer.AllowedStores.Any(x => string.Equals(x, currentStore.Id, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                context.Authentication.SignOut();
+                context.Authentication.User = new GenericPrincipal(new GenericIdentity(string.Empty), null);
+            }
         }
 
         private async Task<CustomerInfo> GetCustomerAsync(IOwinContext context)
         {
-            CustomerInfo retVal = new CustomerInfo();
+            var retVal = new CustomerInfo();
 
-            if (context.Authentication.User.Identity.IsAuthenticated)
+            var principal = context.Authentication.User;
+            var identity = principal.Identity;
+
+            if (identity.IsAuthenticated)
             {
-                var sidClaim = context.Authentication.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid);
-                var userId = sidClaim != null ? sidClaim.Value : null;
+                var userId = identity.GetUserId();
                 if (userId == null)
                 {
                     //If somehow claim not found in user cookies need load user by name from API
-                    var user = await _platformApi.SecurityGetUserByNameAsync(context.Authentication.User.Identity.Name);
+                    var user = await _commerceApi.StorefrontSecurityGetUserByNameAsync(identity.Name);
                     if (user != null)
                     {
                         userId = user.Id;
@@ -186,10 +211,21 @@ namespace VirtoCommerce.Storefront.Owin
 
                 if (userId != null)
                 {
-                    retVal = await _customerService.GetCustomerByIdAsync(userId) ?? retVal;
+                    var customerService = _container.Resolve<ICustomerService>();
+                    var customer = await customerService.GetCustomerByIdAsync(userId);
+                    retVal = customer ?? retVal;
                     retVal.Id = userId;
-                    retVal.UserName = context.Authentication.User.Identity.Name;
+                    retVal.UserName = identity.Name;
                     retVal.IsRegisteredUser = true;
+                }
+
+                retVal.OperatorUserId = principal.FindFirstValue(StorefrontConstants.OperatorUserIdClaimType);
+                retVal.OperatorUserName = principal.FindFirstValue(StorefrontConstants.OperatorUserNameClaimType);
+
+                var allowedStores = principal.FindFirstValue(StorefrontConstants.AllowedStoresClaimType);
+                if (!string.IsNullOrEmpty(allowedStores))
+                {
+                    retVal.AllowedStores = allowedStores.Split(',');
                 }
             }
 
@@ -255,7 +291,7 @@ namespace VirtoCommerce.Storefront.Owin
         private string GetStoreIdFromUrl(IOwinContext context, ICollection<Store> stores)
         {
             //Try first find by store url (if it defined)
-            var retVal = stores.Where(x => x.IsStoreUri(context.Request.Uri)).Select(x => x.Id).FirstOrDefault();
+            var retVal = stores.Where(x => x.IsStoreUrl(context.Request.Uri)).Select(x => x.Id).FirstOrDefault();
             if (retVal == null)
             {
                 foreach (var store in stores)

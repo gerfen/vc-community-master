@@ -1,6 +1,7 @@
 ﻿angular.module('platformWebApp')
 .controller('platformWebApp.propertyDictionaryController', ['$scope', 'platformWebApp.dialogService', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', 'platformWebApp.dynamicProperties.dictionaryItemsApi', function ($scope, dialogService, bladeNavigationService, settings, dictionaryItemsApi) {
     var blade = $scope.blade;
+    blade.updatePermission = 'platform:dynamic_properties:update';
     blade.headIcon = 'fa-plus-square-o';
     blade.title = 'platform.blades.property-dictionary.title';
     blade.subtitle = 'platform.blades.property-dictionary.subtitle';
@@ -133,7 +134,7 @@
     }
 
     function isDirty() {
-        return !angular.equals(blade.currentEntities, blade.origEntity);
+        return !angular.equals(blade.currentEntities, blade.origEntity) && blade.hasUpdatePermission();
     };
 
     $scope.saveChanges = function () {
@@ -163,17 +164,15 @@
             canExecuteMethod: function () {
                 return isDirty() && $scope.formScope && $scope.formScope.$valid;
             },
-            permission: 'platform:dynamic_properties:update'
+            permission: blade.updatePermission
         },
         {
             name: "platform.commands.reset", icon: 'fa fa-undo',
             executeMethod: function () {
                 angular.copy(blade.origEntity, blade.currentEntities);
             },
-            canExecuteMethod: function () {
-                return isDirty();
-            },
-            permission: 'platform:dynamic_properties:update'
+            canExecuteMethod: isDirty,
+            permission: blade.updatePermission
         },
         {
             name: "platform.commands.delete", icon: 'fa fa-trash-o',
@@ -183,7 +182,7 @@
             canExecuteMethod: function () {
                 return isItemsChecked();
             },
-            permission: 'platform:dynamic_properties:update'
+            permission: blade.updatePermission
         }
     ];
 

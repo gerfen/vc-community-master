@@ -31,28 +31,13 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public async Task<ActionResult> ProductDetails(string productId)
         {
-            var product = (await _catalogSearchService.GetProductsAsync(new[] { productId }, Model.Catalog.ItemResponseGroup.ItemInfo | Model.Catalog.ItemResponseGroup.ItemWithPrices)).FirstOrDefault();
+            var product = (await _catalogSearchService.GetProductsAsync(new[] { productId }, Model.Catalog.ItemResponseGroup.ItemSmall | Model.Catalog.ItemResponseGroup.ItemWithPrices)).FirstOrDefault();
             WorkContext.CurrentProduct = product;
 
             WorkContext.CurrentCatalogSearchCriteria.CategoryId = product.CategoryId;
             WorkContext.CurrentCatalogSearchResult = await _catalogSearchService.SearchAsync(WorkContext.CurrentCatalogSearchCriteria);
 
             return View("product", WorkContext);
-        }
-
-        /// <summary>
-        /// GET: /product/{productId}/json
-        /// This action used by js 
-        /// </summary>
-        /// <param name="productId"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
-        [HandleJsonErrorAttribute]
-        public async Task<ActionResult> ProductDetailsJson(string productId)
-        {
-            base.WorkContext.CurrentProduct = (await _catalogSearchService.GetProductsAsync(new [] { productId }, Model.Catalog.ItemResponseGroup.ItemLarge)).FirstOrDefault();
-            return Json(base.WorkContext.CurrentProduct, JsonRequestBehavior.AllowGet);
         }
     }
 }
