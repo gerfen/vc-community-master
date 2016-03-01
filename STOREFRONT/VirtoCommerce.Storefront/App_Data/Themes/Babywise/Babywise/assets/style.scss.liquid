@@ -414,7 +414,7 @@ input.quantity, input[type="number"] {
 }
 
 /* All buttons. */
-.button {
+/* .button {
   display: inline-block;
   padding: .4em .6em;
   background-color: darken( $background-color, 10%);
@@ -426,7 +426,7 @@ input.quantity, input[type="number"] {
   &:hover {
     background-color: darken( $background-color, 20%);
   }
-}
+} */
 
 .disabled {
   pointer-events: none;
@@ -1331,7 +1331,64 @@ nav#footer-links li {
   top: 45%;
 }
 
+.imagetriad {
+  h3 { margin: 65px 0 5px 0; }
+  h5 { margin: 0; text-align: center; }
+  .column {
+    width: 340px;
+    height: 204px;
+    position: relative;
+    @include white-bg;
+  }
+  .column:nth-of-type(2) {
+    margin-left: ($section-max-width - (3 * 340)) / 2;
+    margin-right: ($section-max-width - (3 * 340)) / 2;
+  }
+  .imagecaption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+}
 
+#featuredvideo {
+  max-width: 1200px;
+  margin-top: 75px;
+  margin-bottom: 30px;
+}
+
+#emailsignup {
+  height: 90px;
+  border: 1px solid #D1CEC9;
+  border-radius: 4px;
+  background-color: #EBE8E3;
+  padding: 15px;
+  img {
+    width: 86px;
+    height: 60px;
+    margin: 5px 20px 5px 0;
+    float: left;
+  }
+  div {
+    float: left;
+    margin-right: 45px;
+  }
+  .subheadline {
+    margin-top: 20px;
+  }
+  form {
+    margin-top: 10px;
+    #email-field {
+      height: 36px;
+      background-color: white;
+    }
+    .button {
+      width: 100px;
+      margin-left: -15px;
+    }
+  }
+}
 
 /* ===================================
    Babywise-specific style overrides
@@ -1365,7 +1422,7 @@ h2 {
   border: 1px solid black;
 }
 
-button {
+button, .button {
   border: 0px;
   padding: 10px 10px; 
   border-radius: 20px;

@@ -45,7 +45,7 @@
     "fonts_google": "",
 
     // A list of fonts to reference from the assets/fonts directory.
-    "fonts_local": "Garamond,Garamond-Bold,MulberryScript-Bold,TrebuchetMS-Bold,TrebuchetMS",
+    "fonts_local": "Garamond,Garamond-Bold,MulberryScript-Bold,TrebuchetMS-Bold,TrebuchetMS,Trebuchet-BoldItalic",
     
     // The version of Font Awesome to reference from a CDN, if any (e.g. "4.4.0").
     "fonts_font_awesome": "4.4.0",
