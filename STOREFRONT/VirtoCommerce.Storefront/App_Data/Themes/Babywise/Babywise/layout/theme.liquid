@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% include 'root/html' %} 
+<head>
+{% include 'head/title' %} 
+{% include 'head/meta' %} 
+{% include 'head/icons' %} 
+{% include 'head/fonts' %}
+{% include 'head/opengraph' %}
+{% include 'head/twitter' %}
+{% include 'head/styles' %}
+{% include 'head/scripts' %}
+  <link rel="canonical" href="{{ canonical_url }}" />
+  <!--[if lt IE 9]>
+  {{ '//html5shiv.googlecode.com/svn/trunk/html5.js' | script_tag }}
+  <![endif]-->
+</head>
+<body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" >
+
+  <header id="header">
+    {% include 'header/infobar' %}
+    {% include 'header/navarea' %}
+  </header>
+
+  <div id="main" role="main">
+    {{ content_for_layout }}
+  </div>
+
+  <footer>
+    {% include 'footer' %}
+  </footer>
+
+  {% include 'body/scripts' %}
+  {{ 'shop.js'  | asset_url | script_tag }}
+</body>
+</html>

@@ -1,0 +1,12 @@
+{% assign fonts = settings.fonts_google | split: ',' %}
+{% for font in fonts %}
+  {% unless font == blank %}
+  <link href="//fonts.googleapis.com/css?family={{ font | strip | replace: ' ', '+'}}:300italic,400italic,500italic,600italic,700italic,800italic,300,400,500,600,700,900&subset=cyrillic-ext,greek-ext,latin,latin-ext,cyrillic,greek,vietnamese" rel='stylesheet' type='text/css'>
+  {% endunless %}
+{% endfor %}
+{% unless settings.fonts_font_awesome == blank %}
+  {{ settings.fonts_font_awesome | prepend: '//maxcdn.bootstrapcdn.com/font-awesome/' | append: '/css/font-awesome.min.css' | stylesheet_tag }}
+{% endunless %}
+{% unless settings.fonts_material_design == blank %}
+  {{ settings.fonts_material_design | prepend: '//cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/' | append: '/css/material-design-iconic-font.min.css' | stylesheet_tag }}
+{% endunless %}

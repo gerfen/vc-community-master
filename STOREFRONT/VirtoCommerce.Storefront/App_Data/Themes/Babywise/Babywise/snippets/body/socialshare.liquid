@@ -1,0 +1,47 @@
+{% if settings.social_share_show %}
+<div class="social-share-links">
+	{% if settings.fonts_shopify_social_icons %}{% assign social_icon_prefix = 'shopify-' %}{% endif %}
+	{% unless settings.social_share_twitter_url == blank %}
+	<a href="{{ settings.social_share_twitter_url }}" title="Share this on Twitter" target="_blank"><span class="{{ social_icon_prefix }}social-icon-twitter{{ settings.social_icon_suffix }}"></span></a>
+	{% endunless %}
+	{% unless settings.social_share_pinterest_url == blank %}
+	<a href="{{ settings.social_share_pinterest_url }}" title="Share this on Pinterest" target="_blank"><span class="{{ social_icon_prefix }}social-icon-pinterest{{ settings.social_icon_suffix }}"></span></a>
+	{% endunless %}
+	{% unless settings.social_share_facebook_url == blank %}
+	<a href="{{ settings.social_share_facebook_url }}" title="Share this on Facebook" target="_blank"><span class="{{ social_icon_prefix }}social-icon-facebook{{ settings.social_icon_suffix }}"></span></a>
+	{% endunless %}
+	{% unless settings.social_share_googleplus_url == blank %}
+	<a href="{{ settings.social_share_googleplus_url }}" title="Share this on Google+" target="_blank"><span class="{{ social_icon_prefix }}social-icon-googleplus{{ settings.social_icon_suffix }}"></span></a>
+	{% endunless %}
+	{% unless settings.social_share_instagram_url == blank %}
+	<a href="{{ settings.social_share_instagram_url }}" title="Share this on Instagram" target="_blank"><span class="{{ social_icon_prefix }}social-icon-instagram{{ settings.social_icon_suffix }}"></span></a>
+	{% endunless %}
+	{% unless settings.social_share_linkedin_url == blank %}
+	<a href="{{ settings.social_share_linkedin_url }}" title="Share this on linkedin" target="_blank"><span class="{{ social_icon_prefix }}social-icon-linkedin{{ settings.social_icon_suffix }}"></span></a>
+	{% endunless %}
+	{% unless settings.social_share_flickr_url == blank %}
+	<a href="{{ settings.social_share_flickr_url }}" title="Share this on Flickr" target="_blank"><span class="{{ social_icon_prefix }}social-icon-flickr{{ settings.social_icon_suffix }}"></span></a>
+	{% endunless %}
+	{% unless settings.social_share_yelp_url == blank %}
+	<a href="{{ settings.social_share_yelp_url }}" title="Share this on Yelp" target="_blank"><span class="{{ social_icon_prefix }}social-icon-yelp{{ settings.social_icon_suffix }}"></span></a>
+	{% endunless %}
+	{% unless settings.social_share_vimeo_url == blank %}
+	<a href="{{ settings.social_share_vimeo_url }}" title="Share this on Vimeo" target="_blank"><span class="{{ social_icon_prefix }}social-icon-vimeo{{ settings.social_icon_suffix }}"></span></a>
+	{% endunless %}
+	{% unless settings.social_share_youtube_url == blank %}
+	<a href="{{ settings.social_share_youtube_url }}" title="Share this on YouTube" target="_blank"><span class="{{ social_icon_prefix }}social-icon-youtube{{ settings.social_icon_suffix }}"></span></a>
+	{% endunless %}
+	{% unless settings.social_share_tumblr_url == blank %}
+	<a href="{{ settings.social_share_tumblr_url }}" title="Share this on Tumblr" target="_blank"><span class="{{ social_icon_prefix }}social-icon-tumblr{{ settings.social_icon_suffix }}"></span></a>
+	{% endunless %}
+	{% unless settings.social_share_wordpress_url == blank %}
+	<a href="{{ settings.social_share_wordpress_url }}" title="Come visit our blog" target="_blank"><span class="{{ social_icon_prefix }}social-icon-wordpress{{ settings.social_icon_suffix }}"></span></a>
+	{% endunless %}
+	{% unless settings.social_share_featured_blog == blank %}
+	<a href="/blogs/{{ settings.social_share_featured_blog }}.atom" title="Subscribe to our blog" target="_blank"><span class="{{ social_icon_prefix }}social-icon-feed{{ settings.social_icon_suffix }}"></span></a>
+	{% endunless %}
+	{% unless settings.social_share_contact_email == blank %}
+	<a href="mailto:{{ settings.social_share_contact_email }}" title="Email us" target="_blank"><span class="{{ social_icon_prefix }}social-icon-email{{ settings.social_icon_suffix }}"></span></a>
+	{% endunless %}	
+</div>
+{% endif %}

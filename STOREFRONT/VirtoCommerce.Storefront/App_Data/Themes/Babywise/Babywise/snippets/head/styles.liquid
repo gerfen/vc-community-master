@@ -1,0 +1,8 @@
+  {{ 'fonts.scss.css' | asset_url | stylesheet_tag }}
+  {% if settings.fonts_payment_font %}
+  {{ 'payment-webfont.scss.css' | asset_url | stylesheet_tag }}
+  {% endif %}
+  {% if settings.fonts_shopify_social_icons %}
+  {{ 'social-icons.scss.css' | asset_url | stylesheet_tag }}
+  {% endif %}
+  {{ 'style.scss.css' | asset_url | stylesheet_tag }}

@@ -1,0 +1,5 @@
+{% if template contains 'index' %}
+  {% if page_title != blank and page_title != 'Welcome' %}<title>{{ page_title }}</title>{% else %}<title>{{ shop.name }}</title>{% endif %}
+  {% elsif template == '404' %}<title>Page Not Found | {{ shop.name }}</title>
+  {% else %}<title>{{ page_title }} | {{ shop.name }}</title>
+{% endif %}

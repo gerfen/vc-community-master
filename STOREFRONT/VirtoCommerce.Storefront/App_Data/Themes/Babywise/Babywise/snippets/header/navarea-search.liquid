@@ -1,0 +1,8 @@
+        <form action="/search" method="get" class="search-form" role="search">
+          <input name="q" type="search" id="search-field" placeholder="{{ settings.navarea_search_placeholder }}" value="{{ search.terms | escape }}" />
+          {% if settings.navarea_search_button_image %}
+          <input type="image" id="search-submit-icon" src="{{ settings.navarea_search_button_image | asset_url }}" alt="Search" />
+          {% else %}
+          <input type="submit" id="search-submit-button" value="Search" />
+          {% endif %}
+        </form>

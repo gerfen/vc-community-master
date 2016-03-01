@@ -1,0 +1,36 @@
+  {% unless settings.icons_apple57 == blank %}
+  <link rel="apple-touch-icon" sizes="57x57" href="{{ settings.icons_apple57 | asset_url }}" />
+  {% endunless %}
+  {% unless settings.icons_apple60 == blank %}
+  <link rel="apple-touch-icon" sizes="60x60" href="{{ settings.icons_apple60 | asset_url }}" />
+  {% endunless %}
+  {% unless settings.icons_apple72 == blank %}
+  <link rel="apple-touch-icon" sizes="72x72" href="{{ settings.icons_apple72 | asset_url }}" />
+  {% endunless %}
+  {% unless settings.icons_apple76 == blank %}
+  <link rel="apple-touch-icon" sizes="76x76" href="{{ settings.icons_apple76 | asset_url }}" />
+  {% endunless %}
+  {% unless settings.icons_apple114 == blank %}
+  <link rel="apple-touch-icon" sizes="114x114" href="{{ settings.icons_apple114 | asset_url }}" />
+  {% endunless %}
+  {% unless settings.icons_apple144 == blank %}
+  <link rel="apple-touch-icon" sizes="144x144" href="{{ settings.icons_apple144 | asset_url }}" />
+  {% endunless %}
+  {% unless settings.icons_favicon32 == blank %}
+  <link rel="icon" type="image/png" href="{{ settings.icons_favicon32 | asset_url }}" sizes="32x32" />
+  {% endunless %}
+  {% unless settings.icons_favicon16 == blank %}
+  <link rel="icon" type="image/png" href="{{ settings.icons_favicon16 | asset_url }}" sizes="16x16" />
+  {% endunless %}
+  {% unless settings.icons_google_manifest == blank %}
+  <link rel="manifest" href="{{ settings.icons_google_manifest | asset_url }}" />
+  {% endunless %}
+  {% unless settings.icons_safari_mask == blank %}
+  <link rel="mask-icon" href="{{ settings.icons_safari_mask | asset_url }}" color="{{ settings.icons_safari_maskcolor }}" />
+  {% endunless %}
+  {% unless settings.icons_favicon == blank %}
+  <link rel="shortcut icon" href="{{ settings.icons_favicon | asset_url }}" type="image/x-icon" />
+  {% endunless %}
+  {% unless settings.icons_windows_tilecolor == blank %}
+  <meta name="msapplication-TileColor" content="{{ settings.icons_windows_tilecolor }}" />
+  {% endunless %} 

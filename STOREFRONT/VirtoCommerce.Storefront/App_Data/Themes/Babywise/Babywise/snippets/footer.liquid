@@ -1,0 +1,9 @@
+{% if linklists.footer.links.size > 0 %}
+<nav id="footer-links">
+  <ul>
+    {% for link in linklists.footer.links %}
+    <li><a href="{{ link.url }}" title="{{ link.title }}"{% if link.active %} class="active"{% endif %}>{{ link.title }}</a></li>
+    {% endfor %}
+  </ul>
+</nav>
+{% endif %}

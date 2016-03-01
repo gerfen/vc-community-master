@@ -1,0 +1,259 @@
+{
+  "current": {
+
+    // --------------------------------------------------------------------------------------------------------------
+    // Application Icons (for the <head> section of each page)
+    // Set these values to filenames of image files in assets/icons directory as appropriate.
+    // Use the tool at http://realfavicongenerator.net to generate the needed assets, if needed.
+    // See the discussion at http://stackoverflow.com/questions/2268204/favicon-dimensions for more details.
+    //
+    "icons_favicon": "favicon.ico",
+    "icons_favicon16": "favicon-16x16.png",
+    "icons_favicon32": "favicon-32x32.png",
+    "icons_apple57": "apple-touch-icon-57x57.png",
+    "icons_apple60": "apple-touch-icon-60x60.png",
+    "icons_apple72": "apple-touch-icon-72x72.png",
+    "icons_apple76": "apple-touch-icon-76x76.png",
+    "icons_apple114": "",
+    "icons_apple144": "",
+    "icons_google_manifest": "manifest.json",
+    "icons_safari_mask": "safari-pinned-tab.svg",
+    "icons_safari_maskcolor": "#5bbad5",
+    "icons_windows_tilecolor": "#da532c",
+    "icons_windows_config": "browserconfig.xml",
+
+    // --------------------------------------------------------------------------------------------------------------
+    // Layout defaults 
+    "layout_site_width_max": "1200px",
+    "layout_section_width_max": "1100px",
+
+
+    // --------------------------------------------------------------------------------------------------------------
+    // Typography defaults, for these named styles:
+    //   - display1
+    //   - display2
+    //   - headline1
+    //   - headline2
+    //   - subheadline
+    //   - body1
+    //   - body2
+    //   - button
+    //   - caption
+
+    // A list of fonts to reference from Google Fonts.
+    "fonts_google": "",
+
+    // A list of fonts to reference from the assets/fonts directory.
+    "fonts_local": "Garamond-Bold,MulberryScript-Bold,TrebuchetMS-Bold,TrebuchetMS",
+    
+    // The version of Font Awesome to reference from a CDN, if any (e.g. "4.4.0").
+    "fonts_font_awesome": "4.4.0",
+
+    // The version of Material Design Iconic Font to reference from a CDN, if any (e.g. "2.1.1").
+    "fonts_material_design": "",
+    
+    // If true, include a reference to the payment font from the assets/fonts directory.
+    "fonts_payment_font": false,
+
+    // If true, include a reference to the Shopify social icons from the assets/fonts directory.
+    "fonts_shopify_social_icons": false,
+
+    "fonts_display1_family": "Garamond-Bold",
+    "fonts_display1_fallback": "Times Roman,serif",
+    "fonts_display1_size": "30px",
+    "fonts_display1_transform": "",
+
+    "fonts_display2_family": "Garamond-Bold",
+    "fonts_display2_fallback": "Times Roman,serif",
+    "fonts_display2_size": "60px",
+    "fonts_display2_transform": "",
+    
+    "fonts_headline1_family": "MulberryScript-Bold",
+    "fonts_headline1_fallback": "Script,sans-serif",
+    "fonts_headline1_size": "50px",
+    "fonts_headline1_transform": "",
+    
+    "fonts_headline2_family": "Garamond-Bold",
+    "fonts_headline2_fallback": "Times Roman,serif",
+    "fonts_headline2_size": "24px",
+    "fonts_headline2_transform": "",
+    
+    "fonts_subheadline_family": "TrebuchetMS-Bold",
+    "fonts_subheadline_fallback": "Helvetica,Arial,sans-serif",
+    "fonts_subheadline_size": "14px",
+    "fonts_subheadline_transform": "",
+
+    "fonts_body1_family": "TrebuchetMS",
+    "fonts_body1_fallback": "Helvetica,Arial,sans-serif",
+    "fonts_body1_size": "14px",
+    "fonts_body1_transform": "",
+
+    "fonts_body2_family": "TrebuchetMS-Bold",
+    "fonts_body2_fallback": "Helvetica,Arial,sans-serif",
+    "fonts_body2_size": "14px",
+    "fonts_body2_transform": "",
+
+    "fonts_textlink_family": "TrebuchetMS-Bold",
+    "fonts_textlink_fallback": "Helvetica,Arial,sans-serif",
+    "fonts_textlink_size": "12px",
+    "fonts_textlink_transform": "",
+
+    "fonts_caption_family": "TrebuchetMS-Bold",
+    "fonts_caption_fallback": "Helvetica,Arial,sans-serif",
+    "fonts_caption_size": "12px",
+    "fonts_caption_transform": "uppercase",
+
+    "colors_purple": "#6f6fd3",
+    "colors_pink": "#e899db",
+    "colors_grey": "#666666",
+    "colors_black": "#000000",
+    "colors_white": "#ffffff",
+    "colors_yellow": "#e2cd7a",
+    "colors_lighttan": "#f4f1ea",
+
+    "colors_background": "#f4f1ea",
+    "colors_text": "#666666",
+    "colors_link": "#e899db",
+
+    // --------------------------------------------------------------------------------------------------------------
+    // Scripts to reference in the <head> section of the page.
+
+    // The version of jQuery to reference from a CDN, if any.
+    "scripts_head_jquery": "1.11.0",
+
+
+    // --------------------------------------------------------------------------------------------------------------
+    // Facebook Open Graph: 
+    // Specifies the default image (in the assets/images directory) to be used when sharing content on Facebook.
+    // For debugging, see the Facebook Linter: http://developers.facebook.com/tools/debug
+    //
+    "opengraph_defaultimage": "logo.png",
+
+    // --------------------------------------------------------------------------------------------------------------
+    // Info bar (optional colored bar at the top of the page)
+    // 
+
+    // Show the info bar?
+    "infobar_show": true,
+    "infobar_font_family": "TrebuchetMS",
+    "infobar_font_size": "18px",
+    "infobar_color_foreground": "#ffffff",
+    "infobar_color_background": "#e899db",
+    "infobar_color_highlight_foreground": "#ffffff",
+    "infobar_color_highlight_background": "#ff4081",
+    "infobar_height": "30px",
+    "infobar_content_left": "",
+    "infobar_content_center": "",
+    "infobar_content_right": "",
+    "infobar_link_left_text": "",
+    "infobar_link_left_icon": "",
+    "infobar_link_left_url": "",
+    "infobar_link_right_text": "Cart",
+    "infobar_link_right_icon": "cart-icon.png",
+    "infobar_link_right_url": "/cart",
+
+    // Should the info bar be closable (close icon on the right)?  This requires the Material Design Icon font.
+    "infobar_closable": false,
+
+    // --------------------------------------------------------------------------------------------------------------
+    // Navigation area 
+    // 
+    "navarea_color_background": "#ffffff",
+    "navarea_height": "70px",
+
+    "navarea_hamburger_show": true,
+    "navarea_hamburger_image": "hamburger-nav.png ",
+    "navarea_hamburger_image_hover": "hamburger-nav-hover.png ",
+    "navarea_hamburger_width": "41px",
+    "navarea_hamburger_height": "26px",
+
+    "navarea_logo_image": "logo.png ",
+    "navarea_logo_image_hover": "logo-hover.png ",
+    "navarea_logo_width": "180px",
+    "navarea_logo_height": "140px",
+    "navarea_logo_top": "10px",
+    "navarea_logo_left": "-25px",
+    "navarea_logo_scrolled_image": "logomark.png ",
+    "navarea_logo_scrolled_image_hover": "logomark-hover.png ",
+    "navarea_logo_scrolled_width": "126px",
+    "navarea_logo_scrolled_height": "80px",
+    "navarea_logo_scrolled_top": "-20px",
+    "navarea_logo_scrolled_left": "30px",
+
+    "navarea_search_placeholder": "Search Babywise...",
+    "navarea_search_button_text": "Search",
+    "navarea_search_button_image": "search-icon.png",
+
+    "navarea_signin_create_account": false,
+
+    // --------------------------------------------------------------------------------------------------------------
+    // Social media 
+    // The use of the Shopify social icon font is controlled by the "fonts_shopify_social_icons" setting above. 
+    //
+
+    // Show the social links?
+    "social_show": true,
+
+    // URLs for each of the social media services.  If a URL is not present, that icon is not shown.
+    "social_facebook_url": "https://www.facebook.com/shopify",
+    "social_twitter_url": "",
+    "social_pinterest_url": "http://pinterest.com/shopify/",
+    "social_googleplus_url": "",
+    "social_instagram_url": "",
+    "social_linkedin_url": "",
+    "social_flickr_url": "",
+    "social_yelp_url": "",
+    "social_vimeo_url": "",
+    "social_youtube_url": "",
+    "social_tumblr_url": "",
+    "social_wordpress_url": "",
+    "social_featured_blog": "",
+    "social_contact_email": "mailto:info@babywise.life",
+
+    // Show the social links?
+    "social_share_show": true,
+
+    // URLs for sharing on each of the social media services.  If a URL is not present, that icon is not shown.
+    "social_share_facebook_url": "https://www.facebook.com/shopify",
+    "social_share_twitter_url": "http://twitter.com/shopify",
+    "social_share_pinterest_url": "http://pinterest.com/shopify/",
+    "social_share_googleplus_url": "",
+    "social_share_instagram_url": "",
+    "social_share_linkedin_url": "",
+    "social_share_flickr_url": "",
+    "social_share_yelp_url": "",
+    "social_share_vimeo_url": "",
+    "social_share_youtube_url": "",
+    "social_share_tumblr_url": "",
+    "social_share_wordpress_url": "",
+    "social_share_featured_blog": "",
+    "social_share_contact_email": "mailto:info@babywise.life",
+
+    // Height and width of each social media icon.
+    "social_icons_image_height": "32px",
+    "social_icons_image_width": "32px",
+
+    // A prefix of the CSS class assigned to the icon <span> element.  If using the Shopify social icons, this is
+    // automatically set to "shopify-".
+    "social_icons_prefix": "",
+
+    // A suffix of the CSS class assigned to the icon <span> element.  For example, if using the Shopify social icons,
+    // this might be "-square", "-rounded", or "-circle". 
+    "social_icons_suffix": "",
+
+    // --------------------------------------------------------------------------------------------------------------
+    // Footer bars
+    // 
+
+    "footer_font_family": "TrebuchetMS",
+    "footer_font_size": "18px",
+    "footer_color_foreground": "#ffffff",
+    "footer_color_background": "#e899db",
+    "footer_line_height": "30px",
+
+    "featured_blog": "news",
+    "homepage_collection": "frontpage",
+    "products_per_row": "3",
+    "number_of_rows": "4",
+  }
+}

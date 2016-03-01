@@ -1,0 +1,42 @@
+      {% if settings.infobar_show %}
+      <div class="infobar">
+        {% unless settings.infobar_link_left_url == blank %}
+        <div class="link left">
+          <a href="{{settings.infobar_link_left_url}}" class="link">
+            {% unless settings.infobar_link_left_text == blank %}{{ settings.infobar_link_left_text }}{% endunless %}
+            {% unless settings.infobar_link_left_icon == blank %}<img src="{{ settings.infobar_link_left_icon | asset_url }}" />{% endunless %}
+          </a>
+        </div>
+        {% endunless %}
+        {% unless settings.infobar_link_right_url == blank %}
+        <div class="link right">
+          <a href="{{settings.infobar_link_right_url}}" class="link">
+            {% unless settings.infobar_link_right_text == blank %}{{ settings.infobar_link_right_text }}{% endunless %}
+            {% unless settings.infobar_link_right_icon == blank %}<img src="{{ settings.infobar_link_right_icon | asset_url }}" />{% endunless %}
+            {% comment %}
+            Details about number of items in the cart and total cart price can be added like this:
+            {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} ({{ cart.total_price | money }})
+            {% endcomment %}
+          </a>
+        </div>
+        {% endunless %}
+        {% unless settings.infobar_content_left == blank %}<div class="content left">{{settings.infobar_content_left}}</div>{% endunless %}
+        {% unless settings.infobar_content_right == blank %}<div class="content right">{{settings.infobar_content_right}}</div>{% endunless %}
+        {% if settings.infobar_closable %}<div class="right"><a href="javascript:;" class="close"><i class="zmdi zmdi-close"></i></a></div>{% endif %}
+        {% unless settings.infobar_content_center == blank %}<div class="content centered">{{settings.infobar_content_center}}</div>{% endunless %}
+        {% if settings.infobar_closable %}
+        <script>
+          jQuery(document).ready(function() {
+            var $_popup_cookie = jQuery.cookie('popup_top_cookie');
+            if ($_popup_cookie == undefined){
+              jQuery('.infobar').show();
+              jQuery('.infobar .close').click(function(e) {
+                jQuery('.infobar').slideUp();
+                jQuery.cookie('popup_top_cookie', 'yes', { path: '/', expires: 1 });
+              });
+            }
+          });
+        </script>
+        {% endif %}
+      </div>
+      {% endif %}

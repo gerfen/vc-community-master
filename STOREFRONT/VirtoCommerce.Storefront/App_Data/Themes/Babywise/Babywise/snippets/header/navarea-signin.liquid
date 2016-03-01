@@ -1,0 +1,13 @@
+        {% if shop.customer_accounts_enabled %}
+        <div class="signin">
+          <span class="separator">|</span>
+          {% if customer %}
+            Welcome <a href="/account">{{ customer.first_name }}</a> · {{ 'Sign out' | customer_logout_link }}
+          {% else %}
+            {{ 'Sign in' | customer_login_link }}
+            {% if settings.navarea_signin_create_account %}
+            or {{ 'Create an account' | customer_register_link }}
+            {% endif %}
+          {% endif %}
+        </div>
+        {% endif %}

@@ -1,0 +1,13 @@
+{% assign fonts = settings.fonts_local | split: ',' %}
+{% for font in fonts %}
+  {% assign font_url = font | strip | replace: ' ', '' | asset_url %}
+  @font-face {
+    font-family: '{{ font | strip }}';
+    src: url({{ font_url | append: '.eot?#iefix' }}) format('embedded-opentype'), 
+         url({{ font_url | append: '.woff' }}) format('woff'), 
+         url({{ font_url | append: '.ttf' }}) format('truetype'), 
+         url({{ font_url | append: '.svg#' | append: font }}) format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
+{% endfor %}
