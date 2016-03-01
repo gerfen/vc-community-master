@@ -217,6 +217,7 @@
   <ItemGroup>
     <Content Include="App_Data\countries.json" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\fonts\Garamond-Bold.svg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\fonts\Garamond.svg" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\fonts\MulberryScript-Bold.svg" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\fonts\payment-webfont.svg" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\fonts\shopify-social.svg" />
@@ -788,6 +789,9 @@
     <Content Include="App_Data\Themes\Babywise\default\templates\send-code.liquid" />
     <Content Include="App_Data\Themes\Babywise\default\templates\thanks.liquid" />
     <Content Include="App_Data\Themes\Babywise\default\templates\verify-code.liquid" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\fonts\Garamond.eot" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\fonts\Garamond.ttf" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\fonts\Garamond.woff" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

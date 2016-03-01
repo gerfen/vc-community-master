@@ -24,7 +24,8 @@
 
     // --------------------------------------------------------------------------------------------------------------
     // Layout defaults 
-    "layout_site_width_max": "1200px",
+    "layout_site_width_max": "1600px",
+    "layout_content_width_max": "1200px",
     "layout_section_width_max": "1100px",
 
 
@@ -44,7 +45,7 @@
     "fonts_google": "",
 
     // A list of fonts to reference from the assets/fonts directory.
-    "fonts_local": "Garamond-Bold,MulberryScript-Bold,TrebuchetMS-Bold,TrebuchetMS",
+    "fonts_local": "Garamond,Garamond-Bold,MulberryScript-Bold,TrebuchetMS-Bold,TrebuchetMS",
     
     // The version of Font Awesome to reference from a CDN, if any (e.g. "4.4.0").
     "fonts_font_awesome": "4.4.0",
@@ -78,6 +79,11 @@
     "fonts_headline2_size": "24px",
     "fonts_headline2_transform": "",
     
+    "fonts_headline3_family": "Trebuchet-BoldItalic",
+    "fonts_headline3_fallback": "Times Roman,serif",
+    "fonts_headline3_size": "20px",
+    "fonts_headline3_transform": "",
+    
     "fonts_subheadline_family": "TrebuchetMS-Bold",
     "fonts_subheadline_fallback": "Helvetica,Arial,sans-serif",
     "fonts_subheadline_size": "14px",
@@ -102,6 +108,11 @@
     "fonts_caption_fallback": "Helvetica,Arial,sans-serif",
     "fonts_caption_size": "12px",
     "fonts_caption_transform": "uppercase",
+
+    "fonts_subcaption_family": "TrebuchetMS",
+    "fonts_subcaption_fallback": "Helvetica,Arial,sans-serif",
+    "fonts_subcaption_size": "12px",
+    "fonts_subcaption_transform": "",
 
     "colors_purple": "#6f6fd3",
     "colors_pink": "#e899db",
@@ -244,12 +255,14 @@
     // --------------------------------------------------------------------------------------------------------------
     // Footer bars
     // 
-
-    "footer_font_family": "TrebuchetMS",
-    "footer_font_size": "18px",
+    "footer_font_family": "Garamond-Bold",
+    "footer_font_size": "30px",
     "footer_color_foreground": "#ffffff",
     "footer_color_background": "#e899db",
-    "footer_line_height": "30px",
+    "footer_line_height": "36px",
+    "footer_copyright": "Babywise.life",
+    "footer_copyright_font_family": "TrebuchetMS",
+    "footer_copyright_font_size": "12px",
 
     "featured_blog": "news",
     "homepage_collection": "frontpage",

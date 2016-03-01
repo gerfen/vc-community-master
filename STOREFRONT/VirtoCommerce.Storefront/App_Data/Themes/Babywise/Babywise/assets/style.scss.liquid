@@ -55,7 +55,7 @@ $heading-font-weight:     600;
   font-size: {{ settings.fonts_headline1_size }};
   {% unless settings.fonts_headline1_transform == blank %}text-transform: {{ settings.fonts_headline1_transform }};{% endunless %}
 }
-/* .headline1 { @include headline1; } */
+.headline1 { @include headline1; }
 
 @mixin headline2 {
   font-family: {{ settings.fonts_headline2_family }},{{ settings.fonts_headline2_fallback }};
@@ -63,6 +63,13 @@ $heading-font-weight:     600;
   {% unless settings.fonts_headline2_transform == blank %}text-transform: {{ settings.fonts_headline2_transform }};{% endunless %}
 }
 .headline2 { @include headline2; }
+
+@mixin headline3 {
+  font-family: {{ settings.fonts_headline3_family }},{{ settings.fonts_headline3_fallback }};
+  font-size: {{ settings.fonts_headline3_size }};
+  {% unless settings.fonts_headline3_transform == blank %}text-transform: {{ settings.fonts_headline3_transform }};{% endunless %}
+}
+.headline3 { @include headline3; }
 
 @mixin subheadline {
   font-family: {{ settings.fonts_subheadline_family }},{{ settings.fonts_subheadline_fallback }};
@@ -98,6 +105,13 @@ $heading-font-weight:     600;
   {% unless settings.fonts_caption_transform == blank %}text-transform: {{ settings.fonts_caption_transform }};{% endunless %}
 }
 .caption { @include caption; }
+
+@mixin subcaption {
+  font-family: {{ settings.fonts_subcaption_family }},{{ settings.fonts_subcaption_fallback }};
+  font-size: {{ settings.fonts_subcaption_size }};
+  {% unless settings.fonts_subcaption_transform == blank %}text-transform: {{ settings.fonts_subcaption_transform }};{% endunless %}
+}
+.subcaption { @include subcaption; }
 
 {% unless settings.colors_purple == blank %}
 @mixin purple { color: {{ settings.colors_purple }}; }
@@ -480,8 +494,15 @@ table {
    ================ */
 
 /* Control the web page maximum width. */
-.container {
-  width: 85%;
+.site-container {
+  /* width: 85%; */
+  max-width: $site-max-width;
+  margin: 0 auto;
+  padding: $gutter 0;
+}
+
+.content-container {
+  /* width: 85%; */
   max-width: $site-max-width;
   margin: 0 auto;
   padding: $gutter 0;
@@ -651,6 +672,7 @@ header, #main {
   position: fixed;
   top: 0;
   width: 100%;
+  max-width: $site-max-width;
   z-index: 5;
   padding-top: 2px;
   {% if settings.infobar_closable %}display: none;{% endif %}
@@ -694,6 +716,7 @@ header, #main {
 #header .navarea {
   height: {{ settings.navarea_height }};
   width: 100%;
+  max-width: $site-max-width;
   background-color: {{ settings.navarea_color_background }};
   position: fixed;
   top: {% if settings.infobar_show %}{{ settings.infobar_height }}{% else %}0{% endif %};
@@ -754,7 +777,7 @@ header, #main {
 
 .navarea .search-form {
   float: right;
-  margin-top: 28px;
+  margin-top: 24px;
 }
 
 .navarea .search-form #search-submit-icon {
@@ -766,12 +789,14 @@ header, #main {
 .navarea nav {
     text-align: center;
     margin-top: 32px;
+    @include subheadline;
 }
 
 .navarea .signin {
   float: right;
   margin-top: 30px;
   margin-right: 10px;
+  @include subheadline;
 }
 
 .navarea .signin .separator {
@@ -872,36 +897,6 @@ nav li:hover ul { display: block; }
 /* Styling active links. */
 nav li.active > a { color: $link-color; }
 
-/* Footer nav */
-nav#footer-links li {
-  display:block;
-  width: 100%;
-  {% unless settings.footer_line_height == blank %}
-  height: {{ settings.footer_line_height }};
-  {% endunless %}
-  {% unless settings.footer_color_background == blank %}
-  background-color: {{ settings.infobar_color_background }};
-  {% endunless %}
-  {% unless settings.footer_color_foreground == blank %}
-  color: {{ settings.footer_color_foreground }};
-  {% endunless %}
-  {% unless settings.footer_font_family == blank %}
-  font-family: {{ settings.footer_font_family }};
-  {% endunless %}
-  {% unless settings.footer_font_size == blank %}
-  font-size: {{ settings.footer_font_size }};
-  {% endunless %}
-  text-align: center;
-  letter-spacing: 0.05em;
-  a{
-    {% unless settings.footer_font_size == blank %}
-      font-size: {{ settings.footer_font_size }};
-    {% endunless %}
-    {% unless settings.footer_color_foreground == blank %}
-      color: {{settings.footer_color_foreground }};
-    {% endunless %}
-  }
-}
 
 /* =====================
    7. Tags
@@ -1237,6 +1232,56 @@ footer {
   a + a { padding-left: 0.666 * $gutter; }
 }
 
+/* Footer nav */
+nav#footer-links {
+  width: 100%;
+  {% unless settings.footer_color_background == blank %}
+  background-color: {{ settings.infobar_color_background }};
+  {% endunless %}
+  {% unless settings.footer_color_foreground == blank %}
+  color: {{ settings.footer_color_foreground }};
+  {% endunless %}
+  {% unless settings.footer_font_family == blank %}
+  font-family: {{ settings.footer_font_family }};
+  {% endunless %}
+  {% unless settings.footer_font_size == blank %}
+  font-size: {{ settings.footer_font_size }};
+  {% endunless %}
+  {% unless settings.footer_line_height == blank %}
+  padding: {{ settings.footer_line_height }} 0;
+  {% endunless %}
+  .copyright {
+    {% unless settings.footer_copyright_font_family == blank %}
+    font-family: {{ settings.footer_copyright_font_family }};
+    {% endunless %}
+    {% unless settings.footer_copyright_font_size == blank %}
+    font-size: {{ settings.footer_copyright_font_size }};
+    {% endunless %}
+    margin-top: -20px;
+    margin-right: 40px;
+  }
+}
+
+nav#footer-links li {
+  display:block;
+  {% unless settings.footer_line_height == blank %}
+  height: {{ settings.footer_line_height }};
+  {% endunless %}
+  text-align: left;
+  letter-spacing: 0.05em;
+  padding-left: 60px;
+  border-left: 2px solid white;
+
+  a{
+    {% unless settings.footer_font_size == blank %}
+      font-size: {{ settings.footer_font_size }};
+    {% endunless %}
+    {% unless settings.footer_color_foreground == blank %}
+      color: {{settings.footer_color_foreground }};
+    {% endunless %}
+  }
+}
+
 /* =====================
    13. Home Page
    ===================== */
@@ -1250,7 +1295,7 @@ footer {
   position: relative;
   .herotext {
     position: absolute;
-    top: 40%;
+    top: 30%;
     left: 0;
     right: 0;
     h1 { margin: 0; }
@@ -1288,9 +1333,9 @@ footer {
 
 
 
-/* =====================
-   Babywise-specific styling
-   ===================== */
+/* ===================================
+   Babywise-specific style overrides
+   =================================== */
 
 /* Dotted headlines: https://css-tricks.com/forums/topic/css-trick-for-a-horizontal-type-line-behind-text/#post-132492. */
 h2 {

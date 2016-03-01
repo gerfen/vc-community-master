@@ -15,20 +15,18 @@
   <![endif]-->
 </head>
 <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" >
-
-  <header id="header">
-    {% include 'header/infobar' %}
-    {% include 'header/navarea' %}
-  </header>
-
-  <div id="main" role="main">
-    {{ content_for_layout }}
+  <div class="site-container">
+    <header id="header">
+      {% include 'header/infobar' %}
+      {% include 'header/navarea' %}
+    </header>
+    <div id="main" role="main">
+      {{ content_for_layout }}
+    </div>
+    <footer>
+      {% include 'footer' %}
+    </footer>
   </div>
-
-  <footer>
-    {% include 'footer' %}
-  </footer>
-
   {% include 'body/scripts' %}
   {{ 'shop.js'  | asset_url | script_tag }}
 </body>

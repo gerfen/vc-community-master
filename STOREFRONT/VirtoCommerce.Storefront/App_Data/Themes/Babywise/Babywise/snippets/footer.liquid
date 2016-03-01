@@ -1,9 +1,15 @@
 {% if linklists.footer.links.size > 0 %}
-<nav id="footer-links">
-  <ul>
-    {% for link in linklists.footer.links %}
-    <li><a href="{{ link.url }}" title="{{ link.title }}"{% if link.active %} class="active"{% endif %}>{{ link.title }}</a></li>
-    {% endfor %}
-  </ul>
+<nav id="footer-links" class="row">
+  <div class="column half footerlogo">
+    <img src="{{ 'logo-horizontal.png' | asset_url }}" />
+  </div>
+  <div class="column half footerlinks">
+    <ul>
+      {% for link in linklists.footer.links %}
+      <li><a href="{{ link.url }}" title="{{ link.title }}"{% if link.active %} class="active"{% endif %}>{{ link.title }}</a></li>
+      {% endfor %}
+    </ul>
+    <div class="copyright right">Copyright &copy; {{ 'now' | date: "%Y" }} {{ settings.footer_copyright }} </div>
+  </div>
 </nav>
 {% endif %}
