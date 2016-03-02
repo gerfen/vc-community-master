@@ -729,16 +729,13 @@ header, #main {
   width: {{settings.navarea_hamburger_width}};
   display: inline-block;
   background-image: url('{{ settings.navarea_hamburger_image | asset_url }}');
+  background-repeat: no-repeat;
   float: left;
   margin-top: 28px;
   margin-left: 20px;
   margin-right: 20px;
 }
-{% unless settings.navarea_hamburger_image_hover == blank %}
-.navarea .hamburger-nav:hover {
-  background-image: url('{{ settings.navarea_hamburger_image_hover | asset_url }}');
-}
-{% endunless %}
+
 {% endif %}
 
 .navarea .logo {
@@ -859,8 +856,8 @@ nav ul {
   }
 }
 
-/* Vertical separator between nav items */
-.navarea nav li + li:before {
+/* Vertical separator between horizontal nav items */
+.navarea .primarynav nav li + li:before {
     content: "|";
     padding-left: $gutter/4 - 4;
     padding-right: $gutter/4;
@@ -897,6 +894,45 @@ nav li:hover ul { display: block; }
 /* Styling active links. */
 nav li.active > a { color: $link-color; }
 
+/* Hamburger menu */
+.hamburger-nav nav { 
+  display: none; 
+  ul {
+    margin-left: -20px;
+    margin-top: 42px;
+    li {
+      background-color: #999999; 
+      width: 200px;
+      height: 40px;
+      padding: 12px;
+      text-align: left;
+      a {
+        color: white;
+      }
+      a:hover {
+         color: $link-color;
+      }
+    }
+    li.footer {
+      background-color: #CCCCCC;
+      a {
+        color: #848484;
+      }
+    }
+    li.first {
+      padding: 12px;
+    }
+  }
+}
+
+{% unless settings.navarea_hamburger_image_hover == blank %}
+.hamburger-nav:hover {
+  background-image: url('{{ settings.navarea_hamburger_image_hover | asset_url }}');
+}
+{% endunless %}
+.hamburger-nav:hover nav {
+  display: block;
+}
 
 /* =====================
    7. Tags

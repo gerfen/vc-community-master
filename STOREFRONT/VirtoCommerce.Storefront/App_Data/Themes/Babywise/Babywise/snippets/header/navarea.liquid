@@ -4,5 +4,7 @@
   <a href="{{ shop.url }}"><div class="logo"></div></a>
   {% include 'header/navarea-signin' %}
   {% include 'header/navarea-search' %}
-  {% include 'header/navarea-nav' %}
+  <div class="primarynav">
+  {% include 'header/navarea-nav', menu_linklist: 'main-menu' %}
+  </div>
 </div>

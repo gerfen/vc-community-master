@@ -10,7 +10,7 @@
 
 <nav role="navigation">
   <ul class="nav">
-    {% for link in linklists.main-menu.links %}
+    {% for link in linklists[menu_linklist].links %}
     {% assign has_sub_menu = false %}
     {% assign has_sub_categories = false %}
     {% assign parent_link_active = false %}
@@ -27,7 +27,7 @@
     {% elsif link.type == 'collection_link' and link.object.all_tags.size > 0 %}
       {% assign has_sub_categories = true %}
     {% endif %}
-    <li class="{% if link.active or parent_link_active %} active{% endif %}{% if has_sub_menu or has_sub_categories %} has-dropdown{% endif %}{% if forloop.first %} first{% elsif forloop.last %} last{% endif %}">
+    <li class="{{ menu_linklist }}{% if link.active or parent_link_active %} active{% endif %}{% if has_sub_menu or has_sub_categories %} has-dropdown{% endif %}{% if forloop.first %} first{% elsif forloop.last %} last{% endif %}">
       <a href="{{ link.url }}">{{ link.title }}{% if has_sub_menu or has_sub_categories %} <i class="fa fa-angle-down"></i>{% endif %}</a> 
       {% if has_sub_menu or has_sub_categories %}
       <ul class="sub-nav">
@@ -47,6 +47,9 @@
       </ul>
       {% endif %}
     </li>
+    {% endfor %}
+    {% for link in linklists[footer_linklist].links %}
+      <li class="{{ footer_linklist }}"><a href="{{ link.url }}" title="{{ link.title }}"{% if link.active %} class="active"{% endif %}>{{ link.title }}</a></li>
     {% endfor %}
     <li class="show-on-small{% if template == 'search' %} active{% endif %}">
       <a href="/search">
