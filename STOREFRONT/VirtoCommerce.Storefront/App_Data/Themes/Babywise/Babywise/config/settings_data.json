@@ -263,6 +263,8 @@
     "footer_copyright": "Babywise.life",
     "footer_copyright_font_family": "TrebuchetMS",
     "footer_copyright_font_size": "12px",
+    
+    "google_analytics_code": "UA-72789433-1",
 
     "featured_blog": "news",
     "homepage_collection": "frontpage",
