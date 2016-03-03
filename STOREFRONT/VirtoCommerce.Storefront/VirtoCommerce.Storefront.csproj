@@ -792,6 +792,7 @@
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\fonts\Garamond.eot" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\fonts\Garamond.ttf" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\fonts\Garamond.woff" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\layout\footer_layout.liquid" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

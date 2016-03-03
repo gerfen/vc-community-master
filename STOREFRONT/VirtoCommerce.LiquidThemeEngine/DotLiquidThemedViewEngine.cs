@@ -32,9 +32,18 @@ namespace VirtoCommerce.LiquidThemeEngine
         #region IViewEngine members
         public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
+            var parts = partialViewName.Split(':');
+
+            string masterViewName = null;
+            if (parts.Length > 1)
+            {
+                partialViewName = parts[0];
+                masterViewName = parts[1];
+            }
+
             if (_themeEngine.ResolveTemplatePath(partialViewName) != null)
             {
-                return new ViewEngineResult(new DotLiquidThemedView(_themeEngine, partialViewName, null), this);
+                return new ViewEngineResult(new DotLiquidThemedView(_themeEngine, partialViewName, masterViewName), this);
             }
             return new NullViewEngineResult();
         }

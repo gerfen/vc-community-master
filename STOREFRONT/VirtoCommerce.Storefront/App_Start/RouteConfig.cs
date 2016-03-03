@@ -122,6 +122,7 @@ namespace VirtoCommerce.Storefront
             routes.MapLocalizedStorefrontRoute("Product.GetProduct", "product/{productId}", defaults: new { controller = "Product", action = "ProductDetails" });
             routes.MapLocalizedStorefrontRoute("Product.GetProductJson", "product/{productId}/json", defaults: new { controller = "Product", action = "ProductDetailsJson" });
             //Assets
+            routes.MapLocalizedStorefrontRoute("Template", "themes/template/{name}", defaults: new { controller = "Asset", action = "Template" });
             routes.MapLocalizedStorefrontRoute("Assets", "themes/assets/{asset}", defaults: new { controller = "Asset", action = "GetAssets" });
             routes.MapLocalizedStorefrontRoute("GlobalAssets", "themes/global/assets/{asset}", defaults: new { controller = "Asset", action = "GetGlobalAssets" });
 
