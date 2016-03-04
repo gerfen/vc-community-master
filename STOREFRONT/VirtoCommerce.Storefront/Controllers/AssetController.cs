@@ -18,11 +18,11 @@ namespace VirtoCommerce.Storefront.Controllers
     public class AssetController : Controller
     {
         private readonly ILiquidThemeEngine _themeEngine;
-        private readonly WorkContext _workContext;
-        public AssetController(ILiquidThemeEngine themeEngine, WorkContext workContext)
+        
+        public AssetController(ILiquidThemeEngine themeEngine)
         {
             _themeEngine = themeEngine;
-            _workContext = workContext;
+           
         }
 
         #region Public Methods and Operators
@@ -64,8 +64,7 @@ namespace VirtoCommerce.Storefront.Controllers
         public ActionResult Template(string name)
         {
             HttpContext.Response.AppendHeader("Access-Control-Allow-Origin", "*");
-            return PartialView($"{name}:{name}_layout");
-            //return PartialView($"{name}");
+            return PartialView(name);
         }
 
         #endregion

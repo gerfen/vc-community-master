@@ -517,6 +517,7 @@
     <Compile Include="Common\IdentityExtensions.cs" />
     <Compile Include="Common\ObjectExtensions.cs" />
     <Compile Include="Common\StorefrontHmacApiClient.cs" />
+    <Compile Include="Controllers\Api\ApiLiquidPartialViewController.cs" />
     <Compile Include="Controllers\Api\ApiQuoteRequestController.cs" />
     <Compile Include="Controllers\Api\ApiCommonController.cs" />
     <Compile Include="Controllers\Api\ApiAccountController.cs" />
@@ -926,6 +927,7 @@
     <Folder Include="Content\" />
     <Folder Include="fonts\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\ApiLiquidPartialView\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SDK\DotNet\VirtoCommerce.Client\VirtoCommerce.Client.csproj">
