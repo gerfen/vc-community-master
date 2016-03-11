@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using DotLiquid;
 using VirtoCommerce.Storefront.Model.Common;
@@ -84,6 +85,15 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public Currency CurrentCurrency { get; set; }
 
         public Shop[] AllStores { get; set; }
+
+        /// <summary>
+        /// Current request url
+        /// </summary>
+        public string RequestUrl { get; set; }
+        /// <summary>
+        /// Search result (products, articles, blogs)
+        /// </summary>
+        public Search Search { get; set; }
         #endregion
         /// <summary>
         /// template returns the name of the template used to render the current page, with the .liquid extension omitted.
@@ -95,6 +105,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public Order Order { get; set; }
 
         public QuoteRequest QuoteRequest { get; set; }
+
+
         #endregion
 
         #region ILiquidizable members
