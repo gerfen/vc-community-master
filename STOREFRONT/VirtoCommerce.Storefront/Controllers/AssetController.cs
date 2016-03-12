@@ -10,6 +10,7 @@ using DotLiquid;
 using LibSassNetProxy;
 using VirtoCommerce.LiquidThemeEngine;
 using VirtoCommerce.Storefront.Common;
+using VirtoCommerce.Storefront.Model;
 
 namespace VirtoCommerce.Storefront.Controllers
 {
@@ -17,9 +18,11 @@ namespace VirtoCommerce.Storefront.Controllers
     public class AssetController : Controller
     {
         private readonly ILiquidThemeEngine _themeEngine;
+        
         public AssetController(ILiquidThemeEngine themeEngine)
         {
             _themeEngine = themeEngine;
+           
         }
 
         #region Public Methods and Operators
@@ -48,6 +51,7 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public ActionResult GetGlobalAssets(string asset)
         {
+           
             var stream = _themeEngine.GetAssetStream(asset, searchInGlobalThemeOnly: true);
             if (stream != null)
             {
@@ -55,6 +59,14 @@ namespace VirtoCommerce.Storefront.Controllers
             }
             throw new HttpException(404, asset);
         }
+
+        [HttpGet]
+        public ActionResult Template(string name)
+        {
+            HttpContext.Response.AppendHeader("Access-Control-Allow-Origin", "*");
+            return PartialView(name);
+        }
+
         #endregion
 
     }
