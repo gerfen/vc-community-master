@@ -1,0 +1,5 @@
+{% if current_tags %}
+<h1 class="delta">{{ blog.title | link_to: blog.url }} <span class="quiet">&raquo;</span> {{ current_tags.first }}</h1>
+{% else %}
+<h1 class="delta">{{ blog.title }}</h1>
+{% endif %}

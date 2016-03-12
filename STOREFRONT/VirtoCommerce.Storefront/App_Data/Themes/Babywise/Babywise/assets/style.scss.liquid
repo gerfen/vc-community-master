@@ -134,6 +134,13 @@ $heading-font-weight:     600;
 .grey-bg { @include grey-bg; }
 {% endunless %}
 
+{% unless settings.colors_charcoal == blank %}
+@mixin charcoal { color: {{ settings.colors_charcoal }}; }
+.charcoal { @include charcoal; }
+@mixin charcoal-bg { background-color: {{ settings.colors_charcoal }}; }
+.charcoal-bg { @include charcoal-bg; }
+{% endunless %}
+
 {% unless settings.colors_black == blank %}
 @mixin black { color: {{ settings.colors_black }}; }
 .black { @include black; }
@@ -219,8 +226,10 @@ h5 {
 
 h6 {
   @extend .header-styles;
+  margin: 0;
+  text-align: left;
   @include caption;
-  @include lighttan;
+  @include charcoal;
 }
 
 /* http://modularscale.com/scale/?px1=16&px2=32&ra1=1.667&ra2=0 */
@@ -508,6 +517,11 @@ table {
   padding: $gutter 0;
 }
 
+.sidebar {
+  width: 350px;
+  margin-right: 25px;
+}
+
 section {
   max-width: $section-max-width;
   margin: 0 auto;
@@ -673,7 +687,7 @@ header, #main {
   top: 0;
   width: 100%;
   max-width: $site-max-width;
-  z-index: 5;
+  z-index: 20;
   padding-top: 2px;
   {% if settings.infobar_closable %}display: none;{% endif %}
   
@@ -720,7 +734,7 @@ header, #main {
   background-color: {{ settings.navarea_color_background }};
   position: fixed;
   top: {% if settings.infobar_show %}{{ settings.infobar_height }}{% else %}0{% endif %};
-  z-index: 6;
+  z-index: 20;
 }
 
 {% if settings.navarea_hamburger_show %}
@@ -1326,8 +1340,10 @@ nav#footer-links li {
   max-width: 1600px;
   height: 534px;
   text-align: center;
-  background-image: url('{{ 'carousel1.jpg' | asset_url }}');
+  {% unless settings.homepage_hero_image == blank %}
+  background-image: url('{{ settings.homepage_hero_image | asset_url }}');
   background-size: cover;
+  {% endunless %}
   position: relative;
   .herotext {
     position: absolute;
@@ -1338,36 +1354,46 @@ nav#footer-links li {
     h5 { @include white; text-align: center; margin: 0; }
     button { margin-top: 25px; border: 2px solid white; padding: 10px 20px; }
   }
+  .herosource {
+    position: absolute;
+    bottom: 0;
+    right: 5%;
+    margin: 0;
+    height: 20px;
+  }
 }
 
 #mommybuzz {
+  a { 
+    color: {{ settings.colors_text }} 
+  }
   .column {
     position: relative;
-    min-height: 150px;
     .content {
       position: absolute;
-      bottom: 0;
-      width: 320px;
+      top: 0;
+      width: 370px;
     }
     .borderedcontent {
       border-right: 1px solid lightgray;
     }
     .contentleft {
-      left: 175px;
+      left: 125px;
     }
     .contentright {
       left: 25px;
     }
   }
   h5 { 
-    margin-bottom: 0; 
+    margin-top: 0;
+    margin-bottom: 10px; 
   }
   p {
     padding-bottom: 10px;
   }
 }
 
-.bookpromo {
+#bookpromo {
   margin-top: 25px;
   .bookimage {
     position: relative;
@@ -1375,8 +1401,10 @@ nav#footer-links li {
   .bookinfo {
     height: 330px;
     background-color: white;
+    position: relative;
     h3 { margin-top: 15%; margin-bottom: 0; }
     h5 { font-style: italic; font-weight: bold; margin: 0; text-align: center; }
+    h6 { position: absolute; bottom: 5px; right: 5%; }
     p { text-align: center; }
     button { margin-left: auto; margin-right: auto; display: block; margin-top: 40px; }
     .social-share-links { text-align: center; margin-top: 60px; }
@@ -1395,8 +1423,8 @@ nav#footer-links li {
 }
 
 .imagetriad {
-  h3 { margin: 65px 0 5px 0; }
-  h5 { margin: 0; text-align: center; }
+  h3 { margin: 65px 0 5px 0; color: white; }
+  h5 { margin: 0; text-align: center; color: white; }
   .column {
     width: 340px;
     height: 204px;
@@ -1413,12 +1441,37 @@ nav#footer-links li {
     left: 0;
     right: 0;
   }
+  .imagesource {
+    h6 { text-align: right; }
+  }
 }
 
 #featuredvideo {
   max-width: 1200px;
   margin-top: 75px;
   margin-bottom: 30px;
+  height: 416px;
+  {% unless settings.homepage_featuredvideo_image == blank %}
+  background-image: url('{{ settings.homepage_featuredvideo_image | asset_url }}');
+  background-size: cover;
+  {% endunless %}
+  position: relative;
+  .videotext {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    right: 0;
+    h1 { margin: 0; }
+    h5 { @include white; text-align: center; margin: 0; }
+    img { margin-left: 550px; margin-top: 30px; }
+  }
+  .videosource {
+    position: absolute;
+    bottom: 0;
+    right: 5%;
+    margin: 0;
+    height: 20px;
+  }
 }
 
 #emailsignup {
@@ -1456,6 +1509,9 @@ nav#footer-links li {
 #headlines {
   margin-top:50px;
   min-height: 650px;
+  a { 
+    color: {{ settings.colors_text }} 
+  }
   .content {
     width: 720px;
   }
@@ -1469,18 +1525,11 @@ nav#footer-links li {
     text-align: left;
     margin-bottom: 5px;
   }
+  h6 {
+    margin-top: 10px;
+  }
   hr {
     margin: 40px 0
-  }
-}
-
-#featuring {
-  margin-bottom: 50px;
-  .slider {
-    width: 100%;
-    height: 650px;
-    border: 1px solid black;
-    @include white-bg;
   }
 }
 
@@ -1489,7 +1538,123 @@ nav#footer-links li {
   height: 650px;
   @include white-bg;
   float: right;
+  position: relative;
+  .adunit-text {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    right: 0;
+    h1 { margin: 10px 30px; }
+    h5 { @include white; text-align: center; margin: 10px 75px; }
+    img { margin-left: 550px; margin-top: 30px; }
+  }
+  .adunit-source {
+    position: absolute;
+    bottom: 0;
+    right: 5%;
+    margin: 0;
+    height: 20px;
+  }
 }
+
+{% unless settings.homepage_adunit_image == blank %}
+#headlines .adunit-tall {
+  background-image: url('{{ settings.homepage_adunit_image | asset_url }}');
+  background-size: cover;
+}
+{% endunless %}
+
+#featuring {
+  margin-bottom: 50px;
+  position: relative;
+  .slider {
+    width: 1100px;
+    height: 660px;
+    border: 1px solid black;
+    display: none;
+    @include white-bg;
+  }
+  .featuringtext {
+    position: absolute;
+    top: 45%;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    h1 { margin: 0; }
+    h5 { @include white; text-align: center; margin: 0; }
+    button { margin-top: 25px; border: 2px solid white; padding: 10px 20px; }
+  }
+  .featuringsource {
+    position: absolute;
+    bottom: -30px;
+    right: 0;
+    margin: 0;
+    height: 20px;
+  }
+}
+
+a.slidesjs-previous, a.slidesjs-next {
+  background-repeat: no-repeat;
+  display: block;
+  width: 81px;
+  height: 112px;
+  overflow: hidden;
+  text-indent: -9999px;
+  margin-right: 5px;
+  position: absolute;
+  margin-top: -375px;
+  z-index: 12;
+}
+
+a.slidesjs-previous {
+    background-image: url("{{ 'arrow-left-white.png' | asset_url }}");
+}
+
+a.slidesjs-next {
+    right: 0;
+    background-image: url("{{ 'arrow-right-white.png' | asset_url }}");
+}
+
+
+/* =====================
+   14. Secondary Pages
+   ===================== */
+
+#emailsignup-vertical {
+  img {
+    width: 86px;
+    height: 60px;
+    margin: 5px 20px 5px 0;
+    float: right;
+  }
+  div {
+  }
+  .subheadline {
+  }
+  form {
+    margin-top: 10px;
+    #email-field {
+      width: 250px;
+      height: 36px;
+      background-color: white;
+    }
+    .button {
+      width: 100px;
+      margin-left: -15px;
+    }
+  }
+}
+
+#bookshop {
+  margin-top: 10px;
+  img {
+    margin-left: 25px;
+  }
+  .subheadline {
+    margin: 20px 0;
+  }
+}
+
 
 /* ===================================
    Babywise-specific style overrides
@@ -1519,6 +1684,13 @@ h2 {
 .thumbnail {
   height: 154px;
   width: 154px;
+  background-color: transparent;
+  border: 1px solid #666666;
+}
+
+.thumbnail100 {
+  height: 100px;
+  width: 100px;
   background-color: transparent;
   border: 1px solid #666666;
 }

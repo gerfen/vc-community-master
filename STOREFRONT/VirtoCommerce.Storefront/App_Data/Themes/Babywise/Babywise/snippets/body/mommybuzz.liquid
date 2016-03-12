@@ -1,35 +1,50 @@
 <section id="mommybuzz">
   <h2>Mommy Buzz</h2>
   <div class="row indented">
-    <div class="column half">
-	    <div class="thumbnail left"></div>
-      <div class="content contentleft">
-        <div class="borderedcontent">
-  	      <h5>Best seat ever!</h5>
-          <p>I'm excited to not have to get another booster seat since this car seat grows with my child.</p>
+    {% unless settings.homepage_mommybuzz_left_link_url == blank %}
+    <a href="{{ settings.homepage_mommybuzz_left_link_url }}" {% unless settings.homepage_mommybuzz_left_link_target == blank %}target="{{ settings.homepage_mommybuzz_left_link_target }}"{% endunless %}>
+    {% endunless %}
+      <div class="column half">
+        {% unless settings.homepage_mommybuzz_left_image == blank %}
+        <div class="thumbnail100 left">
+          <img src="{{ settings.homepage_mommybuzz_left_image | asset_url }}" alt="{{ settings.homepage_mommybuzz_left_headline }}" />      
         </div>
-        <p class="textlink">Read Reviews</p>
+        {% endunless %} 
+        <div class="content contentleft">
+          <div class="borderedcontent">
+            {% unless settings.homepage_mommybuzz_left_headline == blank %}
+    	      <h5>{{ settings.homepage_mommybuzz_left_headline }}</h5>
+            {% endunless %}
+            {% unless settings.homepage_mommybuzz_left_text == blank %}
+            <p>{{ settings.homepage_mommybuzz_left_text }}</p>
+            {% endunless %}
+            {% unless settings.homepage_mommybuzz_left_source == blank %}
+            <h6>{{ settings.homepage_mommybuzz_left_source }}</h6>
+            {% endunless %}
+          </div>
+        </div>
       </div>
-    </div>
+    {% unless settings.homepage_mommybuzz_left_link_url == blank %}
+    </a>
+    {% endunless %}
+    {% unless settings.homepage_mommybuzz_right_link_url == blank %}
+    <a href="{{ settings.homepage_mommybuzz_right_link_url }}" {% unless settings.homepage_mommybuzz_right_link_target == blank %}target="{{ settings.homepage_mommybuzz_right_link_target }}"{% endunless %}>
+    {% endunless %}
     <div class="column half">
-	    <div class="thumbnail right"></div>
+	    <div class="thumbnail100 right">
+        <img src="{{ settings.homepage_mommybuzz_right_image | asset_url }}" alt="{{ settings.homepage_mommybuzz_right_headline }}" />
+      </div>
       <div class="content contentright">
-        <p class="headline3">"Lorem ipsum dolor sit amet, consectetur adipsicing elit?"</p>
-  	    <p class="textlink">Learn How</p>
+        {% unless settings.homepage_mommybuzz_right_headline == blank %}
+        <p class="headline3">{{ settings.homepage_mommybuzz_right_headline }}</p>
+        {% endunless %}
+        {% unless settings.homepage_mommybuzz_right_source == blank %}
+        <h6>{{ settings.homepage_mommybuzz_right_source }}</h6>
+        {% endunless %}
       </div>
     </div>
-  </div>
-  <div class="row bookpromo">
-    <div class="column half bookimage">
-      <img src="{{ '550x330babywisebooks-photo.jpg' | asset_url }}" />
-      <div class="arrow-left"></div>
-    </div>
-    <div class="column half bookinfo">
-      <h3>Revised and Updated</h3>
-      <h5>On Becoming Babywise</h5>
-      <p>The #1 Bestselling Book for infant sleep</p>
-      <button>Shop the Entire Series</button>
-      {% include 'body/socialshare' %} 
-    </div>
+    {% unless settings.homepage_mommybuzz_right_link_url == blank %}
+    </a>
+    {% endunless %}
   </div>
 </section>

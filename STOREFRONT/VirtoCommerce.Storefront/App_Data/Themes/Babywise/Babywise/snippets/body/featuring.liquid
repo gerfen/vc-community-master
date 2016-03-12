@@ -1,5 +1,61 @@
 <section id="featuring">
   <h2>Featuring</h2>
-  <div class="slider">
+  {% unless settings.homepage_featuring_link_url == blank %}
+  <a href="{{ settings.homepage_featuring_link_url }}" {% unless settings.homepage_featuring_link_target == blank %}target="{{ settings.homepage_featuring_link_target }}"{% endunless %}>
+  {% endunless %}
+  <div class="featuringtext">
+    {% unless settings.homepage_featuring_headline == blank %}
+      <h1>{{ settings.homepage_featuring_headline }}</h1>
+    {% endunless %}
+    {% unless settings.homepage_featuring_subheadline == blank %}
+      <h5>{{ settings.homepage_featuring_subheadline }}</h5>
+    {% endunless %}
   </div>
+  {% unless settings.homepage_featuring_source == blank %}
+  <div class="featuringsource">
+    <h6>{{ settings.homepage_featuring_source }}</h6>
+  </div>
+  {% endunless %}
+  <div class="slider">
+    {% for index in (1..settings.homepage_featuring_image_count) %}
+      <img src="{{ index | prepend: settings.homepage_featuring_image_prefix | append: settings.homepage_featuring_image_suffix | asset_url }}" alt="Slider {{ index }}" />
+    {% endfor %}
+  </div>
+  {% unless settings.homepage_featuring_link_url == blank %}
+  </a>
+  {% endunless %}
 </section>
+<script src="{{ 'jquery.slides.min.js' | asset_url }}"></script>
+<script>
+$(function() {
+  if ($('#featuring .slider').width() > 767) {
+    $('#featuring .slider').slidesjs({
+      width: $('#featuring .slider').width(),
+      height: $('#featuring .slider').height(),
+	  navigation: {
+        active: true,
+        effect: "fade"
+      },
+	  pagination: {
+        active: false,
+      },
+	  play: {
+        active: false,
+        auto: true,
+        effect: "fade",
+        pauseOnHover: false,
+        restartDelay: 2500
+      },
+	  effect: {
+        slide: {
+          speed: 700
+        },
+        fade: {
+          speed: 500,
+          crossfade: true
+        } 
+      }
+    });
+  }
+});
+</script>
