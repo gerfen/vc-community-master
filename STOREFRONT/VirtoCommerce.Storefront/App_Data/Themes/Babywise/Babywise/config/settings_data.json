@@ -28,7 +28,6 @@
     "layout_content_width_max": "1200px",
     "layout_section_width_max": "1100px",
 
-
     // --------------------------------------------------------------------------------------------------------------
     // Typography defaults, for these named styles:
     //   - display1
@@ -117,6 +116,7 @@
     "colors_purple": "#6f6fd3",
     "colors_pink": "#e899db",
     "colors_grey": "#666666",
+    "colors_charcoal": "#999999",
     "colors_black": "#000000",
     "colors_white": "#ffffff",
     "colors_yellow": "#e2cd7a",
@@ -206,11 +206,11 @@
     "social_show": true,
 
     // URLs for each of the social media services.  If a URL is not present, that icon is not shown.
-    "social_facebook_url": "https://www.facebook.com/shopify",
-    "social_twitter_url": "",
-    "social_pinterest_url": "http://pinterest.com/shopify/",
-    "social_googleplus_url": "",
-    "social_instagram_url": "",
+    "social_facebook_url": "https://www.facebook.com/babywiselife",
+    "social_twitter_url": "https://twitter.com/BabywiseLife",
+    "social_pinterest_url": "https://www.pinterest.com/babywiselife/",
+    //"social_googleplus_url": "https://plus.google.com/102164957259910401491/about?gmbpt=true&hl=en&_ga=1.3845040.1049744248.1457135146",
+    //"social_instagram_url": "https://www.instagram.com/babywise.life/",
     "social_linkedin_url": "",
     "social_flickr_url": "",
     "social_yelp_url": "",
@@ -221,7 +221,7 @@
     "social_featured_blog": "",
     "social_contact_email": "mailto:info@babywise.life",
 
-    // Show the social links?
+    // Show the social links for sharing?
     "social_share_show": true,
 
     // URLs for sharing on each of the social media services.  If a URL is not present, that icon is not shown.
@@ -263,8 +263,98 @@
     "footer_copyright": "Babywise.life",
     "footer_copyright_font_family": "TrebuchetMS",
     "footer_copyright_font_size": "12px",
-    
-    "google_analytics_code": "UA-72789433-1",
+
+    // Google Analytics - enable for production.
+    //"google_analytics_code": "UA-72789433-1",
+
+    // --------------------------------------------------------------------------------------------------------------
+    // Homepage elements
+    // 
+    "homepage_hero_headline": "All Smiles",
+    "homepage_hero_subheadline": "Building a Loving Home Environment",
+    "homepage_hero_source": "Babywise Books",
+    "homepage_hero_link_url": "/shop",
+    "homepage_hero_link_text": "Start Here",
+    "homepage_hero_image": "carousel1.jpg",
+
+    "homepage_mommybuzz_left_headline": "10 Recipes Your 1 Year Old Will Love",
+    "homepage_mommybuzz_left_text": "Got a picky eater? These recipes are winners. In fact, they’re so good, you might just make some for yourself.",
+    "homepage_mommybuzz_left_source": "The Bump",
+    "homepage_mommybuzz_left_link_url": "http://www.thebump.com/a/top-10-recipes-for-one-year-olds",
+    "homepage_mommybuzz_left_link_target": "_blank",
+    "homepage_mommybuzz_left_image": "100x100ten-recipes.jpg",
+
+    "homepage_mommybuzz_right_headline": "\"Routines to Keep a Home Tidy With Kids\"",
+    "homepage_mommybuzz_right_text": "",
+    "homepage_mommybuzz_right_source": "A Mother Far From Home",
+    "homepage_mommybuzz_right_link_url": "http://amotherfarfromhome.com/routines-to-help-keep-a-tidy-home-with-kids/",
+    "homepage_mommybuzz_right_link_target": "_blank",
+    "homepage_mommybuzz_right_image": "100x100tidy-with-kids.jpg",
+
+    "homepage_sleeptalk_left_headline": "Sleep Trick",
+    "homepage_sleeptalk_left_subheadline": "Help kids fall asleep fast",
+    "homepage_sleeptalk_left_source": "The Military Wife and Mom",
+    "homepage_sleeptalk_left_link_url": "http://www.themilitarywifeandmom.com/one-simple-trick-to-help-your-kids-fall-asleep-fast/",
+    "homepage_sleeptalk_left_link_target": "_blank",
+    "homepage_sleeptalk_left_image": "340x204sleep-trick.jpg",
+
+    "homepage_sleeptalk_center_headline": "3 Easy Steps",
+    "homepage_sleeptalk_center_subheadline": "Get baby sleeping through the night",
+    "homepage_sleeptalk_center_source": "BABYWISE TIP",
+    "homepage_sleeptalk_center_link_url": "http://www.babywisemom.com/2015/07/3-easy-steps-to-get-your-baby-sleeping.html",
+    "homepage_sleeptalk_center_link_target": "_blank",
+    "homepage_sleeptalk_center_image": "340x204easy-steps.jpg",
+
+    "homepage_sleeptalk_right_headline": "Little Posers",
+    "homepage_sleeptalk_right_subheadline": "Mom creates dreams for baby",
+    "homepage_sleeptalk_right_source": "9GAG.COM",
+    "homepage_sleeptalk_right_link_url": "http://9gag.com/gag/30129",
+    "homepage_sleeptalk_right_link_target": "_blank",
+    "homepage_sleeptalk_right_image": "340x204baby-dreams.jpg",
+
+    "homepage_featuredvideo_headline": "Meeting Murilo",
+    "homepage_featuredvideo_subheadline": "Huggies Presents a Truly Unique Moment For Mom",
+    "homepage_featuredvideo_source": "Huggies Brasil",
+    "homepage_featuredvideo_link_url": "https://www.youtube.com/watch?v=KD0AC43fc_4",
+    "homepage_featuredvideo_link_target": "",
+    "homepage_featuredvideo_image": "Meeting-Murilo-background.jpg",
+
+    "homepage_headline1_headline": "Sew Your Own Sleep Sack",
+    "homepage_headline1_text": "Sleep sacks are the bomb! They’re simple to use, cozy to sleep in, signal to baby that it’s sleep time, and keep you from worrying that blankets will get kicked off. On top of all that, they slow down climbers from getting out of their cribs. But even better than all that: You can make one for your baby or as a baby shower gift without a lot of effort.",
+    "homepage_headline1_source": "The DIY Mommy",
+    "homepage_headline1_link_url": "http://thediymommy.com/sew-an-easy-baby-sleep-sack/",
+    "homepage_headline1_link_target": "_blank",
+    "homepage_headline1_image": "154x154diy-sleep-sack.jpg",
+
+    "homepage_headline2_headline": "7 Homemade Baby Food Recipes",
+    "homepage_headline2_text": "Buying baby food can be a killer on the budget. Those little jars are so convenient. And so expensive! So, having a few recipes for homemade baby food on hand can save on costs and add on nutrition.",
+    "homepage_headline2_source": "What to Expect",
+    "homepage_headline2_link_url": "http://www.whattoexpect.com/first-year/feeding-baby/homemade-baby-food-recipes.aspx#01",
+    "homepage_headline2_link_target": "_blank",
+    "homepage_headline2_image": "154x154homemade-baby-food.jpg",
+
+    "homepage_headline3_headline": "Help! My Baby’s Crying!",
+    "homepage_headline3_text": "Nothing strikes fear in the heart of a new parent quite like a baby that won’t stop crying. While it is never easy to hear your baby cry, three simple steps can be taken to help assess the cry and figure out what baby needs and how to address that need.",
+    "homepage_headline3_source": "What to Expect",
+    "homepage_headline3_link_url": "http://www.whattoexpect.com/first-year/feeding-baby/homemade-baby-food-recipes.aspx#01",
+    "homepage_headline3_link_target": "_blank",
+    "homepage_headline3_image": "154x154my-babys-crying.jpg",
+
+    "homepage_adunit_headline": "Art Imitates Life",
+    "homepage_adunit_subheadline": "Have your child’s quote turned into a piece of art",
+    "homepage_adunit_source": "Shop Etsy",
+    "homepage_adunit_link_url": "https://www.etsy.com/shop/HarpAndSquirrel?section_id=16792561&ref=shopsection_leftnav_2",
+    "homepage_adunit_link_target": "_blank",
+    "homepage_adunit_image": "340x660harp-and-squirrel.jpg",
+
+    "homepage_featuring_headline": "&#8220;I Do.&#8221;",
+    "homepage_featuring_subheadline": "Nurse makes 4 year old cancer patient’s dream come true",
+    "homepage_featuring_source": "REBECCA GRUBER – POPSUGAR.COM",
+    "homepage_featuring_link_url": "http://www.popsugar.com/moms/4-Year-Old-Cancer-Patient-Marries-Her-Nurse-37918292#photo-37918292",
+    "homepage_featuring_link_target": "_blank",
+    "homepage_featuring_image_count": "3",
+    "homepage_featuring_image_prefix": "1100x600I-Do-",
+    "homepage_featuring_image_suffix": ".jpg",
 
     "featured_blog": "news",
     "homepage_collection": "frontpage",

@@ -1,7 +1,20 @@
 <section id="heroarea">
   <div class="herotext">
-    <h1>All Smiles</h1>
-    <h5>Building a Loving Home Environment</h5>
-    <button>Happy Family Articles</button>
+  {% unless settings.homepage_hero_headline == blank %}
+    <h1>{{ settings.homepage_hero_headline }}</h1>
+  {% endunless %}
+  {% unless settings.homepage_hero_subheadline == blank %}
+    <h5>{{ settings.homepage_hero_subheadline }}</h5>
+  {% endunless %}
+  {% unless settings.homepage_hero_link_text == blank %}
+    <a href="{{ settings.homepage_hero_link_url }}">
+      <button>{{ settings.homepage_hero_link_text }}</button>
+    </a>
+  {% endunless %}
   </div>
+  {% unless settings.homepage_hero_source == blank %}
+  <div class="herosource">
+    <h6>{{ settings.homepage_hero_source }}</h6>
+  </div>
+  {% endunless %}
 </section>

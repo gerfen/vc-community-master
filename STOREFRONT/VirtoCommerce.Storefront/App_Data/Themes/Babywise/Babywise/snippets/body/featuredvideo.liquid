@@ -1,3 +1,22 @@
 <section id="featuredvideo">
-  <img src="{{ 'Meeting-Murilo.jpg' | asset_url }}" alt="Meeting Murilo" />
+  {% unless settings.homepage_featuredvideo_link_url == blank %}
+  <a href="{{ settings.homepage_featuredvideo_link_url }}" {% unless settings.homepage_featuredvideo_link_target == blank %}target="{{ settings.homepage_featuredvideo_link_target }}"{% endunless %}>
+  {% endunless %}
+  <div class="videotext">
+    {% unless settings.homepage_featuredvideo_headline == blank %}
+      <h1>{{ settings.homepage_featuredvideo_headline }}</h1>
+    {% endunless %}
+    {% unless settings.homepage_featuredvideo_subheadline == blank %}
+      <h5>{{ settings.homepage_featuredvideo_subheadline }}</h5>
+    {% endunless %}
+    <img src="{{ 'play-arrow.png' | asset_url }}" alt="Play video" />
+  </div>
+  {% unless settings.homepage_featuredvideo_link_url == blank %}
+  </a>
+  {% endunless %}
+  {% unless settings.homepage_featuredvideo_source == blank %}
+  <div class="videosource">
+    <h6>{{ settings.homepage_featuredvideo_source }}</h6>
+  </div>
+  {% endunless %}
 </section>

@@ -1,22 +1,93 @@
 <section id="headlines">
-  <div class="adunit-tall"></div>
+  {% unless settings.homepage_adunit_link_url == blank %}
+  <a href="{{ settings.homepage_adunit_link_url }}" {% unless settings.homepage_adunit_link_target == blank %}target="{{ settings.homepage_adunit_link_target }}"{% endunless %}>
+  {% endunless %}
+    <div class="adunit-tall">
+      <div class="adunit-text">
+      {% unless settings.homepage_adunit_headline == blank %}
+        <h1>{{ settings.homepage_adunit_headline }}</h1>
+      {% endunless %}
+      {% unless settings.homepage_adunit_subheadline == blank %}
+        <h5>{{ settings.homepage_adunit_subheadline }}</h5>
+      {% endunless %}
+      </div>
+      {% unless settings.homepage_adunit_source == blank %}
+      <div class="adunit-source">
+        <h6>{{ settings.homepage_adunit_source }}</h6>
+      </div>
+      {% endunless %}
+    </div>
+  {% unless settings.homepage_adunit_link_url == blank %}
+  </a>
+  {% endunless %}
   <div class="content">
-	<div class="headline">
-	  <div class="thumbnail left"></div>
-	  <h3>Headline One</h3>
-	  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu bibendum augue, ornare congue nunc. Sed sit amet facilisis eros. Curabitur et tincidunt tellus. Morbi convallis ante at hendrerit vestibulum. Praesent interdum lacinia leo, tempor pulvinar urna consequat nec. Nulla tempus dolor sit amet massa pretium, malesuada laoreet justo sagittis. Etiam aliquet mi sed eros consequat, vulputate aliquet justo facilisis. Nunc in orci vitae dui tincidunt dictum a quis purus.</p>
-	</div>
+    {% unless settings.homepage_headline1_link_url == blank %}
+    <a href="{{ settings.homepage_headline1_link_url }}" {% unless settings.homepage_headline1_link_target == blank %}target="{{ settings.homepage_headline1_link_target }}"{% endunless %}>
+    {% endunless %}
+		<div class="headline">
+		  {% unless settings.homepage_headline1_image == blank %}
+		  <div class="thumbnail left">
+		  	<img src="{{ settings.homepage_headline1_image | asset_url }}" alt="{{ settings.homepage.headline1_headline }}" />
+		  </div>
+		  {% endunless %}
+		  {% unless settings.homepage_headline1_headline == blank %}
+		  <h3>{{ settings.homepage_headline1_headline }}</h3>
+		  {% endunless %}
+		  {% unless settings.homepage_headline1_text == blank %}
+		  <p>{{ settings.homepage_headline1_text }}</p>
+		  {% endunless %}
+		  {% unless settings.homepage_headline1_source == blank %}
+		  <h6>{{ settings.homepage_headline1_source }}</h6>
+		  {% endunless %}
+		</div>
+    {% unless settings.homepage_headline1_link_url == blank %}
+    </a>
+    {% endunless %}
 	<hr/>
-	<div class="headline">
-	  <div class="thumbnail left"></div>
-	  <h3>Headline Two</h3>
-	  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu bibendum augue, ornare congue nunc. Sed sit amet facilisis eros. Curabitur et tincidunt tellus. Morbi convallis ante at hendrerit vestibulum. Praesent interdum lacinia leo, tempor pulvinar urna consequat nec. Nulla tempus dolor sit amet massa pretium, malesuada laoreet justo sagittis. Etiam aliquet mi sed eros consequat, vulputate aliquet justo facilisis. Nunc in orci vitae dui tincidunt dictum a quis purus.</p>
-	</div>
+    {% unless settings.homepage_headline2_link_url == blank %}
+    <a href="{{ settings.homepage_headline2_link_url }}" {% unless settings.homepage_headline2_link_target == blank %}target="{{ settings.homepage_headline2_link_target }}"{% endunless %}>
+    {% endunless %}
+		<div class="headline">
+		  {% unless settings.homepage_headline2_image == blank %}
+		  <div class="thumbnail left">
+		  	<img src="{{ settings.homepage_headline2_image | asset_url }}" alt="{{ settings.homepage.headline2_headline }}" />
+		  </div>
+		  {% endunless %}
+		  {% unless settings.homepage_headline2_headline == blank %}
+		  <h3>{{ settings.homepage_headline2_headline }}</h3>
+		  {% endunless %}
+		  {% unless settings.homepage_headline2_text == blank %}
+		  <p>{{ settings.homepage_headline2_text }}</p>
+		  {% endunless %}
+		  {% unless settings.homepage_headline2_source == blank %}
+		  <h6>{{ settings.homepage_headline2_source }}</h6>
+		  {% endunless %}
+		</div>
+    {% unless settings.homepage_headline2_link_url == blank %}
+    </a>
+    {% endunless %}
 	<hr/>
-	<div class="headline">
-	  <div class="thumbnail left"></div>
-	  <h3>Headline Three</h3>
-	  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu bibendum augue, ornare congue nunc. Sed sit amet facilisis eros. Curabitur et tincidunt tellus. Morbi convallis ante at hendrerit vestibulum. Praesent interdum lacinia leo, tempor pulvinar urna consequat nec. Nulla tempus dolor sit amet massa pretium, malesuada laoreet justo sagittis. Etiam aliquet mi sed eros consequat, vulputate aliquet justo facilisis. Nunc in orci vitae dui tincidunt dictum a quis purus.</p>
-	</div>
+    {% unless settings.homepage_headline3_link_url == blank %}
+    <a href="{{ settings.homepage_headline3_link_url }}" {% unless settings.homepage_headline3_link_target == blank %}target="{{ settings.homepage_headline3_link_target }}"{% endunless %}>
+    {% endunless %}
+		<div class="headline">
+		  {% unless settings.homepage_headline3_image == blank %}
+		  <div class="thumbnail left">
+		  	<img src="{{ settings.homepage_headline3_image | asset_url }}" alt="{{ settings.homepage.headline3_headline }}" />
+		  </div>
+		  {% endunless %}
+		  {% unless settings.homepage_headline3_headline == blank %}
+		  <h3>{{ settings.homepage_headline3_headline }}</h3>
+		  {% endunless %}
+		  {% unless settings.homepage_headline3_text == blank %}
+		  <p>{{ settings.homepage_headline3_text }}</p>
+		  {% endunless %}
+		  {% unless settings.homepage_headline3_source == blank %}
+		  <h6>{{ settings.homepage_headline3_source }}</h6>
+		  {% endunless %}
+		</div>
+    {% unless settings.homepage_headline3_link_url == blank %}
+    </a>
+    {% endunless %}
   </div>
 </section>

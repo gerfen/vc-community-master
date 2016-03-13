@@ -2,23 +2,76 @@
   <h2>Sleep Talk</h2>
   <div class="row imagetriad">
     <div class="column">
+      {% unless settings.homepage_sleeptalk_left_link_url == blank %}
+      <a href="{{ settings.homepage_sleeptalk_left_link_url }}" {% unless settings.homepage_sleeptalk_left_link_target == blank %}target="{{ settings.homepage_sleeptalk_left_link_target }}"{% endunless %}>
+      {% endunless %}
+      {% unless settings.homepage_sleeptalk_left_image == blank %}
+      <img src="{{ settings.homepage_sleeptalk_left_image | asset_url }}" alt="{{ settings.homepage_sleeptalk_left_headline }}" />
+      {% endunless %}
       <div class="imagecaption">
-        <h3>Image Title</h3>
-        <h5>Detail subtext here</h5>
+        {% unless settings.homepage_sleeptalk_left_headline == blank %}
+        <h3>{{ settings.homepage_sleeptalk_left_headline }}</h3>
+        {% endunless %}
+        {% unless settings.homepage_sleeptalk_left_subheadline == blank %}
+        <h5>{{ settings.homepage_sleeptalk_left_subheadline }}</h5>
+        {% endunless %}
       </div>
+      {% unless settings.homepage_sleeptalk_left_source == blank %}
+      <div class="imagesource">
+        <h6>{{ settings.homepage_sleeptalk_left_source }}</h6>
+      </div>
+      {% endunless %}
+      {% unless settings.homepage_sleeptalk_left_link_url == blank %}
+      </a>
+      {% endunless %}
     </div>
     <div class="column">
+      {% unless settings.homepage_sleeptalk_center_link_url == blank %}
+      <a href="{{ settings.homepage_sleeptalk_center_link_url }}" {% unless settings.homepage_sleeptalk_center_link_target == blank %}target="{{ settings.homepage_sleeptalk_center_link_target }}"{% endunless %}>
+      {% endunless %}
+      {% unless settings.homepage_sleeptalk_center_image == blank %}
+      <img src="{{ settings.homepage_sleeptalk_center_image | asset_url }}" alt="{{ settings.homepage_sleeptalk_center_headline }}" />
+      {% endunless %}
       <div class="imagecaption">
-        <h3>Image Title</h3>
-        <h5>Detail subtext here</h5>
+        {% unless settings.homepage_sleeptalk_center_headline == blank %}
+        <h3>{{ settings.homepage_sleeptalk_center_headline }}</h3>
+        {% endunless %}
+        {% unless settings.homepage_sleeptalk_center_subheadline == blank %}
+        <h5>{{ settings.homepage_sleeptalk_center_subheadline }}</h5>
+        {% endunless %}
       </div>
+      {% unless settings.homepage_sleeptalk_center_source == blank %}
+      <div class="imagesource">
+        <h6>{{ settings.homepage_sleeptalk_center_source }}</h6>
+      </div>
+      {% endunless %}
+      {% unless settings.homepage_sleeptalk_center_link_url == blank %}
+      </a>
+      {% endunless %}
     </div>
     <div class="column">
-      <img src="{{ '340x204imageFPO.jpg' | asset_url }}" alt="Sample image" />
+      {% unless settings.homepage_sleeptalk_right_link_url == blank %}
+      <a href="{{ settings.homepage_sleeptalk_right_link_url }}" {% unless settings.homepage_sleeptalk_right_link_target == blank %}target="{{ settings.homepage_sleeptalk_right_link_target }}"{% endunless %}>
+      {% endunless %}
+      {% unless settings.homepage_sleeptalk_right_image == blank %}
+      <img src="{{ settings.homepage_sleeptalk_right_image | asset_url }}" alt="{{ settings.homepage_sleeptalk_right_headline }}" />
+      {% endunless %}
       <div class="imagecaption">
-        <h3 class="white">Image Title</h3>
-        <h5>Detail subtext here</h5>
+        {% unless settings.homepage_sleeptalk_right_headline == blank %}
+        <h3>{{ settings.homepage_sleeptalk_right_headline }}</h3>
+        {% endunless %}
+        {% unless settings.homepage_sleeptalk_right_subheadline == blank %}
+        <h5>{{ settings.homepage_sleeptalk_right_subheadline }}</h5>
+        {% endunless %}
       </div>
+      {% unless settings.homepage_sleeptalk_right_source == blank %}
+      <div class="imagesource">
+        <h6>{{ settings.homepage_sleeptalk_right_source }}</h6>
+      </div>
+      {% endunless %}
+      {% unless settings.homepage_sleeptalk_right_link_url == blank %}
+      </a>
+      {% endunless %}
     </div>
   </div>
 </section>
