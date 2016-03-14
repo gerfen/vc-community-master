@@ -292,7 +292,6 @@
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\js\jquery.slides.js" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\js\jquery.slides.min.js" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\shopify_common.js" />
-    <Content Include="App_Data\Themes\Babywise\Babywise\config\settings.html" />
     <Content Include="App_Data\Themes\Babywise\default\assets\active-bg.png" />
     <Content Include="App_Data\Themes\Babywise\default\assets\amazon-payments.svg" />
     <Content Include="App_Data\Themes\Babywise\default\assets\amazon.svg" />
