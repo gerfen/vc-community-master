@@ -63,18 +63,6 @@
       <HintPath>..\packages\DotLiquid.VirtoCommerce.1.8.3\lib\NET45\DotLiquid.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Glimpse.AspNet, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Glimpse.AspNet.1.8.0\lib\net45\Glimpse.AspNet.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Glimpse.Core, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Glimpse.1.8.2\lib\net45\Glimpse.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Glimpse.Mvc5, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Glimpse.Mvc5.1.5.3\lib\net45\Glimpse.Mvc5.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="LibSassNetProxy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Shared\LibSassNetProxy.dll</HintPath>
@@ -252,26 +240,57 @@
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\icons\mstile-310x150.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\icons\mstile-70x70.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\icons\safari-pinned-tab.svg" />
-    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\550x330babywisebooks-photo.jpg" />
-    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\carousel1.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\arrow-left-grey.png" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\arrow-left-white.png" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\arrow-right-grey.png" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\arrow-right-white.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\cart-icon-active.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\cart-icon.png" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\100x100ten-recipes.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\100x100tidy-with-kids.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\1100x600I-Do-1.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\1100x600I-Do-2.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\1100x600I-Do-3.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\154x154diy-sleep-sack.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\154x154homemade-baby-food.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\154x154lunchtime-surprise.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\154x154my-babys-crying.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\340x204baby-dreams.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\340x204easy-steps.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\340x204imageFPO.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\340x204sleep-trick.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\340x660harp-and-squirrel.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\550x330babywisebooks-photo.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\Babywise-book-lrg.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\carousel1.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\Meeting-Murilo-background.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\Meeting-Murilo.jpg" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\content\on-becoming-series.png" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\email-icon.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\hamburger-nav-hover.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\hamburger-nav.png" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\logo-horizontal.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\logo-hover.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\logo.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\logomark-hover.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\logomark.png" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\play-arrow.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\search-icon-active.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\search-icon.png" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-google-active.png" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-google.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-icon-email-hover.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-icon-email.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-icon-facebook-hover.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-icon-facebook.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-icon-pinterest-hover.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-icon-pinterest.png" />
-    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-icon-twitter-active.png" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-icon-twitter-hover.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-icon-twitter.png" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-instagram-active.png" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-instagram.png" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\js\jquery.slides.js" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\js\jquery.slides.min.js" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\shopify_common.js" />
     <Content Include="App_Data\Themes\Babywise\Babywise\config\settings.html" />
     <Content Include="App_Data\Themes\Babywise\default\assets\active-bg.png" />
@@ -549,7 +568,6 @@
     <Compile Include="Converters\QuoteRequestTotalsConverter.cs" />
     <Compile Include="Converters\ShippingMethodConverter.cs" />
     <Compile Include="Converters\TierPriceConverter.cs" />
-    <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Services\CartValidator.cs" />
     <Compile Include="Services\CustomerServiceImpl.cs" />
     <Compile Include="Services\LinkHelper.cs" />
