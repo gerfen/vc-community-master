@@ -26,7 +26,6 @@ namespace VirtoCommerce.Storefront.Services
         private readonly IPromotionEvaluator _promotionEvaluator;
         private readonly Func<WorkContext> _workContextFactory;
 
-
         public CatalogSearchServiceImpl(Func<WorkContext> workContextFactory, ICatalogModuleApi catalogModuleApi, IPricingService pricingService, IInventoryModuleApi inventoryModuleApi, ISearchModuleApi searchApi, IPromotionEvaluator promotionEvaluator)
         {
             _workContextFactory = workContextFactory;
@@ -75,7 +74,7 @@ namespace VirtoCommerce.Storefront.Services
             var workContext = _workContextFactory();
 
             var retVal = (await _catalogModuleApi.CatalogModuleCategoriesGetCategoriesByIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToWebModel(workContext.CurrentLanguage)).ToArray();
-            
+
             return retVal;
         }
 
@@ -117,7 +116,7 @@ namespace VirtoCommerce.Storefront.Services
             criteria.ResponseGroup = criteria.ResponseGroup | CatalogSearchResponseGroup.WithCategories;
             var searchCriteria = criteria.ToServiceModel(workContext);
             var categories = _searchApi.SearchModuleSearch(searchCriteria).Categories.Select(x => x.ToWebModel(workContext.CurrentLanguage)).ToList();
-           
+
             //API temporary does not support paginating request to categories (that's uses PagedList with superset)
             return new PagedList<Category>(categories, criteria.PageNumber, criteria.PageSize);
         }
@@ -167,7 +166,7 @@ namespace VirtoCommerce.Storefront.Services
             criteria.ResponseGroup = criteria.ResponseGroup | CatalogSearchResponseGroup.WithProducts;
 
             var searchCriteria = criteria.ToServiceModel(workContext);
-        
+
             var result = _searchApi.SearchModuleSearch(searchCriteria);
             var products = result.Products.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentCurrency)).ToList();
 
@@ -188,9 +187,11 @@ namespace VirtoCommerce.Storefront.Services
             searchCriteria.ResponseGroup = CatalogSearchResponseGroup.WithProducts.ToString();
 
             var result = _searchApi.SearchModuleSearch(searchCriteria);
-            var aggregations = result.Aggregations.Select(x => x.ToWebModel()).ToList();
+            var aggregations = result.Aggregations
+                .Select(x => x.ToWebModel(workContext.CurrentLanguage.CultureName))
+                .ToList();
 
-            return new StaticPagedList<Aggregation>(aggregations, criteria.PageNumber, criteria.PageSize, aggregations.Count());
+            return new StaticPagedList<Aggregation>(aggregations, criteria.PageNumber, criteria.PageSize, aggregations.Count);
         }
 
         #endregion
