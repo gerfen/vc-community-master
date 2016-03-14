@@ -287,7 +287,7 @@
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-icon-pinterest.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-icon-twitter-hover.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-icon-twitter.png" />
-    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-instagram-active.png" />
+    <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-instagram-hover.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\images\social-instagram.png" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\js\jquery.slides.js" />
     <Content Include="App_Data\Themes\Babywise\Babywise\assets\js\jquery.slides.min.js" />
